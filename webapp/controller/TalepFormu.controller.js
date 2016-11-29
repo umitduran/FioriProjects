@@ -60,7 +60,6 @@ sap.ui.define([
 		onKaydet : function(oEvent) {
 			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
-			//result = true;
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 				return;
