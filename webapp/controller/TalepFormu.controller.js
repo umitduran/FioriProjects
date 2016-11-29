@@ -12,6 +12,7 @@ sap.ui.define([
 			//test
 			//test2
 			//test3
+			//test4 remote branch
 		},
 		onBeforeRendering : function() {
 			var oController = this;
