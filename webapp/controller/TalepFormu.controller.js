@@ -9,6 +9,7 @@ sap.ui.define([
 	"use strict";
 	return Controller.extend("com.silverline.ticariurun.controller.TalepFormu", {
 		onInit : function() {
+			//test
 		},
 		onBeforeRendering : function() {
 			var oController = this;
