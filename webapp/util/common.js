@@ -456,6 +456,24 @@ sap.ui.define([
 	
 	timeFormat: function(val) {
 		return val.replace('PT','').replace('H',':').replace('M',':').replace('S','');
+	},
+	
+	compareDate : function(date1,date2,checkTime) {
+	//date1 ile date2 karşılatırılır, date1>=date2 ise true, değilse false döner
+	//checkTime parametresi true ise saati de karşılaştırır, false ise saati dikkate almaz
+		if (!checkTime) {
+			date1.setHours(0,0,0,0);
+			date2.setHours(0,0,0,0);
+		}
+		if (date1 >= date2) {
+			return true;
+		} else {
+			return false;
+		}
+
+	
+	
 	}
+	
 };
 });

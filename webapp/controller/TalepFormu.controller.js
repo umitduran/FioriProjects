@@ -57,28 +57,23 @@ sap.ui.define([
 			this.updateIconColor("idEklerTab", bResult5);
 			return bResult1 && bResult2 && bResult3 && bResult4 && bResult5;
 		},
-		_validateDate : function (oModel) {
-
-			var today = new Date();
-			today.setHours(0, 0, 0, 0);
-			var talepTarihi = new Date(oModel.oData.HedefSiparisTarihi);
-			talepTarihi.setHours(0, 0, 0, 0);
-			if(talepTarihi > today) {
-				return true;
-				}
-			else {
-				return false;
-				}
-			},
 		onKaydet : function(oEvent) {
+			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
 			//result = true;
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 				return;
 			}
-			var oModel = this.getView().getModel();
-			var validateDate = this._validateDate(oModel);
+			var dHedefSipiarisTarihi = new Date(oModel.getProperty("/HedefSiparisTarihi"));
+			var validDate = Common.compareDate(dHedefSipiarisTarihi,new Date(),false);
+			if (!validDate) {
+				var oHedefSiparisTarihi = this.getView().byId("idHedefSiparisTarihi");
+				oHedefSiparisTarihi.setValueState(sap.ui.core.ValueState.Error);
+				oHedefSiparisTarihi.setValueStateText("Geçersiz Tarih");	
+				MessageToast.show("Hedef Sipariş Tarihi geçmiş tarih girilemez!");
+				return;
+			}
 			
 			var oData = oModel.getData();
 			var eModel = this.getView().getModel("ecc");
@@ -93,19 +88,7 @@ sap.ui.define([
 			oTalep.HedefFiyat = parseFloat(oData.HedefFiyat).toFixed(2);
 			oTalep.HedefFiyatPB = oData.HedefFiyatPB;
 			oTalep.MinimumSiparisMiktari = parseInt(oData.MinimumSiparisMiktari,10);
-			if(validateDate == true){
-				oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
-			}
-			else {			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-			MessageBox.warning(
-				"Geçerli Sipariş Tarihi Giriniz!!",
-				{
-					styleClass: bCompact? "sapUiSizeCompact" : ""
-				}
-			);
-				return;
-				
-			}
+			
 			//oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
 			oTalep.OdemeSekli = oData.OdemeSekli;
 			oTalep.TeslimSekli = oData.TeslimSekli;  
@@ -312,6 +295,10 @@ sap.ui.define([
 				mainModel.setProperty("/Attachments",collection);
 				//this.saveFileDataSAP(row);
 			}			
+		},
+		handleUrunGrubuValueHelp : function(oEvent) {
+			var oModel = this.getView().getModel("genel");
+			Common.handleValueHelp(this,oEvent.getSource(),null,"UrunGrubuKodu","UrunGrubuAciklamasi",oModel,'/UrunGrubuSet',this.getView(),"Ürün Grubu");
 		},
 		handleHedefUlkeValueHelp : function(oEvent) {
 			var oModel = this.getView().getModel("genel");

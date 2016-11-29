@@ -16,16 +16,15 @@
 		<Label id="idTalepTarihiLabel" text="{i18n>TalepTarihiLabel}"/>
 		<DatePicker id="idTalepTarihi" value="{/TalepTarihi}" valueFormat="dd.MM.yyyy" displayFormat="dd.MM.yyyy"/>
 		<Label id="idUrunGrubuLabel" text="{i18n>UrunGrubuLabel}"/>
-		<ComboBox id="idUrunGrubu" 
-		          items="{sabit>/UrunGrubu}"
+		<ComboBox id="idUrunGrubu"
+		          items="{genel>/UrunGrubuSet}" 
 		          selectedKey="{/UrunGrubu}"
 		          selectionChange="onUrunGrubuChanged">
-			<core:Item key="{sabit>key}" text="{sabit>value}"/>
-			<layoutData>
-				<l:GridData span="L4 M4 S12"/>
-			</layoutData>
-		</ComboBox>
-		<Label text="" />
+			<core:Item key="{genel>UrunGrubuKodu}" text="{genel>UrunGrubuAciklamasi}" />
+	        <layoutData>
+	          <l:GridData span="L3 M6 S12"/>
+	        </layoutData>				        							
+		</ComboBox>				
 	</f:SimpleForm>
 
 </core:FragmentDefinition>
