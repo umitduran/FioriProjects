@@ -1,0 +1,43 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm editable="true" 
+				layout="ResponsiveGridLayout" 
+				id="idEklerForm"
+				labelSpanL="4" 
+				labelSpanM="6" 
+				labelSpanS="12"
+				columnsL="2"
+				columnsM="2">
+		<core:Title text="{i18n>AttachmentsTitle}" />
+		<UploadCollection 
+			id="idAttachmentUpload"
+			multiple="false"
+			sameFilenameAllowed="true"
+			showSeparators="All"
+			change="onFileUploadChange"
+			fileDeleted="onFileDeleted"
+			uploadComplete="onFileUploadComplete"
+			numberOfAttachmentsText=" "
+			uploadUrl="/logo~ui~talep/UploadServlet"
+			noDataText=" "
+			items="{/Attachments}">
+			<items>
+				<UploadCollectionItem
+					fileName="{FileName}"
+					documentId="{DocumentId}"
+					url="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}"
+					visibleEdit="false">
+				</UploadCollectionItem>
+			</items>
+			<layoutData>
+				<l:GridData span="L6 M6 S12"/>
+			</layoutData>
+		</UploadCollection>
+	</f:SimpleForm>
+
+</core:FragmentDefinition>

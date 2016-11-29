@@ -1,0 +1,62 @@
+{
+	"DEFAULT" : {
+		"required": false,
+		"visible": true,
+		"editable": true
+	},
+	"TalepEden" : {
+		"required": false,
+		"visible": true,
+		"editable": false
+	},
+	"TalepTarihi" : {
+		"required": false,
+		"visible": true,
+		"editable": false
+	},
+	"UrunGrubu" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"HedefFiyat" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"HedefFiyatPB" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"HedefAdet" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"MinimumSiparisMiktari" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"HedefSiparisTarihi" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"Marka" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"UrunOzellikleri" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	},
+	"MinimumSiparis" : {
+		"required": true,
+		"visible": true,
+		"editable": true
+	}
+}

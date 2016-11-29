@@ -1,0 +1,53 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm editable="true" 
+				id="idUrunOzellikForm"
+				layout="ResponsiveGridLayout" 
+				labelSpanL="4" 
+				labelSpanM="6" 
+				labelSpanS="12"
+				columnsL="2"
+				columnsM="2">
+		<core:Title text="{i18n>UrunOzellikTitle}" />
+		<Label id="idUrunOzellikleriLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
+		<TextArea id="idUrunOzellikleri" rows="12" value="{/UrunOzellikleri}" maxLength="2000">
+		</TextArea>
+		<Label text="{i18n>WebLinkLabel}"/>
+		<Input value="{/WebLink}" maxLength="500"/>
+		<Label text="{i18n>OzelDurumLabel}"/>
+		<Input value="{/OzelDurum}" maxLength="100"/>
+		<core:Title text="{i18n>GorselUploadTitle}" />
+		<u:FileUploader
+			id="idGorselUpload"
+			uploadUrl="/logo~ui~talep/UploadServlet"
+			width="400px"
+			uploadComplete="onGorselUploadComplete"
+			change="onGorselUploadChange"
+			useMultipart="false"
+			style="Emphasized"
+			placeholder="{i18n>GorselUploadText}">
+			<u:layoutData>
+				<l:GridData span="L12 M12 S12"/>
+			</u:layoutData>
+			<u:headerParameters>
+				<u:FileUploaderParameter
+					name="headerParam1"
+					value="Foo"/>
+				<u:FileUploaderParameter
+					name="headerParam2"
+					value="bar"/>
+			</u:headerParameters>			
+		</u:FileUploader>
+		<Image
+			id="idGorselImage"
+			height="250px"
+			densityAware="false"
+			decorative="false"/>
+	</f:SimpleForm>
+
+</core:FragmentDefinition>

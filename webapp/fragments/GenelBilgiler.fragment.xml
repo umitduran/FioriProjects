@@ -1,0 +1,57 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm editable="true" 
+				layout="ResponsiveGridLayout" 
+				id="idGenelBilgilerForm"
+				labelSpanL="4" 
+				labelSpanM="6" 
+				labelSpanS="12"
+				columnsL="2"
+				columnsM="2">
+		<core:Title/>
+		<Label id="idHedefFiyatLabel" text="{i18n>HedefFiyatLabel}"/>
+		<Input id="idHedefFiyat" value="{	path: '/HedefFiyat',
+											type: 'sap.ui.model.type.Float',
+											formatOptions: {
+												minFractionDigits: 2
+											}
+										}" >
+	        <layoutData>
+	          <l:GridData span="L5 M5 S12"/>
+	        </layoutData>			
+		</Input>
+		<ComboBox id="idHedefFiyatPB"
+		          items="{sabit>/ParaBirimi}"
+		          selectedKey="{/HedefFiyatPB}">
+			<core:Item key="{sabit>key}" text="{sabit>value}" />
+	        <layoutData>
+	          <l:GridData span="L3 M3 S12"/>
+	        </layoutData>				        							
+		</ComboBox>			
+		<Label id="idHedefAdetLabel" text="{i18n>HedefAdetLabel}"/>
+		<Input id="idHedefAdet" value="{/HedefAdet}" type="Number" maxLength="10"/>
+		<Label id="idMinimumSiparisLabel" text="{i18n>MinimumSiparisLabel}"/>
+		<Input id="idMinimumSiparis" value="{/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
+		<Label id="idHedefUlkeLabel" text="{i18n>HedefUlkeLabel}"/>
+		<MultiInput id="idHedefUlke" showValueHelp="true" valueHelpRequest="handleHedefUlkeValueHelp" valueHelpOnly="true"
+					enableMultiLineMode="true" />
+		<Label id="idTedarikKisitiLabel" text=" {i18n>TedarikKisitiLabel}"/>
+		<MultiInput id="idTedarikKisiti" showValueHelp="true" valueHelpRequest="handleTedarikKisitiUlkeValueHelp" valueHelpOnly="true"
+					enableMultiLineMode="true" />
+		<core:Title/>
+		<Label id="idHedefSiparisTarihiLabel" text=" {i18n>HedefSiparisTarihiLabel}"/>
+		<DatePicker id="idHedefSiparisTarihi" value="{/HedefSiparisTarihi}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
+		<Label id="idOdemeSekliLabel" text="{i18n>OdemeSekliLabel}"/>
+		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}" />
+
+		<Label id="idTeslimSekliLabel" text="{i18n>TeslimSekliLabel}"/>
+		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" />
+		<Label id="idMarkaLabel" text="{i18n>MarkaLabel}"/>
+		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Marka}" />
+	</f:SimpleForm>
+
+</core:FragmentDefinition>

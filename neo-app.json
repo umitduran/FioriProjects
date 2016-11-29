@@ -1,0 +1,51 @@
+{
+  "welcomeFile": "/index.html",
+  "routes": [
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/logo~ui~talep",
+      "target": {
+        "type": "destination",
+        "name": "SFP",
+        "entryPath": "/logo~ui~talep"
+      },
+      "description": "SFP"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "SFP",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "Silverline SFP"
+    },
+    {
+      "path": "/sap/bc/ui5_ui5",
+      "target": {
+        "type": "destination",
+        "name": "SFP",
+        "entryPath": "/sap/bc/ui5_ui5"
+      },
+      "description": "Silverline SFP"
+    }
+  ],
+  "sendWelcomeFileRedirect": true
+}

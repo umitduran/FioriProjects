@@ -1,0 +1,76 @@
+<mvc:View controllerName="com.silverline.ticariurun.controller.TalepFormu" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m">
+	<App>
+		<pages>
+			<Page title="{i18n>TalepFormuTitle}">
+				<content>
+					<IconTabBar
+						id="idIconTabBar"
+						select="handleIconTabBarSelect"
+						class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter
+								id="idUrunGrubuTab"
+								icon="sap-icon://product"
+								design="Horizontal"
+								text="{i18n>UrunGrubuTitle}">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunGrubu" type="XML"/> 	
+							</IconTabFilter>
+							<IconTabSeparator />
+							<IconTabFilter
+								id="idUrunOzellikTab"
+								icon="sap-icon://dishwasher"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>UrunOzellikTitle}"
+								key="UrunOzellik">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunOzellik" type="XML"/> 								
+							</IconTabFilter>
+							<IconTabSeparator icon="sap-icon://open-command-field" />
+							<IconTabFilter
+								id="idGenelBilgilerTab"
+								icon="sap-icon://message-information"
+								iconColor="Positive"
+								design="Horizontal"
+								text="{i18n>GenelBilgilerTitle}"
+								key="GenelBilgiler">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.GenelBilgiler" type="XML"/> 																								
+							</IconTabFilter>
+							<IconTabSeparator icon="sap-icon://open-command-field" />	
+							<IconTabFilter
+								id="idYorumlarTab"
+								icon="sap-icon://idea-wall"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>YorumlarTitle}"
+								key="Yorumlar">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Yorumlar" type="XML"/> 																
+							</IconTabFilter>
+							<IconTabSeparator icon="sap-icon://open-command-field" />	
+							<IconTabFilter
+								id="idEklerTab"
+								icon="sap-icon://attachment"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>EklerTitle}"
+								key="Ekler">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Ekler" type="XML"/> 																
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+				</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button text="{i18n>Kaydet}" type="Accept" press="onKaydet"/>
+					</Toolbar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

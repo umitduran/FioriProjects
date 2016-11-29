@@ -1,0 +1,79 @@
+{
+    "resources": [
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "Component.js"
+        },
+        {
+            "name": "localService/ZBPM_GENEL_SRV/metadata.xml"
+        },
+        {
+            "name": "localService/metadata.xml"
+        },
+        {
+            "name": "controller/TalepFormu.controller.js"
+        },
+        {
+            "name": "model/ui.json"
+        },
+        {
+            "name": "model/sabit.json"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "manifest.json"
+        },
+        {
+            "name": "css/style.css"
+        },
+        {
+            "name": "util/common.js"
+        },
+        {
+            "name": "util/util.js"
+        },
+        {
+            "name": "extended_runnable_file.html"
+        },
+        {
+            "name": "fragments/Ekler.fragment.xml"
+        },
+        {
+            "name": "fragments/GenelBilgiler.fragment.xml"
+        },
+        {
+            "name": "fragments/UrunGrubu.fragment.xml"
+        },
+        {
+            "name": "fragments/Yorumlar.fragment.xml"
+        },
+        {
+            "name": "fragments/UrunOzellik.fragment.xml"
+        },
+        {
+            "name": "resources.json",
+            "merged": true
+        },
+        {
+            "name": "index.html"
+        },
+        {
+            "name": "view/TalepFormu.view.xml"
+        },
+        {
+            "name": "view/App.view.xml"
+        },
+        {
+            "name": "neo-app.json"
+        }
+    ]
+}

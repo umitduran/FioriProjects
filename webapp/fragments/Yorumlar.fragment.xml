@@ -1,0 +1,37 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm editable="true" 
+				layout="ResponsiveGridLayout" 
+				id="idYorumlarForm"
+				labelSpanL="4" 
+				labelSpanM="6" 
+				labelSpanS="12"
+				columnsL="1"
+				columnsM="1">
+		<core:Title text="{i18n>YorumlarTitle}" />
+	 	<TextArea id="idComment"  value="{/Yorum}" width="100%" maxLength="200" rows="5">		
+			<layoutData>
+				<l:GridData span="L12 M12 S12"/>
+			</layoutData>
+	 	</TextArea>
+		<List
+		  showSeparators="Inner"
+		  showNoData="false"
+		  items="{/Yorumlar}" >
+		  <FeedListItem
+		  	showIcon="false" 
+		  	maxCharacters="100"
+		  	senderActive="false"
+		    sender="{Sender}"
+		    info="{Info}"
+		    timestamp="{Date}"
+		    text="{Comment}" />
+		</List>									
+	</f:SimpleForm>
+
+</core:FragmentDefinition>
