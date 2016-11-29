@@ -11,6 +11,7 @@ sap.ui.define([
 		onInit : function() {
 			//test
 			//test2
+			//test3
 		},
 		onBeforeRendering : function() {
 			var oController = this;
