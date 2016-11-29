@@ -58,5 +58,10 @@
 		"required": true,
 		"visible": true,
 		"editable": true
+	},
+	"OdemeSekliAdi" : {
+		"required": false,
+		"visible": true,
+		"editable": false
 	}
 }

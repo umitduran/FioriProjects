@@ -314,8 +314,16 @@ sap.ui.define([
 		},
 		
 		handleOdemeSekliValueHelp : function(oEvent) {
-			
+			var oModel = this.getView().getModel("genel");
+			var textEl = this.getView().byId("idOdemeSekliAdi");
+			Common.handleValueHelp(this,oEvent.getSource(),textEl,"OdemeKosuluKodu","OdemeKosuluAciklamasi",oModel,"/OdemeKosuluSet",this.getView(),"Ödeme Şekli");
+		},
+		
+		handleTeslimSekliValueHelp : function(oEvent) {
+			var oModel = this.getView().getModel("genel");
+			Common.handleValueHelp(this,oEvent.getSource(),null,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
 		}
+		
 		
 	});
 });

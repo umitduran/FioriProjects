@@ -46,8 +46,16 @@
 		<Label id="idHedefSiparisTarihiLabel" text=" {i18n>HedefSiparisTarihiLabel}"/>
 		<DatePicker id="idHedefSiparisTarihi" value="{/HedefSiparisTarihi}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
 		<Label id="idOdemeSekliLabel" text="{i18n>OdemeSekliLabel}"/>
-		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}" />
-
+		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}">
+	        <layoutData>
+	          <l:GridData span="L2 M2 S12"/>
+	        </layoutData>				        
+		</Input>
+        <Input id="idOdemeSekliAdi">
+	        <layoutData>
+	          <l:GridData span="L6 M6 S12"/>
+	        </layoutData>				        
+        </Input>	
 		<Label id="idTeslimSekliLabel" text="{i18n>TeslimSekliLabel}"/>
 		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" />
 		<Label id="idMarkaLabel" text="{i18n>MarkaLabel}"/>
