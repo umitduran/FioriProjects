@@ -1,0 +1,62 @@
+{
+	"UrunGrubu": [
+		{
+			"key": "01",
+			"value": "Ocak"
+		},
+		{
+			"key": "02",
+			"value": "Fırın"
+		}, 
+		{
+			"key": "03",
+			"value": "Bulaşık Makinesi"
+		}, 
+		{
+			"key": "04",
+			"value": "Buzdolabı"
+		}, 
+		{
+			"key": "05",
+			"value": "Mikrodalga"
+		}, 
+		{
+			"key": "06",
+			"value": "Çöp Öğütücü"
+		}, 
+		{
+			"key": "07",
+			"value": "Kahve Makinesi"
+		}, 
+		{
+			"key": "08",
+			"value": "Muhtelif Aksesuar"
+		}, 
+		{
+			"key": "09",
+			"value": "Isıtma Çekmecesi"
+		}, 
+		{
+			"key": "10",
+			"value": "Foster Eviye"
+		}, 
+		{
+			"key": "11",
+			"value": "Schock Eviye"
+		}
+	],
+	"ParaBirimi" : [
+		{
+			"key": "TRY",
+			"value": "Türk Lirası"
+		},
+		{
+			"key": "EUR",
+			"value": "Euro"
+		},
+		{
+			"key": "USD",
+			"value": "Dolar"
+		}
+	]
+}
