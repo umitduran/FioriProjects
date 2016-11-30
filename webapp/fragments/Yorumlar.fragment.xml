@@ -27,10 +27,9 @@
 		  	showIcon="false" 
 		  	maxCharacters="100"
 		  	senderActive="false"
-		    sender="{Sender}"
-		    info="{Info}"
-		    timestamp="{Date}"
-		    text="{Comment}" />
+		    sender="{KullaniciAdi}"
+		    timestamp="{YorumTarihi}"
+		    text="{Yorum}" />
 		</List>									
 	</f:SimpleForm>
 

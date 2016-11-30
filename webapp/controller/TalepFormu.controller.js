@@ -24,16 +24,19 @@ sap.ui.define([
 				if (talepNumarasi) {
 					oView.setBusy(true);
 					var eccModel = oComp.getModel("ecc");
+					var genelModel = oComp.getModel("genel");
 					//eccModel.setUseBatch(false);
 					var sPath = '/TalepSet(\''+talepNumarasi+'\')';
 					
 					eccModel.read(sPath, 
 					{
-						urlParameters : { "$expand":"TalepToYorum,TalepToUlke"},
+						urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler"},
 						success : function(oData,oResponse) {
 							mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
 							mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
-							
+							mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
+							var oOdemeSekliAdi = oView.byId("idOdemeSekliAdi");
+							oOdemeSekliAdi.setValue(oData.TalepToMetinler.OdemeKosuluAciklamasi);
 							jQuery.each(oData.TalepToUlke.results,function(key,el) {
 								var oToken = new Token(
 									{key: el.Ulke, 
@@ -43,7 +46,18 @@ sap.ui.define([
 								} else if (el.KayitTipi==="K") {
 									oTedarikKisiti.addToken(oToken);
 								}
+							}); 
+							var aYorumlar = [];
+							jQuery.each(oData.TalepToYorum.results,function(key,el) {
+
+								var row = {
+									KullaniciAdi : el.KullaniciAdi,
+									YorumTarihi : el.YorumTarihi,
+									Yorum : el.Yorum
+								};
+								aYorumlar.push(row);
 							});    	
+							mainModel.setProperty('/Yorumlar',aYorumlar);
 							oView.setBusy(false);
 						},
 						error : function(err) {

@@ -3,7 +3,6 @@ sap.ui.define([
 ], function() {
 	"use strict";
 	return {
-
 	checkRequired : function (src) {
 		var metadata = src.getMetadata();
 		var type = metadata.getName();		

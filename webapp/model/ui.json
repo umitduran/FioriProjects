@@ -4,6 +4,11 @@
 		"visible": true,
 		"editable": true
 	},
+	"Comment" : {
+		"10" : {
+			"visible" : false
+		}	
+	},
 	"TalepEden" : {
 		"required": false,
 		"visible": true,
