@@ -27,7 +27,7 @@ sap.ui.define([
 					//eccModel.setUseBatch(false);
 					var sPath = '/TalepSet(\''+talepNumarasi+'\')';
 					
-					eccModel.read(sPath,
+					eccModel.read(sPath, 
 					{
 						urlParameters : { "$expand":"TalepToYorum,TalepToUlke"},
 						success : function(oData,oResponse) {
