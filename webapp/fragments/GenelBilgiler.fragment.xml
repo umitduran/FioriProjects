@@ -57,9 +57,28 @@
 	        </layoutData>				        
         </Input>	
 		<Label id="idTeslimSekliLabel" text="{i18n>TeslimSekliLabel}"/>
-		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" />
+		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" >
+			<layoutData>
+	          <l:GridData span="L2 M2 S12"/>
+	        </layoutData>				        
+		</Input>	
+		<Input id="idTeslimSekliAdi">
+	        <layoutData>
+	          <l:GridData span="L6 M6 S12"/>
+	        </layoutData>				        
+        </Input>		
+		
 		<Label id="idMarkaLabel" text="{i18n>MarkaLabel}"/>
-		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Marka}" />
+		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Markalar}" >
+			<layoutData>
+				<l:GridData span="L2 M2 S12"/>
+			</layoutData>
+		</Input>
+		<Input id="idMarkaAdi">	
+	        <layoutData>
+	          <l:GridData span="L6 M6 S12"/>
+	        </layoutData>
+		</Input>	
 	</f:SimpleForm>
 
 </core:FragmentDefinition>

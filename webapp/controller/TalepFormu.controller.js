@@ -321,7 +321,14 @@ sap.ui.define([
 		
 		handleTeslimSekliValueHelp : function(oEvent) {
 			var oModel = this.getView().getModel("genel");
-			Common.handleValueHelp(this,oEvent.getSource(),null,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
+			var textEl = this.getView().byId("idTeslimSekliAdi");
+			Common.handleValueHelp(this,oEvent.getSource(),textEl,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
+		},
+		handleMarkaValueHelp : function (oEvent) {
+			var oModel = this.getView().getModel("genel");
+			var textEl = this.getView().byId("idMarkaAdi");
+			Common.handleValueHelp(this,oEvent.getSource(),textEl,"MarkaKodu","Aciklama",oModel,"/MarkalarSet",this.getView(),"Marka");
+			
 		}
 		
 		

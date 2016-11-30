@@ -63,5 +63,16 @@
 		"required": false,
 		"visible": true,
 		"editable": false
+	},
+	"TeslimSekliAdi" : {
+		"required": false,
+		"visible": true,
+		"editable": false
+	},
+	"MarkaAdi" : {
+		"required": false,
+		"visible": true,
+		"editable": false
 	}
+
 }
