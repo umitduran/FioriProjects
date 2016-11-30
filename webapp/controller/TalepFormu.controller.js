@@ -171,7 +171,8 @@ sap.ui.define([
 			var filename = evt.mParameters.mParameters.newValue;// eslint-disable-line
 			
 			var mainModel = this.getView().getModel();
-			var pid = mainModel.getProperty("/ProcessId");
+			//var pid = mainModel.getProperty("/ProcessId");
+			var objid = jQuery.sap.uid();
 			var fileUploader = uc._oFileUploader;		
 			fileUploader.addHeaderParameter( 
 					new sap.ui.unified.FileUploaderParameter({
@@ -182,7 +183,7 @@ sap.ui.define([
 			fileUploader.addHeaderParameter( 
 					new sap.ui.unified.FileUploaderParameter({
 						name : "objid",
-						value : pid
+						value : objid
 					}) 
 				);		
 		},		
