@@ -2,18 +2,74 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
+	"sap/m/Token",
 	"sap/ui/model/json/JSONModel",
 	"com/silverline/ticariurun/util/util",
-	"com/silverline/ticariurun/util/common"
-], function(Controller,MessageToast,MessageBox,JSONModel,Util,Common) {
+	"com/silverline/ticariurun/util/common",
+	"com/silverline/ticariurun/model/models"
+], function(Controller,MessageToast,MessageBox,Token,JSONModel,Util,Common,models) {
 	"use strict";
 	return Controller.extend("com.silverline.ticariurun.controller.TalepFormu", {
 		onInit : function() {
-			//test
-			//test2
-			//test3
-			//test4 remote branch
-			//test5 
+			var oView = this.getView();
+			var oComp = this.getOwnerComponent();
+			var mainModel = oComp.getModel();
+			var oHedefUlke = this.getView().byId("idHedefUlke");
+			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
+			var taskId = jQuery.sap.getUriParameters().get("taskId");
+			if (taskId) {
+				var bpmModel = models.createBPMModel(taskId);
+				this.getView().setModel(bpmModel, "bpm");
+				var talepNumarasi = bpmModel.getProperty("/TalepNumarasi");
+				if (talepNumarasi) {
+					oView.setBusy(true);
+					var eccModel = oComp.getModel("ecc");
+					//eccModel.setUseBatch(false);
+					var sPath = '/TalepSet(\''+talepNumarasi+'\')';
+					
+					eccModel.read(sPath,
+					{
+						urlParameters : { "$expand":"TalepToYorum,TalepToUlke"},
+						success : function(oData,oResponse) {
+							mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
+							mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
+							
+							jQuery.each(oData.TalepToUlke.results,function(key,el) {
+								var oToken = new Token(
+									{key: el.Ulke, 
+									text: el.UlkeAdi});
+								if (el.KayitTipi==="H") {
+									oHedefUlke.addToken(oToken);
+								} else if (el.KayitTipi==="K") {
+									oTedarikKisiti.addToken(oToken);
+								}
+							});    	
+							oView.setBusy(false);
+						},
+						error : function(err) {
+							oView.setBusy(false);
+						}							
+					});
+					
+/*					eccModel.read(sPath,null,null,
+					  //  {
+							// "$expand":"TalepToYorum,TalepToUlke"
+					  //  },
+					    false,null,null
+					    function (mData,mResponse) {
+							mainModel.setProperty('UrunGrubu',mData.UrunGrubu);
+							oView.setBusy(false);
+					    },
+					    function(oError) {
+					    	oView.setBusy(false);
+						}
+					);
+					eccModel.attachRequestCompleted(function(oEvent) {
+						var oModel = oEvent.getSource();
+					});
+*/					
+				}
+			}
 		},
 		onBeforeRendering : function() {
 			var oController = this;
@@ -163,7 +219,8 @@ sap.ui.define([
 			var oMainModel = this.getView().getModel();
 			var oUIModel = this.getView().getModel("ui");
 			var oMainForm = this.getView().byId(sFormId);
-			Common.updateForm(oMainForm,oUIModel,"",oMainModel);
+			var bpmModel = this.getView().getModel("bpm");
+			Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel);
 		},
 		onFileUploadChange : function(evt) {
 			var uc = evt.getSource();

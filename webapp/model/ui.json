@@ -17,7 +17,10 @@
 	"UrunGrubu" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"HedefFiyat" : {
 		"required": true,
@@ -52,12 +55,18 @@
 	"UrunOzellikleri" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"MinimumSiparis" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"OdemeSekliAdi" : {
 		"required": false,

@@ -26,6 +26,15 @@ sap.ui.define([
 			oModel.setProperty("/TalepTarihi",sToday); 
 			return oModel;
 		},
+		createBPMModel : function(taskId) {
+			var bpmData = {
+				TaskId : taskId,
+				TalepNumarasi : '43',
+				currentStep : '10'
+			};
+			var bpmModel = new JSONModel(bpmData);
+			return bpmModel;
+		},
 		createUIModel: function() {
 			var sRootPath = jQuery.sap.getModulePath("com.silverline.ticariurun");   
 			var oModel = new JSONModel(sRootPath+"/model/ui.json");
