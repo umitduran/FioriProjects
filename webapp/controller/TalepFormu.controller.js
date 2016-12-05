@@ -17,6 +17,7 @@ sap.ui.define([
 			var oHedefUlke = this.getView().byId("idHedefUlke");
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
+			taskId = 1;
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");
@@ -34,9 +35,28 @@ sap.ui.define([
 						success : function(oData,oResponse) {
 							mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
 							mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
+							mainModel.setProperty('/HedefFiyat',oData.HedefFiyat);
+							mainModel.setProperty('/HedefFiyatPB',oData.HedefFiyatPB);
+							mainModel.setProperty('/HedefAdet',oData.HedefAdet);
+							mainModel.setProperty('/MinimumSiparisMiktari',oData.MinimumSiparisMiktari);
+							mainModel.setProperty('/WebLink',oData.WebLink);
+							mainModel.setProperty('/OzelDurum',oData.OzelDurum);
+							mainModel.setProperty('/HedefSiparisTarihi',oData.HedefSiparisTarihi.toLocaleDateString());
 							mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
+							mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
+							mainModel.setProperty('/Markalar',oData.Marka);
+							var oHedefFiyat = oView.byId("idHedefFiyat");
+							var oHedefAdet = oView.byId("idHedefAdet");
+							var oMinimumSiparis = oView.byId("idMinimumSiparis");
 							var oOdemeSekliAdi = oView.byId("idOdemeSekliAdi");
+							var oTeslimSekliAdi = oView.byId("idTeslimSekliAdi");
+							var oMarkaAdi = oView.byId("idMarkaAdi");
 							oOdemeSekliAdi.setValue(oData.TalepToMetinler.OdemeKosuluAciklamasi);
+							oTeslimSekliAdi.setValue(oData.TalepToMetinler.TeslimSekliAciklamasi);
+							oMarkaAdi.setValue(oData.TalepToMetinler.MarkaAciklamasi);
+							oHedefFiyat.setValue(oData.HedefFiyat);
+							oHedefAdet.setValue(oData.HedefAdet);
+							oMinimumSiparis.setValue(oData.MinimumSiparisMiktari);
 							jQuery.each(oData.TalepToUlke.results,function(key,el) {
 								var oToken = new Token(
 									{key: el.Ulke, 
@@ -56,7 +76,7 @@ sap.ui.define([
 									Yorum : el.Yorum
 								};
 								aYorumlar.push(row);
-							});    	
+							});
 							mainModel.setProperty('/Yorumlar',aYorumlar);
 							oView.setBusy(false);
 						},

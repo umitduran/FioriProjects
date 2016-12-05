@@ -18,9 +18,9 @@
 		<TextArea id="idUrunOzellikleri" rows="12" value="{/UrunOzellikleri}" maxLength="2000">
 		</TextArea>
 		<Label text="{i18n>WebLinkLabel}"/>
-		<Input value="{/WebLink}" maxLength="500"/>
+		<Input id="idWebLink" value="{/WebLink}" maxLength="500"/>
 		<Label text="{i18n>OzelDurumLabel}"/>
-		<Input value="{/OzelDurum}" maxLength="100"/>
+		<Input id="idOzelDurum" value="{/OzelDurum}" maxLength="100"/>
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader
 			id="idGorselUpload"

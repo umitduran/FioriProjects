@@ -30,34 +30,100 @@
 	"HedefFiyat" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"HedefFiyatPB" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"HedefAdet" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"MinimumSiparisMiktari" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"HedefUlke" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TedarikKisiti" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"HedefSiparisTarihi" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},	
+	"OdemeSekli" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},	
+	"TeslimSekli" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"Marka" : {
 		"required": true,
 		"visible": true,
-		"editable": true
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
 	},
 	"UrunOzellikleri" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"WebLink" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"OzelDurum" : {
 		"required": true,
 		"visible": true,
 		"editable": true,
