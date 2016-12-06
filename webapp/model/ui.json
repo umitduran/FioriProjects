@@ -9,6 +9,11 @@
 			"visible" : false
 		}	
 	},
+	"AttachmentUpload" : {
+		"10" : {
+			"editable" : false
+		}
+	},	
 	"TalepEden" : {
 		"required": false,
 		"visible": true,

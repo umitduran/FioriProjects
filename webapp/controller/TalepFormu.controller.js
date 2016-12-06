@@ -77,6 +77,9 @@ sap.ui.define([
 								};
 								aYorumlar.push(row);
 							});
+							for (var i=0; i<aYorumlar.length; i++) {
+								aYorumlar[i].YorumTarihi = aYorumlar[i].YorumTarihi.toDateString();
+							}
 							mainModel.setProperty('/Yorumlar',aYorumlar);
 							oView.setBusy(false);
 						},
