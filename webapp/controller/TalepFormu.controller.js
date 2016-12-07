@@ -18,6 +18,7 @@ sap.ui.define([
 			var oHedefUlke = this.getView().byId("idHedefUlke");
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
+			taskId = 1;
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");
@@ -48,7 +49,7 @@ sap.ui.define([
 							
 							var oImage = oView.byId("idGorselImage");
 							oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
-							
+						
 							
 							var oHedefFiyat = oView.byId("idHedefFiyat");
 							var oHedefAdet = oView.byId("idHedefAdet");
@@ -120,14 +121,21 @@ sap.ui.define([
 				oController.updateForms();
 			});			
 		},
-		onUrunGrubuChanged : function(oEvent) {
+/*		onUrunGrubuChanged : function(oEvent) {
 			var oMainModel = this.getView().getModel();
 			var sUrunGrubu = oMainModel.getProperty("/UrunGrubu");
 			var oUrunGrubuTab = this.getView().byId("idUrunGrubuTab");
-			var oSabitModel = this.getView().getModel("sabit"); 
-			var sUrunGrubuText = Util.getSabitText(oSabitModel,"/UrunGrubu", sUrunGrubu);
+			var oSabitModel = this.getView().getModel("genel"); 
+			var sUrunGrubuText = Util.getSabitText(oSabitModel,"/UrunGrubuSet", sUrunGrubu);
 			oUrunGrubuTab.setText(sUrunGrubuText);
 			
+		},*/
+		onUrunGrubuChanged : function (oEvent) {
+			var oMainModel = this.getView().getModel();
+			var sUrunGrubu = oMainModel.getProperty("/UrunGrubu");
+			var oUrunGrubuTab = this.getView().byId("idUrunGrubuTab");
+			var sSelectedItemText  = oEvent.getSource().getSelectedItem().getText();
+			oUrunGrubuTab.setText(sSelectedItemText);
 		},
 /*		onUrunGrubuNext : function(oEvent) {
 			var bResult = this.validateForm("idUrunGrubuForm");
