@@ -51,11 +51,7 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": [
-			"sap_hcb",
-			"sap_bluecrystal",
-			"sap_belize"
-		]
+		"supportedThemes": ["sap_hcb", "sap_belize"]
 	},
 	"sap.ui5": {
 		"_version": "1.1.0",
@@ -104,11 +100,9 @@
 			}
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
+			"css": [{
+				"uri": "css/style.css"
+			}]
 		},
 		"routing": {
 			"targets": {
@@ -119,16 +113,12 @@
 					"viewName": "TalepFormu"
 				}
 			},
-			"routes": [
-				{
-					"name": "talepformu",
-					"pattern": "",
-					"greedy": false,
-					"target": [
-						"talepformu"
-					]
-				}
-			],
+			"routes": [{
+				"name": "talepformu",
+				"pattern": "",
+				"greedy": false,
+				"target": ["talepformu"]
+			}],
 			"config": {
 				"controlId": "app",
 				"controlAggregation": "pages",

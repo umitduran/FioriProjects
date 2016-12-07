@@ -33,7 +33,20 @@ sap.ui.define([
 			
 			// create the views based on the url/hash
 			this.getRouter().initialize();			
-		}
+		},
+		getContentDensityClass : function() {
+		      if (this._sContentDensityClass === undefined) {
+		             // check whether FLP has already set the content density class; do nothing in this case
+		             if (jQuery(document.body).hasClass("sapUiSizeCozy") || jQuery(document.body).hasClass("sapUiSizeCompact")) {
+		                   this._sContentDensityClass = "";
+		             } else {
+		                    // Store "sapUiSizeCompact" or "sapUiSizeCozy" in this._sContentDensityClass, depending on which modes are supported by the app.
+		                    // E.g. the “cozy” class in case sap.ui.Device.support.touch is “true” and “compact” otherwise.
+		                    this._sContentDensityClass = "sapUiSizeCompact";
+		             }
+		      }
+		      return this._sContentDensityClass;
+		}		
 	});
 
 });

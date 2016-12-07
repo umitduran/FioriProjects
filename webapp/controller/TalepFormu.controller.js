@@ -13,11 +13,11 @@ sap.ui.define([
 		onInit : function() {
 			var oView = this.getView();
 			var oComp = this.getOwnerComponent();
+			oView.addStyleClass(oComp.getContentDensityClass());
 			var mainModel = oComp.getModel();
 			var oHedefUlke = this.getView().byId("idHedefUlke");
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
-			taskId = 1;
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");
@@ -45,6 +45,11 @@ sap.ui.define([
 							mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
 							mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
 							mainModel.setProperty('/Markalar',oData.Marka);
+							
+							var oImage = oView.byId("idGorselImage");
+							oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
+							
+							
 							var oHedefFiyat = oView.byId("idHedefFiyat");
 							var oHedefAdet = oView.byId("idHedefAdet");
 							var oMinimumSiparis = oView.byId("idMinimumSiparis");
@@ -186,7 +191,7 @@ sap.ui.define([
 			oTalep.HedefFiyatPB = oData.HedefFiyatPB;
 			oTalep.MinimumSiparisMiktari = parseInt(oData.MinimumSiparisMiktari,10);
 			
-			//oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
+			oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
 			oTalep.OdemeSekli = oData.OdemeSekli;
 			oTalep.TeslimSekli = oData.TeslimSekli;  
 			oTalep.Marka = oData.Marka;
