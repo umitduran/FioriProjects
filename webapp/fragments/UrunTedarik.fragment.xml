@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+	<List
+		items="{/ProductCollection}"
+		headerText="Bulunan Ürünler">
+		<items>
+			<ObjectListItem
+				title="{Name}"
+				type="Active"
+				press="onListItemPress"
+				number="{
+					parts:[{path:'Price'},{path:'CurrencyCode'}],
+					type: 'sap.ui.model.type.Currency',
+					formatOptions: {showMeasure: false}
+				}"
+				numberUnit="{CurrencyCode}">
+				<firstStatus>
+					<ObjectStatus
+						text="{Status}"
+						state="{
+							path: 'Status',
+							formatter: 'sap.m.sample.ObjectListItem.Formatter.status'
+						}" />
+				</firstStatus>
+				<attributes>
+					<ObjectAttribute text="{WeightMeasure} {WeightUnit}" />
+					<ObjectAttribute text="{Width} x {Depth} x {Height} {DimUnit}" />
+				</attributes>
+			</ObjectListItem>
+		</items>
+	</List>
+	</core:FragmentDefinition>

@@ -18,6 +18,7 @@ sap.ui.define([
 			var oHedefUlke = this.getView().byId("idHedefUlke");
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
+			var t = this;
 			taskId = 1;
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
@@ -49,7 +50,9 @@ sap.ui.define([
 							
 							var oImage = oView.byId("idGorselImage");
 							oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
-						
+							
+							t.getView().byId("idUrunGrubuTab").setText(t.byId("idUrunGrubu")._lastValue);
+							t.byId("idUrunKaydetButton").setVisible(false);
 							
 							var oHedefFiyat = oView.byId("idHedefFiyat");
 							var oHedefAdet = oView.byId("idHedefAdet");
@@ -442,7 +445,7 @@ sap.ui.define([
 			Common.handleValueHelp(this,oEvent.getSource(),textEl,"MarkaKodu","Aciklama",oModel,"/MarkalarSet",this.getView(),"Marka");
 			
 		},
-		onUrunTedarik : function(oEvent) {
+		onUrunEkle : function(oEvent) {
 			this.getRouter().navTo("tedarikformu");
 		}
 		

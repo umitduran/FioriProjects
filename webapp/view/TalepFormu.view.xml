@@ -60,6 +60,16 @@
 								text="{i18n>EklerTitle}"
 								key="Ekler">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Ekler" type="XML"/> 																
+							</IconTabFilter>	
+							<IconTabSeparator icon="sap-icon://open-command-field" />
+							<IconTabFilter
+								id="idUrunTedarikTab"
+								icon="sap-icon://customer-view"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>UrunTedarikTitle}"
+								key="UrunTedarik">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunTedarik" type="XML"/> 																
 							</IconTabFilter>
 						</items>
 					</IconTabBar>
@@ -67,8 +77,8 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button text="{i18n>UrunTedarikButton}" type="Accept" press="onUrunTedarik"/>
-						<Button text="{i18n>Kaydet}" type="Accept" press="onKaydet"/>
+						<Button id="idUrunEkleButton" text="{i18n>UrunEkleButton}" type="Accept" press="onUrunEkle" icon="sap-icon://add" />
+						<Button id="idUrunKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onKaydet"/>
 					</Toolbar>
 				</footer>
 			</Page>
