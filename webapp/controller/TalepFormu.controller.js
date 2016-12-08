@@ -114,6 +114,10 @@ sap.ui.define([
 				}
 			}
 		},
+		getRouter : function() {
+			var oComponent = this.getOwnerComponent();
+			return oComponent.getRouter();		
+		},		
 		onBeforeRendering : function() {
 			var oController = this;
 			var uiModel = this.getView().getModel("ui");
@@ -437,8 +441,10 @@ sap.ui.define([
 			var textEl = this.getView().byId("idMarkaAdi");
 			Common.handleValueHelp(this,oEvent.getSource(),textEl,"MarkaKodu","Aciklama",oModel,"/MarkalarSet",this.getView(),"Marka");
 			
+		},
+		onUrunTedarik : function(oEvent) {
+			this.getRouter().navTo("tedarikformu");
 		}
-		
 		
 	});
 });

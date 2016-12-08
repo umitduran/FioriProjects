@@ -111,17 +111,32 @@
 					"transition": "slide",
 					"clearAggregation": true,
 					"viewName": "TalepFormu"
+				},
+				"tedarikformu": {
+					"viewType": "XML",
+					"transition": "slide",
+					"clearAggregation": true,
+					"viewName": "TedarikFormu"
 				}
 			},
-			"routes": [{
-				"name": "talepformu",
-				"pattern": "",
-				"greedy": false,
-				"target": ["talepformu"]
-			}],
+			"routes": [
+				{
+					"name": "talepformu",
+					"pattern": "",
+					"greedy": false,
+					"target": ["talepformu"]
+				},
+				{
+					"name": "tedarikformu",
+					"pattern": "tedarikformu",
+					"greedy": false,
+					"target": ["tedarikformu"]
+				}
+			],
 			"config": {
 				"controlId": "app",
 				"controlAggregation": "pages",
+				"routerClass": "sap.m.routing.Router",
 				"viewPath": "com.silverline.ticariurun.view"
 			}
 		}
