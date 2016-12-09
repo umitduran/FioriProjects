@@ -197,7 +197,7 @@ sap.ui.define([
 	_generateUIObj : function (uidata,id,currentStep) {
 		var uiObj = {};
 		uiObj.conditions = [];
-		if (uidata[id]===undefined && uidata["DEFAULT"]===undefined) {
+		if (uidata[id]===undefined && uidata.DEFAULT===undefined) {
 				return true;
 		} else {				
 			var props = ["required","visible","editable"];
@@ -209,8 +209,8 @@ sap.ui.define([
 				} else if (uidata[id]!==undefined && 
 						   uidata[id][prop]!==undefined) {
 					uiObj[prop] = uidata[id][prop];
-				} else if (uidata["DEFAULT"][prop]) {
-					uiObj[prop] = uidata["DEFAULT"][prop];
+				} else if (uidata.DEFAULT[prop]) {
+					uiObj[prop] = uidata.DEFAULT[prop];
 				}				
 			});
 			if (uidata[id]!==undefined) {
