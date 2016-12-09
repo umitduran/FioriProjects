@@ -14,8 +14,8 @@
 				columnsL="2"
 				columnsM="2">
 		<core:Title text="{i18n>UrunOzellikTitle}" />
-		<Label id="idTedarikUrunOzellikleriLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
-		<TextArea id="idTedarikUrunOzellikleri" rows="12" value="" maxLength="2000">
+		<Label id="idUrunOzellikleriTedarikLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
+		<TextArea id="idUrunOzellikleriTedarik" rows="12" value="" maxLength="2000">
 		</TextArea>
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader

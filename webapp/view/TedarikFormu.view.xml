@@ -27,7 +27,7 @@
 									</IconTabFilter>
 									<IconTabSeparator icon="sap-icon://open-command-field" />
 									<IconTabFilter
-										id="idGenelBilgilerTab"
+										id="idGenelBilgilerTedarikTab"
 										icon="sap-icon://message-information"
 										iconColor="Positive"
 										design="Horizontal"

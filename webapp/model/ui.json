@@ -40,14 +40,6 @@
 			"editable" : false
 		}
 	},
-	"Fiyat" : {
-		"required": true,
-		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
-		}
-	},
 	"HedefFiyatPB" : {
 		"required": true,
 		"visible": true,
@@ -152,22 +144,6 @@
 			"editable" : false
 		}
 	},
-	"TeslimNoktasi" : {
-		"required" : true,
-		"visible" : true,
-		"editable" : true,
-		"10" : {
-			"editable" : false
-		}
-	},
-	"TedarikciAdiInput" : {
-		"required" : true,
-		"visible" : true,
-		"editable" : true,
-		"10" : {
-			"editable" : false
-		}
-	},
 	"OdemeSekliAdi" : {
 		"required": false,
 		"visible": true,
@@ -183,7 +159,63 @@
 		"visible": true,
 		"editable": false
 	},
-	"TedarikUrunOzellikleri" : {
+	"UrunOzellikleriTedarik" : {
+		"required" : true,
+		"visible" : true,
+		"editable" : true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"FiyatTedarik" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"FiyatPBTedarik" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"OdemeSekliTedarik" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TeslimSekliTedarik" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"MinimumSiparisTedarik" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TeslimNoktasi" : {
+		"required" : true,
+		"visible" : true,
+		"editable" : true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TedarikciAdi" : {
 		"required" : true,
 		"visible" : true,
 		"editable" : true,

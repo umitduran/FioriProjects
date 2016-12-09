@@ -15,10 +15,10 @@ sap.ui.define([
 		 * @memberOf com.silverline.ticariurun.view.TedarikFormu
 		 */
 			onInit: function() {
-			var oView = this.getView();
-			var oComp = this.getOwnerComponent();
-			oView.addStyleClass(oComp.getContentDensityClass());
-			var mainModel = oComp.getModel();
+				var oView = this.getView();
+				var oComp = this.getOwnerComponent();
+				oView.addStyleClass(oComp.getContentDensityClass());
+				var mainModel = oComp.getModel();
 				
 
 			},
@@ -32,8 +32,8 @@ sap.ui.define([
 					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 					oRouter.navTo("talepformu", true);
 				}
-				this.handleOdemeSekliValueHelp();
-				this.handleTeslimSekliValueHelp();
+				this.handleOdemeSekliTedarikValueHelp();
+				this.handleTeslimSekliTedarikValueHelp();
 			},	
 			_updateIconColor : function(idTab,state)  {
 				var oIconTab = this.getView().byId(idTab);			
@@ -54,9 +54,9 @@ sap.ui.define([
 			},
 			_onBeforeKaydet : function () {
 				var bResult1 = this._validateForm("idUrunOzellikTedarikForm");
-				this._updateIconColor("idUrunOzellikTab", bResult1);
-				var bResult2 = this._validateForm("idGenelBilgilerForm");
-				this._updateIconColor("idGenelBilgilerTab", bResult2);
+				this._updateIconColor("idUrunOzellikTedarikTab", bResult1);
+				var bResult2 = this._validateForm("idGenelBilgilerTedarikForm");
+				this._updateIconColor("idGenelBilgilerTedarikTab", bResult2);
 				return bResult1 && bResult2;
 			},
 			onUrunOnay : function () {
@@ -66,16 +66,16 @@ sap.ui.define([
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 				return;
 				}
-				var oData = oModel.getData();
+				
 				
 			},
-			handleOdemeSekliValueHelp : function(oEvent) {
+			handleOdemeSekliTedarikValueHelp : function(oEvent) {
 				var oModel = this.getView().getModel("genel");
 				var textEl = this.getView().byId("idOdemeSekliAdi");
 				Common.handleValueHelp(this,oEvent.getSource(),textEl,"OdemeKosuluKodu","OdemeKosuluAciklamasi",oModel,"/OdemeKosuluSet",this.getView(),"Ödeme Şekli");
 			},
 		
-			handleTeslimSekliValueHelp : function(oEvent) {
+			handleTeslimSekliTedarikValueHelp : function(oEvent) {
 				var oModel = this.getView().getModel("genel");
 				var textEl = this.getView().byId("idTeslimSekliAdi");
 				Common.handleValueHelp(this,oEvent.getSource(),textEl,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");

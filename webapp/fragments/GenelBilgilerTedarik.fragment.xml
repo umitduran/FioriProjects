@@ -6,7 +6,7 @@
 	
 	<f:SimpleForm editable="true" 
 				layout="ResponsiveGridLayout" 
-				id="idGenelBilgilerForm"
+				id="idGenelBilgilerTedarikForm"
 				labelSpanL="4" 
 				labelSpanM="6" 
 				labelSpanS="12"
@@ -21,8 +21,8 @@
 	        </layoutData>			
 		</Text>
 		
-		<Label id="idFiyatLabel" text="{i18n>FiyatLabel}" required="true"/>
-		<Input id="idFiyat" value="{	path: '/Fiyat',
+		<Label id="idFiyatTedarikLabel" text="{i18n>FiyatLabel}" required="true"/>
+		<Input id="idFiyatTedarik" value="{	path: '/Fiyat',
 											type: 'sap.ui.model.type.Float',
 											formatOptions: {
 												minFractionDigits: 2
@@ -32,7 +32,7 @@
 	          <l:GridData span="L5 M5 S12"/>
 	        </layoutData>			
 		</Input>
-		<ComboBox id="idHedefFiyatPB"
+		<ComboBox id="idFiyatPBTedarik"
 		          items="{sabit>/ParaBirimi}"
 		          selectedKey="{/HedefFiyatPB}">
 			<core:Item key="{sabit>key}" text="{sabit>value}" />
@@ -41,24 +41,24 @@
 	        </layoutData>				        							
 		</ComboBox>
 		
-		<Label id="idOdemeSekliLabel" text="{i18n>OdemeSekliLabel}" required="true"/>
-		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}">
+		<Label id="idOdemeSekliTedarikLabel" text="{i18n>OdemeSekliLabel}" required="true"/>
+		<Input id="idOdemeSekliTedarik" showValueHelp="true" valueHelpRequest="handleOdemeSekliTedarikValueHelp" value="{/OdemeSekli}">
 	        <layoutData>
 	          <l:GridData span="L2 M2 S12"/>
 	        </layoutData>				        
 		</Input>
-        <Input id="idOdemeSekliAdi">
+        <Input id="idOdemeSekliTedarikAdi">
 	        <layoutData>
 	          <l:GridData span="L6 M6 S12"/>
 	        </layoutData>				        
         </Input>
-        <Label id="idTeslimSekliLabel" text="{i18n>TeslimSekliLabel}" required="true"/>
-		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" >
+        <Label id="idTeslimSekliTedarikLabel" text="{i18n>TeslimSekliLabel}" required="true"/>
+		<Input id="idTeslimSekliTedarik" showValueHelp="true" valueHelpRequest="handleTeslimSekliTedarikValueHelp" value="{/TeslimSekli}" >
 			<layoutData>
 	          <l:GridData span="L2 M2 S12"/>
 	        </layoutData>				        
 		</Input>	
-		<Input id="idTeslimSekliAdi">
+		<Input id="idTeslimSekliTedarikAdi">
 	        <layoutData>
 	          <l:GridData span="L6 M6 S12"/>
 	        </layoutData>				        
@@ -76,11 +76,11 @@
 	        </layoutData>				        
         </Input>
 		
-		<Label id="idMinimumSiparisLabel" text="{i18n>MinimumSiparisLabel}" required="true"/>
-		<Input id="idMinimumSiparis" value="" type="Number" maxLength="10"/>
+		<Label id="idMinimumSiparisTedarikLabel" text="{i18n>MinimumSiparisLabel}" required="true"/>
+		<Input id="idMinimumSiparisTedarik" value="" type="Number" maxLength="10"/>
 			
-	<Label id="idTedarikAdiLabel" text="{i18n>TedarikciAdiLabel}" required="true"/>
-		<Input id="idTedarikciAdiInput" value="" >
+	<Label id="idTedarikciAdiLabel" text="{i18n>TedarikciAdiLabel}" required="true"/>
+		<Input id="idTedarikciAdi" value="" >
 	        <layoutData>
 	          <l:GridData span="L5 M5 S12"/>
 	        </layoutData>			
