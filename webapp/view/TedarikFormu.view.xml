@@ -17,7 +17,7 @@
 								class="sapUiResponsiveContentPadding">
 								<items>
 									<IconTabFilter
-										id="idUrunOzellikTab"
+										id="idUrunOzellikTedarikTab"
 										icon="sap-icon://dishwasher"
 										design="Horizontal"
 										iconColor="Positive"

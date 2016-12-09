@@ -295,7 +295,7 @@ sap.ui.define([
 		//var uimodel = sap.ui.getCore().getModel("uimodel");
 		var uidata = uimodel.getData();
 		var skip = ['sap.ui.core.Title','sap.m.Label'];
-		var run = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.DatePicker'];
+		var run = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.DatePicker','sap.m.TextArea'];
 		content.forEach(function(el){			
 			var type = el.getMetadata().getName();
 			if (skip.indexOf(type)>=0) {
@@ -418,8 +418,18 @@ sap.ui.define([
                 	var obj = aContexts[0].getObject();                	
                 	var type = inputEl.getMetadata().getName();
                 	if (type==="sap.m.MultiInput") {
-                		var oToken = new sap.m.Token({key: obj[keyProp], text: obj[valueProp]});
-                		inputEl.addToken(oToken);
+                		var bFound = false;
+						jQuery.each(inputEl.getTokens(),function(key,el) {
+							var tokenKey = el.getKey();                		
+                			if (tokenKey===obj[keyProp]) {
+                				bFound = true;
+                				return false;
+                			}
+						});
+						if (!bFound) {
+	                		var oToken = new sap.m.Token({key: obj[keyProp], text: obj[valueProp]});
+	                		inputEl.addToken(oToken);
+						}
                 	} else {
                 		inputEl.setValue(obj[keyProp]);
                 	}                	
