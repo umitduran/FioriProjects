@@ -14,13 +14,9 @@
 				columnsL="2"
 				columnsM="2">
 		<core:Title text="{i18n>UrunOzellikTitle}" />
-		<Label id="idUrunOzellikleriLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
-		<TextArea id="idUrunOzellikleri" rows="12" value="" maxLength="2000">
+		<Label id="idTedarikUrunOzellikleriLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
+		<TextArea id="idTedarikUrunOzellikleri" rows="12" value="" maxLength="2000">
 		</TextArea>
-		<Label text="{i18n>WebLinkLabel}"/>
-		<Input id="idWebLink" value="" maxLength="500"/>
-		<Label text="{i18n>OzelDurumLabel}"/>
-		<Input id="idOzelDurum" value="" maxLength="100"/>
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader
 			id="idGorselUpload"

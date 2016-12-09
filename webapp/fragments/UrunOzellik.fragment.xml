@@ -14,7 +14,7 @@
 				columnsL="2"
 				columnsM="2">
 		<core:Title text="{i18n>UrunOzellikTitle}" />
-		<Label id="idUrunOzellikleriLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
+		<Label id="idUrunOzellikleriLabel" text="{i18n>UrunOzellikLabel}" />
 		<TextArea id="idUrunOzellikleri" rows="12" value="{/UrunOzellikleri}" maxLength="2000">
 		</TextArea>
 		<Label text="{i18n>WebLinkLabel}"/>
