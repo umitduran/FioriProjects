@@ -10,7 +10,9 @@ sap.ui.define([
 		var value = "";
 		if (type==="sap.m.ComboBox") {
 			value = src.getSelectedKey(); 
-		} else if (type==="sap.m.Input" || type==="sap.m.DatePicker") {
+		} else if (type==="sap.m.Input" || 
+		           type==="sap.m.DatePicker" ||
+		           type==="sap.m.TextArea") {
 			value = src.getValue();
 			if (!value) {
 				value = src.getProperty("value");
