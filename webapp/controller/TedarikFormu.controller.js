@@ -18,10 +18,22 @@ sap.ui.define([
 				var oView = this.getView();
 				var oComp = this.getOwnerComponent();
 				oView.addStyleClass(oComp.getContentDensityClass());
-				var mainModel = oComp.getModel();
 				
+				this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
 
 			},
+			getRouter : function() {
+				var oComponent = this.getOwnerComponent();
+				return oComponent.getRouter();		
+			},				
+			_onRouteMatched : function(oEvent) {
+				var oView = this.getView();
+				var sRouteName = oEvent.getParameter("name");
+				if (sRouteName==="tedarikformu") {
+					var oModel = new JSONModel();
+					oView.setModel(oModel,"tedarik");
+				}
+			},				
 			onNavBack: function () {
 				var oHistory = History.getInstance();
 				var sPreviousHash = oHistory.getPreviousHash();
@@ -61,13 +73,20 @@ sap.ui.define([
 			},
 			onUrunOnay : function () {
 				var oModel = this.getView().getModel();
+				var tModel = this.getView().getModel("tedarik");
 				var result = this._onBeforeKaydet();
 				if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
-				return;
+					MessageToast.show("Tüm zorunlu alanları doldurun!");
+					return;
+				} else {
+					var tData = tModel.getData();
+					var tedarikCollection = oModel.getProperty("/TedarikCollection");
+					if (!tedarikCollection) {
+						tedarikCollection = [];
+					}
+					tedarikCollection.push(tData);
+					oModel.setProperty("/TedarikCollection",tedarikCollection);
 				}
-				
-				
 			},
 			handleOdemeSekliTedarikValueHelp : function(oEvent) {
 				var oModel = this.getView().getModel("genel");
