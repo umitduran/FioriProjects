@@ -40,6 +40,14 @@
 			"editable" : false
 		}
 	},
+	"Fiyat" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
 	"HedefFiyatPB" : {
 		"required": true,
 		"visible": true,
@@ -121,7 +129,7 @@
 		}
 	},
 	"WebLink" : {
-		"required": true,
+		"required": false,
 		"visible": true,
 		"editable": true,
 		"10" : {
@@ -129,7 +137,7 @@
 		}
 	},
 	"OzelDurum" : {
-		"required": true,
+		"required": false,
 		"visible": true,
 		"editable": true,
 		"10" : {
@@ -140,6 +148,22 @@
 		"required": true,
 		"visible": true,
 		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TeslimNoktasi" : {
+		"required" : true,
+		"visible" : true,
+		"editable" : true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TedarikciAdiInput" : {
+		"required" : true,
+		"visible" : true,
+		"editable" : true,
 		"10" : {
 			"editable" : false
 		}

@@ -51,7 +51,10 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": ["sap_hcb", "sap_belize"]
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
 	},
 	"sap.ui5": {
 		"_version": "1.1.0",
@@ -100,9 +103,11 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"targets": {
@@ -124,13 +129,17 @@
 					"name": "talepformu",
 					"pattern": "",
 					"greedy": false,
-					"target": ["talepformu"]
+					"target": [
+						"talepformu"
+					]
 				},
 				{
 					"name": "tedarikformu",
 					"pattern": "tedarikformu",
 					"greedy": false,
-					"target": ["tedarikformu"]
+					"target": [
+						"tedarikformu"
+					]
 				}
 			],
 			"config": {

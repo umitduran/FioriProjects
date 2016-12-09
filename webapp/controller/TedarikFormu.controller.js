@@ -1,7 +1,10 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/core/routing/History"
-], function(Controller, History) {
+	"sap/ui/core/routing/History",
+	"sap/m/MessageToast",
+	"sap/ui/model/json/JSONModel",
+	"com/silverline/ticariurun/util/common"
+], function(Controller, History, MessageToast, JSONModel, Common) {
 	"use strict";
 
 	return Controller.extend("com.silverline.ticariurun.controller.TedarikFormu", {
@@ -11,10 +14,14 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf com.silverline.ticariurun.view.TedarikFormu
 		 */
-/*			onInit: function() {
+			onInit: function() {
+			var oView = this.getView();
+			var oComp = this.getOwnerComponent();
+			oView.addStyleClass(oComp.getContentDensityClass());
+			var mainModel = oComp.getModel();
 				
 
-			},*/
+			},
 			onNavBack: function () {
 				var oHistory = History.getInstance();
 				var sPreviousHash = oHistory.getPreviousHash();
@@ -25,6 +32,53 @@ sap.ui.define([
 					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 					oRouter.navTo("talepformu", true);
 				}
+				this.handleOdemeSekliValueHelp();
+				this.handleTeslimSekliValueHelp();
+			},	
+			_updateIconColor : function(idTab,state)  {
+				var oIconTab = this.getView().byId(idTab);			
+				if (oIconTab) {
+					var sColor = "Positive";
+					if (!state) {
+						sColor = "Negative";
+					} 
+					oIconTab.setIconColor(sColor);
+				}
+			},
+			_validateForm : function(sFormId) {
+				var oMainModel = this.getView().getModel();
+				var oUIModel = this.getView().getModel("ui");
+				var oMainForm = this.getView().byId(sFormId);
+				var oDummyModel = new JSONModel();
+				return Common.validateAll(oMainForm,oUIModel,oDummyModel,oMainModel);
+			},
+			_onBeforeKaydet : function () {
+				var bResult1 = this._validateForm("idUrunOzellikTedarikForm");
+				this._updateIconColor("idUrunOzellikTab", bResult1);
+				var bResult2 = this._validateForm("idGenelBilgilerForm");
+				this._updateIconColor("idGenelBilgilerTab", bResult2);
+				return bResult1 && bResult2;
+			},
+			onUrunOnay : function () {
+				var oModel = this.getView().getModel();
+				var result = this._onBeforeKaydet();
+				if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				return;
+				}
+				var oData = oModel.getData();
+				
+			},
+			handleOdemeSekliValueHelp : function(oEvent) {
+				var oModel = this.getView().getModel("genel");
+				var textEl = this.getView().byId("idOdemeSekliAdi");
+				Common.handleValueHelp(this,oEvent.getSource(),textEl,"OdemeKosuluKodu","OdemeKosuluAciklamasi",oModel,"/OdemeKosuluSet",this.getView(),"Ödeme Şekli");
+			},
+		
+			handleTeslimSekliValueHelp : function(oEvent) {
+				var oModel = this.getView().getModel("genel");
+				var textEl = this.getView().byId("idTeslimSekliAdi");
+				Common.handleValueHelp(this,oEvent.getSource(),textEl,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
 			}
 
 		/**

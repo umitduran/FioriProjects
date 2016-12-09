@@ -1,0 +1,92 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm editable="true" 
+				layout="ResponsiveGridLayout" 
+				id="idGenelBilgilerForm"
+				labelSpanL="4" 
+				labelSpanM="6" 
+				labelSpanS="12"
+				columnsL="2"
+				columnsM="2">
+		<core:Title/>
+		
+		<Label id="idUrunTedarikLabel" text="{i18n>UrunTedarikLabel}"/>
+		<Text id="idUrunTedarikText" text="Umit Duran" >
+	        <layoutData>
+	          <l:GridData span="L5 M5 S12"/>
+	        </layoutData>			
+		</Text>
+		
+		<Label id="idFiyatLabel" text="{i18n>FiyatLabel}" required="true"/>
+		<Input id="idFiyat" value="{	path: '/Fiyat',
+											type: 'sap.ui.model.type.Float',
+											formatOptions: {
+												minFractionDigits: 2
+											}
+										}" >
+	        <layoutData>
+	          <l:GridData span="L5 M5 S12"/>
+	        </layoutData>			
+		</Input>
+		<ComboBox id="idHedefFiyatPB"
+		          items="{sabit>/ParaBirimi}"
+		          selectedKey="{/HedefFiyatPB}">
+			<core:Item key="{sabit>key}" text="{sabit>value}" />
+	        <layoutData>
+	          <l:GridData span="L3 M3 S12"/>
+	        </layoutData>				        							
+		</ComboBox>
+		
+		<Label id="idOdemeSekliLabel" text="{i18n>OdemeSekliLabel}" required="true"/>
+		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}">
+	        <layoutData>
+	          <l:GridData span="L2 M2 S12"/>
+	        </layoutData>				        
+		</Input>
+        <Input id="idOdemeSekliAdi">
+	        <layoutData>
+	          <l:GridData span="L6 M6 S12"/>
+	        </layoutData>				        
+        </Input>
+        <Label id="idTeslimSekliLabel" text="{i18n>TeslimSekliLabel}" required="true"/>
+		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" >
+			<layoutData>
+	          <l:GridData span="L2 M2 S12"/>
+	        </layoutData>				        
+		</Input>	
+		<Input id="idTeslimSekliAdi">
+	        <layoutData>
+	          <l:GridData span="L6 M6 S12"/>
+	        </layoutData>				        
+        </Input>	
+		<core:Title/> 
+		<Label id="idTeslimNoktasiLabel" text="{i18n>TeslimNoktasiLabel}" />
+		<Input id="idTeslimNoktasi" showValueHelp="true" valueHelpRequest="handleTeslimNoktasiValueHelp" value="{/TeslimNoktasi}" >
+			<layoutData>
+	          <l:GridData span="L2 M2 S12"/>
+	        </layoutData>				        
+		</Input>	
+		<Input id="idTeslimNoktasiAdi">
+	        <layoutData>
+	          <l:GridData span="L6 M6 S12"/>
+	        </layoutData>				        
+        </Input>
+		
+		<Label id="idMinimumSiparisLabel" text="{i18n>MinimumSiparisLabel}" required="true"/>
+		<Input id="idMinimumSiparis" value="" type="Number" maxLength="10"/>
+			
+	<Label id="idTedarikAdiLabel" text="{i18n>TedarikciAdiLabel}" required="true"/>
+		<Input id="idTedarikciAdiInput" value="" >
+	        <layoutData>
+	          <l:GridData span="L5 M5 S12"/>
+	        </layoutData>			
+		</Input>	
+		
+		
+	</f:SimpleForm>
+
+</core:FragmentDefinition>

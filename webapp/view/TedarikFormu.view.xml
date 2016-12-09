@@ -1,12 +1,52 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-	controllerName="com.silverline.ticariurun.controller.TedarikFormu" xmlns:html="http://www.w3.org/1999/xhtml">
-	<App>
-		<pages>
-			<Page	title="{i18n>TedarikFormuTitle}"
-					showNavButton="true"
-					navButtonPress="onNavBack">
-				<content></content>
-			</Page>
-		</pages>
-	</App>
+<mvc:View controllerName="com.silverline.ticariurun.controller.TedarikFormu"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m">
+		<App>
+			<pages>
+				<Page	title="{i18n>TedarikFormuTitle}"
+						showNavButton="true"
+						navButtonPress="onNavBack">
+					<content>
+							<IconTabBar
+								id="idIconTabBar"
+								select="handleIconTabBarSelect"
+								class="sapUiResponsiveContentPadding">
+								<items>
+									<IconTabFilter
+										id="idUrunOzellikTab"
+										icon="sap-icon://dishwasher"
+										design="Horizontal"
+										iconColor="Positive"
+										text="{i18n>UrunOzellikTitle}"
+										key="UrunOzellik">
+										<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunOzellikTedarik" type="XML"/> 
+									</IconTabFilter>
+									<IconTabSeparator icon="sap-icon://open-command-field" />
+									<IconTabFilter
+										id="idGenelBilgilerTab"
+										icon="sap-icon://message-information"
+										iconColor="Positive"
+										design="Horizontal"
+										text="{i18n>GenelBilgilerTitle}"
+										key="GenelBilgiler">
+										<core:Fragment fragmentName="com.silverline.ticariurun.fragments.GenelBilgilerTedarik" type="XML"/>
+									</IconTabFilter>	
+								</items>
+							</IconTabBar>
+					</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button id="idTalepIptalButton" text="{i18n>TalepIptalButton}" type="Reject" press="onTalepIptal"/>
+						<Button id="idRevizyonButton" text="{i18n>RevizyonButton}" type="Reject" press="onRevizyonaGonder"/>
+						<Button id="idUrunOnayButton" text="{i18n>UrunOnayButton}" type="Accept" press="onUrunOnay" icon="sap-icon://add" />
+					</Toolbar>
+				</footer>
+				</Page>
+			</pages>
+		</App>
 </mvc:View>
