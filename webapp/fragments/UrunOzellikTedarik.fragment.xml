@@ -17,6 +17,10 @@
 		<Label id="idUrunOzellikleriTedarikLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
 		<TextArea id="idUrunOzellikleriTedarik" rows="12" value="" maxLength="2000">
 		</TextArea>
+		
+		<Label text="{i18n>OzelDurumLabel}"/>
+		<Input id="idOzelDurumTedarik" value="{/OzelDurumTedarik}" maxLength="100"/>
+		
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader
 			id="idGorselUpload"

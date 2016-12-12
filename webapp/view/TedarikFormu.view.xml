@@ -41,8 +41,8 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button id="idTalepIptalButton" text="{i18n>TalepIptalButton}" type="Reject" press="onTalepIptal"/>
-						<Button id="idRevizyonButton" text="{i18n>RevizyonButton}" type="Reject" press="onRevizyonaGonder"/>
+<!--						<Button id="idTalepIptalButton" text="{i18n>TalepIptalButton}" type="Reject" press="onTalepIptal"/>
+						<Button id="idRevizyonButton" text="{i18n>RevizyonButton}" type="Reject" press="onRevizyonaGonder"/>-->
 						<Button id="idUrunOnayButton" text="{i18n>UrunOnayButton}" type="Accept" press="onUrunOnay" icon="sap-icon://add" />
 					</Toolbar>
 				</footer>

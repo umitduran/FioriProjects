@@ -9,27 +9,14 @@
 		headerText="Bulunan Ürünler">
 		<items>
 			<ObjectListItem
-				title="{Fiyat}"
+				title="{TedarikciAdi}"
 				type="Active"
 				press="onListItemPress"
-				number="{
-					parts:[{path:'Price'},{path:'CurrencyCode'}],
-					type: 'sap.ui.model.type.Currency',
-					formatOptions: {showMeasure: false}
-				}"
-				numberUnit="{CurrencyCode}">
+				number="{parts:[{path:'Fiyat'},{path:'HedefFiyatPB'}],
+						type: 'sap.ui.model.type.Currency' }">
 				<firstStatus>
-					<ObjectStatus
-						text="{Status}"
-						state="{
-							path: 'Status',
-							formatter: 'sap.m.sample.ObjectListItem.Formatter.status'
-						}" />
+					<ObjectStatus text="{UretimSuresi}"/>	
 				</firstStatus>
-				<attributes>
-					<ObjectAttribute text="{WeightMeasure} {WeightUnit}" />
-					<ObjectAttribute text="{Width} x {Depth} x {Height} {DimUnit}" />
-				</attributes>
 			</ObjectListItem>
 		</items>
 	</List>

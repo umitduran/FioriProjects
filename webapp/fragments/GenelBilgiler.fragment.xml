@@ -36,6 +36,7 @@
 		<Input id="idHedefAdet" value="{/HedefAdet}" type="Number" maxLength="10"/>
 		<Label id="idMinimumSiparisLabel" text="{i18n>MinimumSiparisLabel}"/>
 		<Input id="idMinimumSiparis" value="{/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
+		
 		<Label id="idHedefUlkeLabel" text="{i18n>HedefUlkeLabel}"/>
 		<MultiInput id="idHedefUlke" showValueHelp="true" valueHelpRequest="handleHedefUlkeValueHelp" valueHelpOnly="true"
 					enableMultiLineMode="true" />
@@ -46,7 +47,7 @@
 		<Label id="idHedefSiparisTarihiLabel" text=" {i18n>HedefSiparisTarihiLabel}"/>
 		<DatePicker id="idHedefSiparisTarihi" value="{/HedefSiparisTarihi}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
 		<Label id="idOdemeSekliLabel" text="{i18n>OdemeSekliLabel}"/>
-		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}">
+		<Input id="idOdemeSekli" showValueHelp="true" valueHelpRequest="handleOdemeSekliValueHelp" value="{/OdemeSekli}" valueHelpOnly="true">
 	        <layoutData>
 	          <l:GridData span="L2 M2 S12"/>
 	        </layoutData>				        
@@ -57,7 +58,7 @@
 	        </layoutData>				        
         </Input>	
 		<Label id="idTeslimSekliLabel" text="{i18n>TeslimSekliLabel}"/>
-		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" >
+		<Input id="idTeslimSekli" showValueHelp="true" valueHelpRequest="handleTeslimSekliValueHelp" value="{/TeslimSekli}" valueHelpOnly="true">
 			<layoutData>
 	          <l:GridData span="L2 M2 S12"/>
 	        </layoutData>				        
@@ -69,7 +70,7 @@
         </Input>		
 		
 		<Label id="idMarkaLabel" text="{i18n>MarkaLabel}"/>
-		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Markalar}" >
+		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Markalar}" valueHelpOnly="true">
 			<layoutData>
 				<l:GridData span="L2 M2 S12"/>
 			</layoutData>

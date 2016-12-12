@@ -19,6 +19,7 @@ sap.ui.define([
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
 			var t = this;
+			taskId=1;
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");
@@ -65,6 +66,7 @@ sap.ui.define([
 							oHedefFiyat.setValue(oData.HedefFiyat);
 							oHedefAdet.setValue(oData.HedefAdet);
 							oMinimumSiparis.setValue(oData.MinimumSiparisMiktari);
+							
 							jQuery.each(oData.TalepToUlke.results,function(key,el) {
 								var oToken = new Token(
 									{key: el.Ulke, 
@@ -114,6 +116,9 @@ sap.ui.define([
 					});
 */					
 				}
+			}else{
+				t.byId("idUrunEkleButton").setVisible(false);	
+				t.byId("idUrunTedarikTab").setVisible(false);
 			}
 		},
 		getRouter : function() {
@@ -127,15 +132,6 @@ sap.ui.define([
 				oController.updateForms();
 			});			
 		},
-/*		onUrunGrubuChanged : function(oEvent) {
-			var oMainModel = this.getView().getModel();
-			var sUrunGrubu = oMainModel.getProperty("/UrunGrubu");
-			var oUrunGrubuTab = this.getView().byId("idUrunGrubuTab");
-			var oSabitModel = this.getView().getModel("genel"); 
-			var sUrunGrubuText = Util.getSabitText(oSabitModel,"/UrunGrubuSet", sUrunGrubu);
-			oUrunGrubuTab.setText(sUrunGrubuText);
-			
-		},*/
 		onUrunGrubuChanged : function (oEvent) {
 			var oMainModel = this.getView().getModel();
 			var sUrunGrubu = oMainModel.getProperty("/UrunGrubu");

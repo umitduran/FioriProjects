@@ -64,6 +64,14 @@
 			"editable" : false
 		}
 	},
+	"HedefSiparisTarihi" : {
+		"required": true,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
 	"HedefUlke" : {
 		"required": true,
 		"visible": true,
@@ -73,30 +81,6 @@
 		}
 	},
 	"TedarikKisiti" : {
-		"required": true,
-		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
-		}
-	},
-	"HedefSiparisTarihi" : {
-		"required": true,
-		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
-		}
-	},	
-	"OdemeSekli" : {
-		"required": true,
-		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
-		}
-	},	
-	"TeslimSekli" : {
 		"required": true,
 		"visible": true,
 		"editable": true,
