@@ -20,7 +20,7 @@ sap.ui.define([
 				oView.addStyleClass(oComp.getContentDensityClass());
 				
 				this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
-				this._updateForms();
+		
 			},
 			getRouter : function() {
 				var oComponent = this.getOwnerComponent();
@@ -29,9 +29,9 @@ sap.ui.define([
 			onBeforeRendering : function() {
 				var oController = this;
 				var uiModel = this.getView().getModel("ui");
-				uiModel.attachRequestCompleted(function(oEvent){
+			
 					oController._updateForms();
-				});			
+					
 			},				
 			_onRouteMatched : function(oEvent) {
 				var oView = this.getView();
