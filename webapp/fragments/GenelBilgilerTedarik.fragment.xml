@@ -14,7 +14,7 @@
 				columnsM="2">
 		<core:Title/>
 		
-		<Label id="idFiyatTedarikLabel" text="{i18n>FiyatLabel}" required="true"/>
+		<Label id="idFiyatTedarikLabel" text="{i18n>FiyatLabel}" />
 		<Input id="idFiyatTedarik" value="{	path: 'tedarik>/Fiyat',
 											type: 'sap.ui.model.type.Float',
 											formatOptions: {
@@ -34,7 +34,7 @@
 	        </layoutData>				        							
 		</ComboBox>
 		
-		<Label id="idOdemeSekliTedarikLabel" text="{i18n>OdemeSekliLabel}" required="true"/>
+		<Label id="idOdemeSekliTedarikLabel" text="{i18n>OdemeSekliLabel}" />
 		<Input id="idOdemeSekliTedarik" showValueHelp="true" valueHelpRequest="handleOdemeSekliTedarikValueHelp" value="{tedarik>/OdemeSekli}" valueHelpOnly="true">
 	        <layoutData>
 	          <l:GridData span="L2 M2 S12"/>
@@ -45,7 +45,7 @@
 	          <l:GridData span="L6 M6 S12"/>
 	        </layoutData>				        
         </Input>
-        <Label id="idTeslimSekliTedarikLabel" text="{i18n>TeslimSekliLabel}" required="true"/>
+        <Label id="idTeslimSekliTedarikLabel" text="{i18n>TeslimSekliLabel}" />
 		<Input id="idTeslimSekliTedarik" showValueHelp="true" valueHelpRequest="handleTeslimSekliTedarikValueHelp" value="{tedarik>/TeslimSekli}" valueHelpOnly="true">
 			<layoutData>
 	          <l:GridData span="L2 M2 S12"/>
@@ -63,7 +63,7 @@
 		<Label id="idMinimumSiparisTedarikLabel" text="{i18n>MinimumSiparisLabel}" />
 		<Input id="idMinimumSiparisTedarik" value="{tedarik>/MinimumSiparis}" type="Number" maxLength="10"/>
 			
-	<Label id="idTedarikciAdiLabel" text="{i18n>TedarikciAdiLabel}" required="true" />
+	<Label id="idTedarikciAdiLabel" text="{i18n>TedarikciAdiLabel}" />
 		<Input id="idTedarikciAdi" value="{tedarik>/TedarikciAdi}" >
 	        <layoutData>
 	          <l:GridData span="L5 M5 S12"/>

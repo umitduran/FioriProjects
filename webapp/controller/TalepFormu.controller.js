@@ -19,7 +19,7 @@ sap.ui.define([
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
 			var t = this;
-		
+			taskId=1;
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");

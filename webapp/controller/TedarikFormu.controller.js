@@ -20,11 +20,18 @@ sap.ui.define([
 				oView.addStyleClass(oComp.getContentDensityClass());
 				
 				this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
-
+				this._updateForms();
 			},
 			getRouter : function() {
 				var oComponent = this.getOwnerComponent();
 				return oComponent.getRouter();		
+			},		
+			onBeforeRendering : function() {
+				var oController = this;
+				var uiModel = this.getView().getModel("ui");
+				uiModel.attachRequestCompleted(function(oEvent){
+					oController._updateForms();
+				});			
 			},				
 			_onRouteMatched : function(oEvent) {
 				var oView = this.getView();
@@ -63,6 +70,17 @@ sap.ui.define([
 				var oMainForm = this.getView().byId(sFormId);
 				var oDummyModel = new JSONModel();
 				return Common.validateAll(oMainForm,oUIModel,oDummyModel,oMainModel);
+			},
+			_updateForms : function() {
+				this._updateForm("idUrunOzellikTedarikForm");
+				this._updateForm("idGenelBilgilerTedarikForm");		
+			},
+			_updateForm : function(sFormId) {
+				var oMainModel = this.getView().getModel();
+				var oUIModel = this.getView().getModel("ui");
+				var oMainForm = this.getView().byId(sFormId);
+				var bpmModel = this.getView().getModel("bpm");
+				Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel);
 			},
 			_onBeforeKaydet : function () {
 				var bResult1 = this._validateForm("idUrunOzellikTedarikForm");
