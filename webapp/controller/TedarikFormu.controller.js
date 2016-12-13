@@ -27,11 +27,17 @@ sap.ui.define([
 				return oComponent.getRouter();		
 			},		
 			onBeforeRendering : function() {
-				var oController = this;
-				var uiModel = this.getView().getModel("ui");
-			
+				var uiModel = this.getView().getModel("ui");				
+				var oTest = uiModel.getProperty("/DEFAULT");
+				if (oTest===undefined) {
+					var oController = this;
 					oController._updateForms();
-					
+					uiModel.attachRequestCompleted(function(oEvent){
+						oController._updateForms();
+					});					
+				} else {
+					this._updateForms();
+				}
 			},				
 			_onRouteMatched : function(oEvent) {
 				var oView = this.getView();
