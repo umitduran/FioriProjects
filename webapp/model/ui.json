@@ -147,7 +147,7 @@
 		"required" : true,
 		"visible" : true,
 		"editable" : true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
 	},
@@ -198,15 +198,5 @@
 		"10" : {
 			"editable" : false
 		}
-	},
-	"TedarikciAdi" : {
-		"required" : true,
-		"visible" : true,
-		"editable" : true,
-		"10" : {
-			"editable" : false
-		}
 	}
-	
-
 }

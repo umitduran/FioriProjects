@@ -8,6 +8,7 @@
 		<App>
 			<pages>
 				<Page	title="{i18n>TedarikFormuTitle}"
+						id="idTedarikFormuPage"
 						showNavButton="true"
 						navButtonPress="onNavBack">
 					<content>
@@ -41,9 +42,7 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-<!--						<Button id="idTalepIptalButton" text="{i18n>TalepIptalButton}" type="Reject" press="onTalepIptal"/>
-						<Button id="idRevizyonButton" text="{i18n>RevizyonButton}" type="Reject" press="onRevizyonaGonder"/>-->
-						<Button id="idUrunOnayButton" text="{i18n>UrunOnayButton}" type="Accept" press="onUrunOnay" icon="sap-icon://add" />
+						<Button id="idUrunKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onUrunKaydet" icon="sap-icon://save" />
 					</Toolbar>
 				</footer>
 				</Page>

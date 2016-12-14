@@ -3,125 +3,154 @@ sap.ui.define([
 	"sap/m/MessageToast",
 	"sap/m/MessageBox",
 	"sap/m/Token",
+	"sap/ui/core/format/DateFormat",
 	"sap/ui/model/json/JSONModel",
 	"com/silverline/ticariurun/util/util",
 	"com/silverline/ticariurun/util/common",
 	"com/silverline/ticariurun/model/models"
-], function(Controller,MessageToast,MessageBox,Token,JSONModel,Util,Common,models) {
+], function(Controller,MessageToast,MessageBox,Token,DateFormat,JSONModel,Util,Common,models) {
 	"use strict";
 	return Controller.extend("com.silverline.ticariurun.controller.TalepFormu", {
 		onInit : function() {
 			var oView = this.getView();
 			var oComp = this.getOwnerComponent();
 			oView.addStyleClass(oComp.getContentDensityClass());
-			var mainModel = oComp.getModel();
-			var oHedefUlke = this.getView().byId("idHedefUlke");
-			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
 		
 			if (taskId) {
+				this.taskId = taskId;
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");
-				var talepNumarasi = bpmModel.getProperty("/TalepNumarasi");
-				if (talepNumarasi) {
-					oView.setBusy(true);
-					var eccModel = oComp.getModel("ecc");
-					var genelModel = oComp.getModel("genel");
-					//eccModel.setUseBatch(false);
-					var sPath = '/TalepSet(\''+talepNumarasi+'\')';
-					
-					eccModel.read(sPath, 
-					{
-						urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler"},
-						success : function(oData,oResponse) {
-							mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
-							mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
-							mainModel.setProperty('/HedefFiyat',oData.HedefFiyat);
-							mainModel.setProperty('/HedefFiyatPB',oData.HedefFiyatPB);
-							mainModel.setProperty('/HedefAdet',oData.HedefAdet);
-							mainModel.setProperty('/MinimumSiparisMiktari',oData.MinimumSiparisMiktari);
-							mainModel.setProperty('/WebLink',oData.WebLink);
-							mainModel.setProperty('/OzelDurum',oData.OzelDurum);
-							mainModel.setProperty('/HedefSiparisTarihi',oData.HedefSiparisTarihi.toLocaleDateString());
-							mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
-							mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
-							mainModel.setProperty('/Markalar',oData.Marka);
-							mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
-							
-							var oImage = oView.byId("idGorselImage");
-							oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
-							
-							oView.byId("idUrunGrubuTab").setText(oView.byId("idUrunGrubu")._lastValue);
-							oView.byId("idUrunKaydetButton").setVisible(false);
-							
-							var oHedefFiyat = oView.byId("idHedefFiyat");
-							var oHedefAdet = oView.byId("idHedefAdet");
-							var oMinimumSiparis = oView.byId("idMinimumSiparis");
-							var oOdemeSekliAdi = oView.byId("idOdemeSekliAdi");
-							var oTeslimSekliAdi = oView.byId("idTeslimSekliAdi");
-							var oMarkaAdi = oView.byId("idMarkaAdi");
-							oOdemeSekliAdi.setValue(oData.TalepToMetinler.OdemeKosuluAciklamasi);
-							oTeslimSekliAdi.setValue(oData.TalepToMetinler.TeslimSekliAciklamasi);
-							oMarkaAdi.setValue(oData.TalepToMetinler.MarkaAciklamasi);
-							oHedefFiyat.setValue(oData.HedefFiyat);
-							oHedefAdet.setValue(oData.HedefAdet);
-							oMinimumSiparis.setValue(oData.MinimumSiparisMiktari);
-							
-							jQuery.each(oData.TalepToUlke.results,function(key,el) {
-								var oToken = new Token(
-									{key: el.Ulke, 
-									text: el.UlkeAdi});
-								if (el.KayitTipi==="H") {
-									oHedefUlke.addToken(oToken);
-								} else if (el.KayitTipi==="K") {
-									oTedarikKisiti.addToken(oToken);
-								}
-							}); 
-							var aYorumlar = [];
-							jQuery.each(oData.TalepToYorum.results,function(key,el) {
-
-								var row = {
-									KullaniciAdi : el.KullaniciAdi,
-									YorumTarihi : el.YorumTarihi,
-									Yorum : el.Yorum
-								};
-								aYorumlar.push(row);
-							});
-							for (var i=0; i<aYorumlar.length; i++) {
-								aYorumlar[i].YorumTarihi = aYorumlar[i].YorumTarihi.toDateString();
-							}
-							mainModel.setProperty('/Yorumlar',aYorumlar);
-							oView.setBusy(false);
-							
-						
-						},
-						error : function(err) {
-							oView.setBusy(false);
-						}							
-					});
-					
-/*					eccModel.read(sPath,null,null,
-					  //  {
-							// "$expand":"TalepToYorum,TalepToUlke"
-					  //  },
-					    false,null,null
-					    function (mData,mResponse) {
-							mainModel.setProperty('UrunGrubu',mData.UrunGrubu);
-							oView.setBusy(false);
-					    },
-					    function(oError) {
-					    	oView.setBusy(false);
-						}
-					);
-					eccModel.attachRequestCompleted(function(oEvent) {
-						var oModel = oEvent.getSource();
-					});
-*/					
-				}
-			}else{
+			} else {
 				oView.byId("idUrunEkleButton").setVisible(false);	
 				oView.byId("idUrunTedarikTab").setVisible(false);
 			}
+			
+			this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
+		},
+		_onRouteMatched : function(oEvent) {
+			var sRouteName = oEvent.getParameter("name");
+			if (sRouteName==="talepformu") {
+				this._reloadTalepData();
+			}
+		},
+		_reloadTalepData : function() {
+			var oView = this.getView();
+			var oMainModel = this.getView().getModel();
+			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+			if (!sTalepNumarasi) {
+				var bpmModel = this.getView().getModel("bpm");				
+				sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");				
+			}
+			oView.setBusy(true);
+			this._loadTalepData(sTalepNumarasi);
+		},
+		_loadTalepData : function(sTalepNumarasi) {
+			var oView = this.getView();
+			var oComp = this.getOwnerComponent();
+			var mainModel = oComp.getModel();
+			var sUsername = mainModel.getProperty("/Username");
+			var eccModel = oComp.getModel("ecc");
+			var sPath = '/TalepSet(\''+sTalepNumarasi+'\')';
+			
+			eccModel.read(sPath, 
+			{
+				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler"},
+				success : function(oData,oResponse) {
+					mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
+					mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
+					mainModel.setProperty('/HedefFiyat',oData.HedefFiyat);
+					mainModel.setProperty('/HedefFiyatPB',oData.HedefFiyatPB);
+					mainModel.setProperty('/HedefAdet',oData.HedefAdet);
+					mainModel.setProperty('/MinimumSiparisMiktari',oData.MinimumSiparisMiktari);
+					mainModel.setProperty('/WebLink',oData.WebLink);
+					mainModel.setProperty('/OzelDurum',oData.OzelDurum);
+					mainModel.setProperty('/HedefSiparisTarihi',oData.HedefSiparisTarihi.toLocaleDateString());
+					mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
+					mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
+					mainModel.setProperty('/Markalar',oData.Marka);
+					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
+					
+					var oImage = oView.byId("idGorselImage");
+					oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
+				
+					var oUrunGrubuTab = oView.byId("idUrunGrubuTab");
+					oUrunGrubuTab.setText(oData.TalepToMetinler.UrunGrubuAciklamasi);
+					
+					oView.byId("idUrunKaydetButton").setVisible(false);
+					
+					var oTalepToMetinler = {};
+					mainModel.setProperty('/TalepToMetinler',oTalepToMetinler);
+					
+					mainModel.setProperty('/TalepToMetinler/OdemeKosuluAciklamasi',oData.TalepToMetinler.OdemeKosuluAciklamasi);
+					mainModel.setProperty('/TalepToMetinler/TeslimSekliAciklamasi',oData.TalepToMetinler.TeslimSekliAciklamasi);	
+					mainModel.setProperty('/TalepToMetinler/MarkaAciklamasi',oData.TalepToMetinler.MarkaAciklamasi);	
+					
+					var aTedarik = [];
+					jQuery.each(oData.TalepToTedarik.results,function(key,el) {
+						var bChangeVisible = (sUsername===el.Ekleyen);
+						var row = {
+							TalepNumarasi : el.TalepNumarasi,
+ 							TedarikNumarasi : el.TedarikNumarasi,
+							UrunGorseli : el.UrunGorseli,
+							UrunOzellikleri : el.UrunOzellikleri,
+							Fiyat: el.Fiyat,
+							ParaBirimi : el.ParaBirimi,
+							OdemeSekli : el.OdemeSekli,
+							TeslimSekli : el.TeslimSekli,
+							MinimumSiparisMiktari : el.MinimumSiparisMiktari,
+							OzelDurum : el.OzelDurum,
+							UretimSuresi : el.UretimSuresi,
+							Ekleyen : el.Ekleyen,
+							Metinler : el.TedarikToTedarikMetinler,
+							Change : bChangeVisible
+						};
+						aTedarik.push(row);
+					}); 
+					mainModel.setProperty('/TedarikCollection',aTedarik);
+					
+					var oUrunTedarikTab = oView.byId("idUrunTedarikTab");
+					oUrunTedarikTab.setCount(aTedarik.length);
+					var oHedefUlke = oView.byId("idHedefUlke");
+					var oTedarikKisiti = oView.byId("idTedarikKisiti");
+					oHedefUlke.destroyTokens();
+					oTedarikKisiti.destroyTokens();
+					jQuery.each(oData.TalepToUlke.results,function(key,el) {
+						var oToken = new Token(
+							{key: el.Ulke, 
+							text: el.UlkeAdi});
+						if (el.KayitTipi==="H") {
+							oHedefUlke.addToken(oToken);
+						} else if (el.KayitTipi==="K") {
+							oTedarikKisiti.addToken(oToken);
+						}
+					}); 
+					var aYorumlar = [];
+					var oDateFormat = DateFormat.getDateTimeInstance(
+						{
+							pattern: "dd/MM/yyyy"
+							//pattern: "dd/MM/yyyy KK:mm:ss"
+						});
+					jQuery.each(oData.TalepToYorum.results,function(key,el) {
+						var row = {
+							KullaniciAdi : el.KullaniciAdi,
+							YorumTarihi : el.YorumTarihi,
+							YorumSaati : el.YorumSaati,
+							Yorum : el.Yorum
+						};
+						row.YorumTarihi = oDateFormat.format(row.YorumTarihi);
+						
+						aYorumlar.push(row);
+					});
+					mainModel.setProperty('/Yorumlar',aYorumlar);
+					oView.setBusy(false);
+					
+				
+				},
+				error : function(err) {
+					oView.setBusy(false);
+				}							
+			});			
 		},
 		getRouter : function() {
 			var oComponent = this.getOwnerComponent();
@@ -132,29 +161,31 @@ sap.ui.define([
 			var uiModel = this.getView().getModel("ui");
 			var oTest = uiModel.getProperty("/DEFAULT");
 			if(oTest===undefined) {
-					uiModel.attachRequestCompleted(function(oEvent){
-						oController.updateForms();
-			});
-			}else{
+				uiModel.attachRequestCompleted(function(oEvent){
+					oController.updateForms();
+				});
+			} else {
 				this.updateForms();		
 			}
-						
+			
+			if (this.taskId) {
+				var bpmModel = this.getView().getModel("bpm");
+				var talepNumarasi = bpmModel.getProperty("/TalepNumarasi");
+				if (talepNumarasi) {		
+					var i18nModel = this.getView().getModel("i18n");
+					var oBundle = i18nModel.getResourceBundle();
+					var sText = "("+talepNumarasi+")";
+					var sTitle = oBundle.getText("TalepFormuTitle", [sText]);					
+					var oPage = this.getView().byId("idTalepFormuPage");
+					oPage.setTitle(sTitle);
+				}
+			}
 		},
 		onUrunGrubuChanged : function (oEvent) {
-			var oMainModel = this.getView().getModel();
-			var sUrunGrubu = oMainModel.getProperty("/UrunGrubu");
 			var oUrunGrubuTab = this.getView().byId("idUrunGrubuTab");
 			var sSelectedItemText  = oEvent.getSource().getSelectedItem().getText();
 			oUrunGrubuTab.setText(sSelectedItemText);
 		},
-/*		onUrunGrubuNext : function(oEvent) {
-			var bResult = this.validateForm("idUrunGrubuForm");
-			if (bResult) {
-				var oTab = this.getView().byId("idIconTabBar");
-				oTab.setSelectedKey("UrunOzellik");
-			}
-			
-		},*/
 		updateIconColor : function(idTab,state)  {
 			var oIconTab = this.getView().byId(idTab);			
 			if (oIconTab) {
@@ -449,8 +480,29 @@ sap.ui.define([
 			
 		},
 		onUrunEkle : function(oEvent) {
-			this.getRouter().navTo("tedarikformu");
+			this.getRouter().navTo("tedarikformuekle");
+		},
+		onDisplayTedarik : function(oEvent) {
+			var oButton = oEvent.getSource();
+			var oItem = oButton.getParent();
+			var sPath = oItem.getBindingContextPath(); 
+			var sIndex = sPath.substring(sPath.lastIndexOf("/")+1);
+			//MessageToast.show(sIndex);
+			this.getRouter().navTo("tedarikformu",{
+				action : 'display',
+				itemno : sIndex
+			});
+		},
+		onChangeTedarik : function(oEvent) {
+			var oButton = oEvent.getSource();
+			var oItem = oButton.getParent();
+			var sPath = oItem.getBindingContextPath(); 
+			var sIndex = sPath.substring(sPath.lastIndexOf("/")+1);
+			//MessageToast.show(sIndex);
+			this.getRouter().navTo("tedarikformu",{
+				action : 'change',
+				itemno : sIndex
+			});
 		}
-		
 	});
 });

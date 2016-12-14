@@ -24,24 +24,16 @@
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader
 			id="idGorselUploadTedarik"
-			uploadUrl=""
+			uploadUrl="/logo~ui~talep/UploadServlet"
 			width="400px"
-			uploadComplete="onGorselUploadCompleteTedarik"
-			change="onGorselUploadChangeTedarik"
+			uploadComplete="onGorselUploadComplete"
+			change="onGorselUploadChange"
 			useMultipart="false"
 			style="Emphasized"
 			placeholder="{i18n>GorselUploadText}">
 			<u:layoutData>
 				<l:GridData span="L12 M12 S12"/>
 			</u:layoutData>
-			<u:headerParameters>
-				<u:FileUploaderParameter
-					name="headerParam1"
-					value="Foo"/>
-				<u:FileUploaderParameter
-					name="headerParam2"
-					value="bar"/>
-			</u:headerParameters>			
 		</u:FileUploader>
 		<Image
 			id="idGorselImageTedarik"

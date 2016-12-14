@@ -32,18 +32,42 @@ sap.ui.define([
 				if (oTest===undefined) {
 					var oController = this;
 					uiModel.attachRequestCompleted(function(oEvent){
-						oController._updateForms();
+						oController._updateForms(this._action);
 					});					
 				} else {
-					this._updateForms();
+					this._updateForms(this._action);
 				}
 			},				
 			_onRouteMatched : function(oEvent) {
+				var oController = this; 
 				var oView = this.getView();
 				var sRouteName = oEvent.getParameter("name");
+				var oModel = new JSONModel();
 				if (sRouteName==="tedarikformu") {
-					var oModel = new JSONModel();
+					var sItemNo = oEvent.getParameter("arguments").itemno;
+					var sAction = oEvent.getParameter("arguments").action; 
+					oController._action = sAction;
+					if (!sItemNo && sItemNo==='')  {
+						oView.setModel(oModel,"tedarik");
+					} else {
+						var oMainModel = oView.getModel();
+						var oTedarikData = oMainModel.getProperty("/TedarikCollection/"+sItemNo);
+						oModel.setData(oTedarikData);
+						oView.setModel(oModel,"tedarik");
+						
+						var sTedarikNumarasi = oTedarikData.TedarikNumarasi;
+						if (sTedarikNumarasi) {		
+							var oPage = this.getView().byId("idTedarikFormuPage");
+							var sTitle = oPage.getTitle();
+							oPage.setTitle(sTitle+" ("+sTedarikNumarasi+")");
+						}
+						
+					}
+					oController._updateForms(oController._action);
+				} else if (sRouteName==="tedarikformuekle") {
+					oController._action = "";
 					oView.setModel(oModel,"tedarik");
+					oController._updateForms(oController._action);
 				}
 			},				
 			onNavBack: function () {
@@ -53,11 +77,11 @@ sap.ui.define([
 				if (sPreviousHash !== undefined) {
 					window.history.go(-1);
 				} else {
-					var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+					var oRouter = this.getRouter();
 					oRouter.navTo("talepformu", true);
 				}
-				this.handleOdemeSekliTedarikValueHelp();
-				this.handleTeslimSekliTedarikValueHelp();
+				//this.handleOdemeSekliTedarikValueHelp();
+				//this.handleTeslimSekliTedarikValueHelp();
 			},	
 			_updateIconColor : function(idTab,state)  {
 				var oIconTab = this.getView().byId(idTab);			
@@ -76,16 +100,16 @@ sap.ui.define([
 				var oDummyModel = new JSONModel();
 				return Common.validateAll(oMainForm,oUIModel,oDummyModel,oMainModel);
 			},
-			_updateForms : function() {
-				this._updateForm("idUrunOzellikTedarikForm");
-				this._updateForm("idGenelBilgilerTedarikForm");		
+			_updateForms : function(sAction) {
+				this._updateForm("idUrunOzellikTedarikForm",sAction);
+				this._updateForm("idGenelBilgilerTedarikForm",sAction);		
 			},
-			_updateForm : function(sFormId) {
+			_updateForm : function(sFormId,sAction) {
 				var oMainModel = this.getView().getModel();
 				var oUIModel = this.getView().getModel("ui");
 				var oMainForm = this.getView().byId(sFormId);
 				var bpmModel = this.getView().getModel("bpm");
-				Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel);
+				Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel,sAction);
 			},
 			_onBeforeKaydet : function () {
 				var bResult1 = this._validateForm("idUrunOzellikTedarikForm");
@@ -94,71 +118,49 @@ sap.ui.define([
 				this._updateIconColor("idGenelBilgilerTedarikTab", bResult2);
 				return bResult1 && bResult2;
 			},
-			onUrunOnay : function () {
-				var oModel = this.getView().getModel();
-				var tModel = this.getView().getModel("tedarik");
+			onUrunKaydet : function () {
+				var oController = this;
 				var result = this._onBeforeKaydet();
 				if (!result) {
 					MessageToast.show("Tüm zorunlu alanları doldurun!");
 					return;
 				} else {
-/*					var tData = tModel.getData();
-					var tedarikCollection = oModel.getProperty("/TedarikCollection");
-					if (!tedarikCollection) {
-						tedarikCollection = [];
-					}
-					tedarikCollection.push(tData);
-					oModel.setProperty("/TedarikCollection",tedarikCollection);*/
-					this._onCreateRequest();
+					var mainModel = this.getView().getModel();
+					var eModel = this.getView().getModel("ecc");
+					var tModel = this.getView().getModel("tedarik");
+					var oData = mainModel.getData();
+					var tData = tModel.getData();
+					var oTedarik = {};
+					
+					oTedarik.TalepNumarasi = oData.TalepNumarasi;
+					oTedarik.UrunGorseli = oData.UrunGorseli;
+					oTedarik.UrunOzellikleri = tData.UrunOzellikleri;
+					oTedarik.Fiyat = parseFloat(tData.Fiyat).toFixed(2);
+					oTedarik.OzelDurum = tData.OzelDurumTedarik;
+					oTedarik.ParaBirimi = tData.ParaBirimi;
+					oTedarik.OdemeSekli = tData.OdemeSekli;
+					oTedarik.TeslimSekli = tData.TeslimSekli;
+					oTedarik.MinimumSiparisMiktari = parseInt(tData.MinimumSiparisMiktari,10);
+					oTedarik.TedarikNumarasi = tData.TedarikNumarasi;
+					oTedarik.Ekleyen=' ';
+					
+					eModel.create('/TedarikSet', oTedarik, null, null, null);
+						
+					eModel.attachRequestCompleted(function (eEvent) {
+						var sResponse = eEvent.getParameter("response");
+						var oResponse = JSON.parse(sResponse.responseText);
+						if (oResponse.error) {
+							MessageToast.show("Hata Oluştu:"+oResponse.error.message.value);
+						} else { 
+					    	MessageToast.show("Basari ile kaydedildi");
+					    	oController.onNavBack();
+						}
+					});
 				}
 			},
-			_onCreateRequest : function () {
-				var oComp = this.getOwnerComponent();
-				var mainModel = oComp.getModel();
-				var eModel = this.getView().getModel("ecc");
-				var tModel = this.getView().getModel("tedarik");
-				var oData = mainModel.getData();
-				var tData = tModel.getData();
-				var oTedarik = {};
-				
-				oTedarik.TalepNumarasi = oData.TalepNumarasi;
-				oTedarik.UrunGorseli = 'urungorseli';
-				oTedarik.UrunOzellikleri = tData.UrunOzellikleri;
-				oTedarik.Fiyat = parseFloat(tData.Fiyat).toFixed(2);
-				oTedarik.OzelDurum = tData.OzelDurumTedarik;
-				oTedarik.ParaBirimi = tData.HedefFiyatPB;
-				oTedarik.OdemeSekli = tData.OdemeSekli;
-				oTedarik.TeslimSekli = tData.TeslimSekli;
-				oTedarik.MinimumSiparisMiktari = parseInt(tData.MinimumSiparis,10);
-				oTedarik.TedarikNumarasi = '0000000000';
-				
-				eModel.create('/TedarikSet', oTedarik, null, null, null);
-					
-				eModel.attachRequestCompleted(function (eEvent) {
-					var sResponse = eEvent.getParameter("response");
-					var oResponse = JSON.parse(sResponse.responseText);
-					if (oResponse.error) {
-						MessageToast.show("Hata Oluştu:"+oResponse.error.message.value);
-					} else { 
-				    	MessageToast.show("Basari ile kaydedildi");
-					}
-				});
-					
-				
-			},
-			onGorselUploadCompleteTedarik : function (oEvent) {
+			onGorselUploadComplete : function (oEvent) {
 				var sResponse = oEvent.getParameter("responseRaw");
 				var sStatus = oEvent.getParameter("status");
-				//var files = oEvent.getParameter("files");
-				// var sUploadedFile;
-				// if (files) {
-				// 	sUploadedFile = oEvent.getParameter("files")[0].fileName;
-				// }
-				// if (!sUploadedFile) {
-				// 	var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
-				// 	sUploadedFile = aUploadedFile[0];
-				// }
-				
 				if (sStatus !== 200) {
 					sResponse = sResponse.length > 50 ? sResponse.substring(0, 50) + "..." : sResponse;
 					MessageToast.show("Hata oluştu :"+sResponse);
@@ -177,7 +179,7 @@ sap.ui.define([
 				}	
 				
 			},
-			onGorselUploadChangeTedarik : function (oEvent) {
+			onGorselUploadChange : function (oEvent) {
 					this.handleGorselUpload(oEvent);
 			},
 			handleGorselUpload : function(oEvent) {
@@ -225,33 +227,6 @@ sap.ui.define([
 				var textEl = this.getView().byId("idTeslimSekliAdi");
 				Common.handleValueHelp(this,oEvent.getSource(),textEl,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
 			}
-
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf com.silverline.ticariurun.view.TedarikFormu
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf com.silverline.ticariurun.view.TedarikFormu
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf com.silverline.ticariurun.view.TedarikFormu
-		 */
-		//	onExit: function() {
-		//
-		//	}
-
 	});
 
 });

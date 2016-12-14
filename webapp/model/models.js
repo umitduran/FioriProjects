@@ -21,9 +21,12 @@ sap.ui.define([
 		createMainModel: function() {
 			var oModel = new JSONModel();
 			oModel.setProperty("/TalepEden","Abdulbasit Gülşen");
+			oModel.setProperty("/Username","DEVELOPER3");
 			var oDateFormat = DateFormat.getInstance({pattern: "dd.MM.yyyy", style: "short"});
 			var sToday = oDateFormat.format(new Date());
 			oModel.setProperty("/TalepTarihi",sToday); 
+			var oTalepToMetinler = {};
+			oModel.setProperty('/TalepToMetinler',oTalepToMetinler);			
 			return oModel;
 		},
 		createBPMModel : function(taskId) {

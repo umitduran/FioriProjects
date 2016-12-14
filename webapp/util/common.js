@@ -85,19 +85,23 @@ sap.ui.define([
 		}
 		return required;
 	},	
-	updateForm : function (frm,uimodel,bpmModel,mainModel) {
+	updateForm : function (frm,uimodel,bpmModel,mainModel,pCurrentStep) {
 		var that = this;
 		var currentStep = "";
-		if (bpmModel) {
-			currentStep = bpmModel.getProperty("/currentStep");		
-		}
-		if (currentStep===undefined || currentStep==="") {
-			currentStep = mainModel.getProperty("/data/CurrentStep");
-		}
-		if (currentStep==="Yeni") {
-			currentStep = "MT1";
-		} else if (currentStep==="") {
-			currentStep = "XX";
+		if (pCurrentStep) {
+			currentStep = pCurrentStep;
+		} else {
+			if (bpmModel) {
+				currentStep = bpmModel.getProperty("/currentStep");		
+			}
+			if (currentStep===undefined || currentStep==="") {
+				currentStep = mainModel.getProperty("/data/CurrentStep");
+			}
+			if (currentStep==="Yeni") {
+				currentStep = "MT1";
+			} else if (currentStep==="") {
+				currentStep = "XX";
+			}
 		}
 		//frm panel veya simpleform oldugu zaman calisiyor. 
 		var content = frm.getContent();

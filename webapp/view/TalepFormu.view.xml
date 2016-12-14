@@ -7,7 +7,7 @@
 	xmlns="sap.m">
 	<App>
 		<pages>
-			<Page title="{i18n>TalepFormuTitle}">
+			<Page title="{i18n>TalepFormuTitle}" id="idTalepFormuPage">
 				<content>
 					<IconTabBar
 						id="idIconTabBar"

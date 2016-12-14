@@ -135,6 +135,14 @@
 				},
 				{
 					"name": "tedarikformu",
+					"pattern": "tedarikformu/{action}/{itemno}",
+					"greedy": false,
+					"target": [
+						"tedarikformu"
+					]
+				},
+				{
+					"name": "tedarikformuekle",
 					"pattern": "tedarikformu",
 					"greedy": false,
 					"target": [

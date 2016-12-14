@@ -4,20 +4,56 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:u="sap.ui.unified"
 	xmlns:core="sap.ui.core">
-	<List
-		items="{/TedarikCollection}"
-		headerText="Bulunan Ürünler">
+	<Table items="{/TedarikCollection}">
+		<headerToolbar>
+			<Toolbar>
+				<Title text="{i18n>TedarikListTitle}" level="H2"/>
+			</Toolbar>
+		</headerToolbar>	
+		<columns>
+			<Column width="12em">
+				<Text text="{i18n>ColumnTedarikNumarasiTitle}" />
+			</Column>			
+			<Column>
+				<Text text="{i18n>ColumnUretimSuresiTitle}" />
+			</Column>			
+			<Column>
+				<Text text="{i18n>ColumnOdemeSekliTitle}" />
+			</Column>			
+			<Column>
+				<Text text="{i18n>ColumnTeslimSekliTitle}" />
+			</Column>			
+			<Column hAlign="Right">
+				<Text text="{i18n>ColumnPriceTitle}" />
+			</Column>		
+			<Column hAlign="Right">
+				<Text text="{i18n>ColumnEkleyenTitle}" />
+			</Column>		
+			<Column width="2em"/>
+			<Column width="2em"/>
+			<Column width="2em"/>
+		</columns>
 		<items>
-			<ObjectListItem
-				title="{TedarikciAdi}"
-				type="Active"
-				press="onListItemPress"
-				number="{parts:[{path:'Fiyat'},{path:'HedefFiyatPB'}],
-						type: 'sap.ui.model.type.Currency' }">
-				<firstStatus>
-					<ObjectStatus text="{UretimSuresi}"/>	
-				</firstStatus>
-			</ObjectListItem>
+			<ColumnListItem>
+				<cells>			
+					<ObjectIdentifier title="{TedarikNumarasi}" />	
+					<Text text="{UretimSuresi}" />
+					<Text text="{Metinler/OdemeKosuluAciklamasi}" />
+					<Text text="{Metinler/TeslimSekliAciklamasi}" />
+					<ObjectNumber
+						number="{
+							parts:[{path:'Fiyat'},{path:'ParaBirimi'}],
+							type: 'sap.ui.model.type.Currency',
+							formatOptions: {showMeasure: false}
+						}"
+						unit="{ParaBirimi}" />			
+					<Text text="{Ekleyen}" />	
+					<Button type="Transparent" icon="sap-icon://display" press="onDisplayTedarik" />					
+		            <Button type="Transparent" visible="{Change}" icon="sap-icon://edit" press="onChangeTedarik" />
+		            <Button type="Transparent" visible="{Change}" icon="sap-icon://delete" press="onDeleteTedarik" />
+						
+				</cells>
+			</ColumnListItem>
 		</items>
-	</List>
+	</Table>
 	</core:FragmentDefinition>

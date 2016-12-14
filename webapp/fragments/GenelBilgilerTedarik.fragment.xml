@@ -27,7 +27,7 @@
 		</Input>
 		<ComboBox id="idFiyatPBTedarik"
 		          items="{sabit>/ParaBirimi}"
-		          selectedKey="{tedarik>/HedefFiyatPB}">
+		          selectedKey="{tedarik>/ParaBirimi}">
 			<core:Item key="{sabit>key}" text="{sabit>value}" />
 	        <layoutData>
 	          <l:GridData span="L3 M3 S12"/>
@@ -61,16 +61,8 @@
 		<Input id="idUretimSuresi" value="{tedarik>/UretimSuresi}"/>
 		
 		<Label id="idMinimumSiparisTedarikLabel" text="{i18n>MinimumSiparisLabel}" />
-		<Input id="idMinimumSiparisTedarik" value="{tedarik>/MinimumSiparis}" type="Number" maxLength="10"/>
+		<Input id="idMinimumSiparisTedarik" value="{tedarik>/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
 			
-	<Label id="idTedarikciAdiLabel" text="{i18n>TedarikciAdiLabel}" />
-		<Input id="idTedarikciAdi" value="{tedarik>/TedarikciAdi}" >
-	        <layoutData>
-	          <l:GridData span="L5 M5 S12"/>
-	        </layoutData>			
-		</Input>	
-		
-		
 	</f:SimpleForm>
 
 </core:FragmentDefinition>
