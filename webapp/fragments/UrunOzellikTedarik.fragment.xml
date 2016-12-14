@@ -15,19 +15,19 @@
 				columnsM="2">
 		<core:Title text="{i18n>UrunOzellikTitle}" />
 		<Label id="idUrunOzellikleriTedarikLabel" text="{i18n>UrunOzellikLabel}" required="true"/>
-		<TextArea id="idUrunOzellikleriTedarik" rows="12" value="" maxLength="2000">
+		<TextArea id="idUrunOzellikleriTedarik" rows="12" value="{tedarik>/UrunOzellikleri}" maxLength="2000">
 		</TextArea>
 		
 		<Label text="{i18n>OzelDurumLabel}"/>
-		<Input id="idOzelDurumTedarik" value="{/OzelDurumTedarik}" maxLength="100"/>
+		<Input id="idOzelDurumTedarik" value="{tedarik>/OzelDurumTedarik}" maxLength="100"/>
 		
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader
-			id="idGorselUpload"
+			id="idGorselUploadTedarik"
 			uploadUrl=""
 			width="400px"
-			uploadComplete="onGorselUploadComplete"
-			change="onGorselUploadChange"
+			uploadComplete="onGorselUploadCompleteTedarik"
+			change="onGorselUploadChangeTedarik"
 			useMultipart="false"
 			style="Emphasized"
 			placeholder="{i18n>GorselUploadText}">
@@ -44,7 +44,7 @@
 			</u:headerParameters>			
 		</u:FileUploader>
 		<Image
-			id="idGorselImage"
+			id="idGorselImageTedarik"
 			height="250px"
 			densityAware="false"
 			decorative="false"/>

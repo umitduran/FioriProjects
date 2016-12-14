@@ -18,7 +18,7 @@ sap.ui.define([
 				var oView = this.getView();
 				var oComp = this.getOwnerComponent();
 				oView.addStyleClass(oComp.getContentDensityClass());
-				
+	
 				this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
 		
 			},
@@ -31,7 +31,6 @@ sap.ui.define([
 				var oTest = uiModel.getProperty("/DEFAULT");
 				if (oTest===undefined) {
 					var oController = this;
-					oController._updateForms();
 					uiModel.attachRequestCompleted(function(oEvent){
 						oController._updateForms();
 					});					
@@ -103,14 +102,117 @@ sap.ui.define([
 					MessageToast.show("Tüm zorunlu alanları doldurun!");
 					return;
 				} else {
-					var tData = tModel.getData();
+/*					var tData = tModel.getData();
 					var tedarikCollection = oModel.getProperty("/TedarikCollection");
 					if (!tedarikCollection) {
 						tedarikCollection = [];
 					}
 					tedarikCollection.push(tData);
-					oModel.setProperty("/TedarikCollection",tedarikCollection);
+					oModel.setProperty("/TedarikCollection",tedarikCollection);*/
+					this._onCreateRequest();
 				}
+			},
+			_onCreateRequest : function () {
+				var oComp = this.getOwnerComponent();
+				var mainModel = oComp.getModel();
+				var eModel = this.getView().getModel("ecc");
+				var tModel = this.getView().getModel("tedarik");
+				var oData = mainModel.getData();
+				var tData = tModel.getData();
+				var oTedarik = {};
+				
+				oTedarik.TalepNumarasi = oData.TalepNumarasi;
+				oTedarik.UrunGorseli = 'urungorseli';
+				oTedarik.UrunOzellikleri = tData.UrunOzellikleri;
+				oTedarik.Fiyat = parseFloat(tData.Fiyat).toFixed(2);
+				oTedarik.OzelDurum = tData.OzelDurumTedarik;
+				oTedarik.ParaBirimi = tData.HedefFiyatPB;
+				oTedarik.OdemeSekli = tData.OdemeSekli;
+				oTedarik.TeslimSekli = tData.TeslimSekli;
+				oTedarik.MinimumSiparisMiktari = parseInt(tData.MinimumSiparis,10);
+				oTedarik.TedarikNumarasi = '0000000000';
+				
+				eModel.create('/TedarikSet', oTedarik, null, null, null);
+					
+				eModel.attachRequestCompleted(function (eEvent) {
+					var sResponse = eEvent.getParameter("response");
+					var oResponse = JSON.parse(sResponse.responseText);
+					if (oResponse.error) {
+						MessageToast.show("Hata Oluştu:"+oResponse.error.message.value);
+					} else { 
+				    	MessageToast.show("Basari ile kaydedildi");
+					}
+				});
+					
+				
+			},
+			onGorselUploadCompleteTedarik : function (oEvent) {
+				var sResponse = oEvent.getParameter("responseRaw");
+				var sStatus = oEvent.getParameter("status");
+				//var files = oEvent.getParameter("files");
+				// var sUploadedFile;
+				// if (files) {
+				// 	sUploadedFile = oEvent.getParameter("files")[0].fileName;
+				// }
+				// if (!sUploadedFile) {
+				// 	var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
+				// 	sUploadedFile = aUploadedFile[0];
+				// }
+				
+				if (sStatus !== 200) {
+					sResponse = sResponse.length > 50 ? sResponse.substring(0, 50) + "..." : sResponse;
+					MessageToast.show("Hata oluştu :"+sResponse);
+				} else if (sResponse.search("User authentication failed")>0) {
+					MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
+				} else if (sResponse.search("An unexpected problem has occurred")>0 ||
+						   sResponse.search("Application error occurred during the request processing")>0) {
+					MessageToast.show("Dosya yükleme sırasında hata oluştu.");
+				} else {
+					MessageToast.show("Dosya başarı ile yüklendi :"+sResponse);
+					var oModel = this.getView().getModel();
+					var sFilename = oModel.getProperty("/GorselFileName");
+					oModel.setProperty("/UrunGorseli",sResponse);
+					var oImage = this.getView().byId("idGorselImageTedarik");
+					oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+sResponse+"&amp;filename="+sFilename);
+				}	
+				
+			},
+			onGorselUploadChangeTedarik : function (oEvent) {
+					this.handleGorselUpload(oEvent);
+			},
+			handleGorselUpload : function(oEvent) {
+				var oModel = this.getView().getModel();
+				var oFileUploader = this.getView().byId("idGorselUploadTedarik");
+				var type = "DEF00";			
+				var filename = oFileUploader.getValue();
+				if (!filename) {
+					MessageToast.show("Lütfen dosya seçiniz!");
+				} else {
+					oModel.setProperty("/GorselFileName",filename);
+				}
+				var objid = jQuery.sap.uid();
+				//var filename = evt.mParameters.mParameters.newValue;
+				oFileUploader.removeAllHeaderParameters();
+				oFileUploader.addHeaderParameter( 
+						new sap.ui.unified.FileUploaderParameter({
+							name : "filename",
+							value : encodeURI(filename)
+						}) 
+					);		
+				oFileUploader.addHeaderParameter( 
+						new sap.ui.unified.FileUploaderParameter({
+							name : "objid",
+							value : objid
+						}) 
+					);		
+				oFileUploader.addHeaderParameter( 
+						new sap.ui.unified.FileUploaderParameter({
+							name : "type",
+							value : type
+						}) 
+					);					
+				oFileUploader.setSendXHR(true);
+				oFileUploader.upload();			
 			},
 			handleOdemeSekliTedarikValueHelp : function(oEvent) {
 				var oModel = this.getView().getModel("genel");

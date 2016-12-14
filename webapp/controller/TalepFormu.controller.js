@@ -18,8 +18,7 @@ sap.ui.define([
 			var oHedefUlke = this.getView().byId("idHedefUlke");
 			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
-			var t = this;
-
+		
 			if (taskId) {
 				var bpmModel = models.createBPMModel(taskId);
 				this.getView().setModel(bpmModel, "bpm");
@@ -47,12 +46,13 @@ sap.ui.define([
 							mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
 							mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
 							mainModel.setProperty('/Markalar',oData.Marka);
+							mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 							
 							var oImage = oView.byId("idGorselImage");
 							oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
 							
-							t.getView().byId("idUrunGrubuTab").setText(t.byId("idUrunGrubu")._lastValue);
-							t.byId("idUrunKaydetButton").setVisible(false);
+							oView.byId("idUrunGrubuTab").setText(oView.byId("idUrunGrubu")._lastValue);
+							oView.byId("idUrunKaydetButton").setVisible(false);
 							
 							var oHedefFiyat = oView.byId("idHedefFiyat");
 							var oHedefAdet = oView.byId("idHedefAdet");
@@ -92,6 +92,8 @@ sap.ui.define([
 							}
 							mainModel.setProperty('/Yorumlar',aYorumlar);
 							oView.setBusy(false);
+							
+						
 						},
 						error : function(err) {
 							oView.setBusy(false);
@@ -117,8 +119,8 @@ sap.ui.define([
 */					
 				}
 			}else{
-				t.byId("idUrunEkleButton").setVisible(false);	
-				t.byId("idUrunTedarikTab").setVisible(false);
+				oView.byId("idUrunEkleButton").setVisible(false);	
+				oView.byId("idUrunTedarikTab").setVisible(false);
 			}
 		},
 		getRouter : function() {
@@ -128,9 +130,15 @@ sap.ui.define([
 		onBeforeRendering : function() {
 			var oController = this;
 			var uiModel = this.getView().getModel("ui");
-			uiModel.attachRequestCompleted(function(oEvent){
-				oController.updateForms();
-			});			
+			var oTest = uiModel.getProperty("/DEFAULT");
+			if(oTest===undefined) {
+					uiModel.attachRequestCompleted(function(oEvent){
+						oController.updateForms();
+			});
+			}else{
+				this.updateForms();		
+			}
+						
 		},
 		onUrunGrubuChanged : function (oEvent) {
 			var oMainModel = this.getView().getModel();
