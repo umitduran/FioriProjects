@@ -131,7 +131,8 @@
 					"greedy": false,
 					"target": [
 						"talepformu"
-					]
+					],
+					"viewLevel": 1
 				},
 				{
 					"name": "tedarikformu",
@@ -139,7 +140,8 @@
 					"greedy": false,
 					"target": [
 						"tedarikformu"
-					]
+					],
+					"viewLevel": 2
 				},
 				{
 					"name": "tedarikformuekle",

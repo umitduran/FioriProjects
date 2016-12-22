@@ -71,17 +71,17 @@ sap.ui.define([
 				}
 			},				
 			onNavBack: function () {
-				var oHistory = History.getInstance();
-				var sPreviousHash = oHistory.getPreviousHash();
+				var oRouter = this.getRouter();
+				oRouter.navTo("talepformu", true);
+				// var oHistory = History.getInstance();
+				// var sPreviousHash = oHistory.getPreviousHash();
 	
-				if (sPreviousHash !== undefined) {
-					window.history.go(-1);
-				} else {
-					var oRouter = this.getRouter();
-					oRouter.navTo("talepformu", true);
-				}
-				//this.handleOdemeSekliTedarikValueHelp();
-				//this.handleTeslimSekliTedarikValueHelp();
+				// if (sPreviousHash !== undefined) {
+				// 	window.history.go(-1);
+				// } else {
+				// 	var oRouter = this.getRouter();
+				// 	oRouter.navTo("talepformu", true);
+				// }
 			},	
 			_updateIconColor : function(idTab,state)  {
 				var oIconTab = this.getView().byId(idTab);			

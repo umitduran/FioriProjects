@@ -37,13 +37,19 @@ sap.ui.define([
 		_reloadTalepData : function() {
 			var oView = this.getView();
 			var oMainModel = this.getView().getModel();
-			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
-			if (!sTalepNumarasi) {
-				var bpmModel = this.getView().getModel("bpm");				
-				sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");				
+			if (oMainModel) {
+				var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+				if (!sTalepNumarasi) {
+					var bpmModel = this.getView().getModel("bpm");				
+					if (bpmModel) {
+						sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");				
+					}
+				}
+				if (sTalepNumarasi) {
+					oView.setBusy(true);
+					this._loadTalepData(sTalepNumarasi);
+				}
 			}
-			oView.setBusy(true);
-			this._loadTalepData(sTalepNumarasi);
 		},
 		_loadTalepData : function(sTalepNumarasi) {
 			var oView = this.getView();
@@ -172,14 +178,21 @@ sap.ui.define([
 				var bpmModel = this.getView().getModel("bpm");
 				var talepNumarasi = bpmModel.getProperty("/TalepNumarasi");
 				if (talepNumarasi) {		
-					var i18nModel = this.getView().getModel("i18n");
-					var oBundle = i18nModel.getResourceBundle();
 					var sText = "("+talepNumarasi+")";
-					var sTitle = oBundle.getText("TalepFormuTitle", [sText]);					
+					var sTitle = this.getBundleText("TalepFormuTitle", sText);
+					// var i18nModel = this.getView().getModel("i18n");
+					// var oBundle = i18nModel.getResourceBundle();
+					// var sTitle = oBundle.getText("TalepFormuTitle", [sText]);					
 					var oPage = this.getView().byId("idTalepFormuPage");
 					oPage.setTitle(sTitle);
 				}
 			}
+		},
+		getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+			var i18nModel = this.getView().getModel("i18n");
+			var oBundle = i18nModel.getResourceBundle();
+			var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
+			return sValue;
 		},
 		onUrunGrubuChanged : function (oEvent) {
 			var oUrunGrubuTab = this.getView().byId("idUrunGrubuTab");
@@ -492,6 +505,44 @@ sap.ui.define([
 				action : 'display',
 				itemno : sIndex
 			});
+		},
+		onDeleteTedarik : function(oEvent) {
+			var oController = this;
+			var oView = this.getView();
+			var oButton = oEvent.getSource();
+			var oItem = oButton.getParent();			
+			var sPath = oItem.getBindingContextPath(); 			
+			var oModel = this.getView().getModel();
+			var oTedarikData = oModel.getProperty(sPath);
+			var sTalepNumarasi = oTedarikData.TalepNumarasi;
+			var sTedarikNumarasi = oTedarikData.TedarikNumarasi;
+			var sTedarikPath = '/TedarikSet('+
+			                   'TalepNumarasi=\''+sTalepNumarasi+'\','+
+			                   'TedarikNumarasi=\''+sTedarikNumarasi+'\')';
+			var eccModel = this.getView().getModel("ecc");
+			oView.setBusy(true);
+			eccModel.remove(sTedarikPath, null, null, null, null);
+			
+			eccModel.attachRequestCompleted(function (eEvent) {
+				eccModel.detachRequestCompleted(this);
+				var sMessageError = oController.getBundleText("ErrorOccured");
+				var sMessageSuccess = oController.getBundleText("RecordDeleted");
+
+				var sResponse = eEvent.getParameter("response");
+				var bError = false;
+				if (sResponse.responseText) {
+					var oResponse = JSON.parse(sResponse.responseText);
+					if (oResponse.error) {
+						MessageBox.error(sMessageError);
+						bError = true;
+					}
+				}
+				if (!bError) { 
+			    	MessageToast.show(sMessageSuccess);
+			    	oController._loadTalepData(sTalepNumarasi);
+				}
+				oView.setBusy(false);
+			});			
 		},
 		onChangeTedarik : function(oEvent) {
 			var oButton = oEvent.getSource();
