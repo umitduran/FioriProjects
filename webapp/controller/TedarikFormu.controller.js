@@ -56,10 +56,13 @@ sap.ui.define([
 						oView.setModel(oModel,"tedarik");
 						
 						var sTedarikNumarasi = oTedarikData.TedarikNumarasi;
-						if (sTedarikNumarasi) {		
+						if (sTedarikNumarasi) {	
+							var i18nModel = this.getView().getModel("i18n");
+							var oBundle = i18nModel.getResourceBundle();
+							var sText = "("+sTedarikNumarasi+")";
+							var sTitle = oBundle.getText("TedarikFormuTitle", [sText]);
 							var oPage = this.getView().byId("idTedarikFormuPage");
-							var sTitle = oPage.getTitle();
-							oPage.setTitle(sTitle+" ("+sTedarikNumarasi+")");
+							oPage.setTitle(sTitle);
 						}
 						
 					}
@@ -67,6 +70,8 @@ sap.ui.define([
 				} else if (sRouteName==="tedarikformuekle") {
 					oController._action = "";
 					oView.setModel(oModel,"tedarik");
+					oModel.setProperty("/Metinler/OdemeKosuluAciklamasi");
+					oModel.setProperty("/Metinler/TeslimSekliAciklamasi");
 					oController._updateForms(oController._action);
 				}
 			},				
@@ -136,10 +141,11 @@ sap.ui.define([
 					oTedarik.UrunGorseli = oData.UrunGorseli;
 					oTedarik.UrunOzellikleri = tData.UrunOzellikleri;
 					oTedarik.Fiyat = parseFloat(tData.Fiyat).toFixed(2);
-					oTedarik.OzelDurum = tData.OzelDurumTedarik;
+					oTedarik.OzelDurum = tData.OzelDurum;
 					oTedarik.ParaBirimi = tData.ParaBirimi;
 					oTedarik.OdemeSekli = tData.OdemeSekli;
 					oTedarik.TeslimSekli = tData.TeslimSekli;
+					oTedarik.UretimSuresi = tData.UretimSuresi;
 					oTedarik.MinimumSiparisMiktari = parseInt(tData.MinimumSiparisMiktari,10);
 					oTedarik.TedarikNumarasi = tData.TedarikNumarasi;
 					oTedarik.Ekleyen=' ';
@@ -218,13 +224,13 @@ sap.ui.define([
 			},
 			handleOdemeSekliTedarikValueHelp : function(oEvent) {
 				var oModel = this.getView().getModel("genel");
-				var textEl = this.getView().byId("idOdemeSekliAdi");
+				var textEl = this.getView().byId("idOdemeSekliTedarikAdi");
 				Common.handleValueHelp(this,oEvent.getSource(),textEl,"OdemeKosuluKodu","OdemeKosuluAciklamasi",oModel,"/OdemeKosuluSet",this.getView(),"Ödeme Şekli");
 			},
 		
 			handleTeslimSekliTedarikValueHelp : function(oEvent) {
 				var oModel = this.getView().getModel("genel");
-				var textEl = this.getView().byId("idTeslimSekliAdi");
+				var textEl = this.getView().byId("idTeslimSekliTedarikAdi");
 				Common.handleValueHelp(this,oEvent.getSource(),textEl,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
 			}
 	});

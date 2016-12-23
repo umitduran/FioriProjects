@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm id="idNumuneForm"
+	              editable="true" 
+	              layout="ResponsiveGridLayout" 
+	              labelSpanL="4" 
+	              labelSpanM="4" 
+	              labelSpanS="12">
+		
+		<Label id="idNumuneLabel" text="{i18n>NumuneLabel}"/>
+		<Input id="idNumune" value="{	path: '/Numune',
+										type: 'sap.ui.model.type.Float',
+											formatOptions: {
+												minFractionDigits: 2
+											}
+										}"	/>	
+	</f:SimpleForm>
+
+</core:FragmentDefinition>

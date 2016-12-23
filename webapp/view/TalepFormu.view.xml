@@ -44,7 +44,7 @@
 							<IconTabSeparator icon="sap-icon://open-command-field" />	
 							<IconTabFilter
 								id="idYorumlarTab"
-								icon="sap-icon://idea-wall"
+								icon="sap-icon://comment"
 								design="Horizontal"
 								iconColor="Positive"
 								text="{i18n>YorumlarTitle}"
@@ -61,7 +61,7 @@
 								key="Ekler">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Ekler" type="XML"/> 																
 							</IconTabFilter>	
-							<IconTabSeparator icon="sap-icon://open-command-field" />
+							<IconTabSeparator id="idIconTabSeparator" icon="sap-icon://open-command-field" />
 							<IconTabFilter
 								id="idUrunTedarikTab"
 								icon="sap-icon://customer-view"
@@ -70,6 +70,16 @@
 								text="{i18n>UrunTedarikTitle}"
 								key="UrunTedarik">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunTedarik" type="XML"/> 																
+							</IconTabFilter>
+							<IconTabSeparator icon="sap-icon://open-command-field" />
+							<IconTabFilter
+								id="idNumuneTab"
+								icon="sap-icon://picture"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>NumuneTitle}"
+								key="Numune">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Numune" type="XML"/> 																
 							</IconTabFilter>
 						</items>
 					</IconTabBar>

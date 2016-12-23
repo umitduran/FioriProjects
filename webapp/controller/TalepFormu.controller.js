@@ -16,7 +16,7 @@ sap.ui.define([
 			var oComp = this.getOwnerComponent();
 			oView.addStyleClass(oComp.getContentDensityClass());
 			var taskId = jQuery.sap.getUriParameters().get("taskId");
-		
+	
 			if (taskId) {
 				this.taskId = taskId;
 				var bpmModel = models.createBPMModel(taskId);
@@ -24,6 +24,7 @@ sap.ui.define([
 			} else {
 				oView.byId("idUrunEkleButton").setVisible(false);	
 				oView.byId("idUrunTedarikTab").setVisible(false);
+				oView.byId("idIconTabSeparator").destroy();	
 			}
 			
 			this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
@@ -252,6 +253,7 @@ sap.ui.define([
 			oTalep.HedefFiyat = parseFloat(oData.HedefFiyat).toFixed(2);
 			oTalep.HedefFiyatPB = oData.HedefFiyatPB;
 			oTalep.MinimumSiparisMiktari = parseInt(oData.MinimumSiparisMiktari,10);
+			oTalep.Numune = parseFloat(oData.Numune).toFixed(2);
 			
 			oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
 			oTalep.OdemeSekli = oData.OdemeSekli;
@@ -521,28 +523,20 @@ sap.ui.define([
 			                   'TedarikNumarasi=\''+sTedarikNumarasi+'\')';
 			var eccModel = this.getView().getModel("ecc");
 			oView.setBusy(true);
-			eccModel.remove(sTedarikPath, null, null, null, null);
 			
-			eccModel.attachRequestCompleted(function (eEvent) {
-				eccModel.detachRequestCompleted(this);
-				var sMessageError = oController.getBundleText("ErrorOccured");
-				var sMessageSuccess = oController.getBundleText("RecordDeleted");
-
-				var sResponse = eEvent.getParameter("response");
-				var bError = false;
-				if (sResponse.responseText) {
-					var oResponse = JSON.parse(sResponse.responseText);
-					if (oResponse.error) {
-						MessageBox.error(sMessageError);
-						bError = true;
-					}
-				}
-				if (!bError) { 
-			    	MessageToast.show(sMessageSuccess);
-			    	oController._loadTalepData(sTalepNumarasi);
-				}
-				oView.setBusy(false);
-			});			
+            eccModel.remove(sTedarikPath,{
+                success : function(oData,oResponse) {
+                    var sMessageSuccess = oController.getBundleText("RecordDeleted");
+                    MessageToast.show(sMessageSuccess);
+                    oController._loadTalepData(sTalepNumarasi);
+                    oView.setBusy(false) ;
+                },
+                error : function(oError) {
+                    var sMessageError = oController.getBundleText("ErrorOccured");
+                    MessageBox.error(sMessageError);
+                    oView.setBusy(false) ;
+                }
+            });		
 		},
 		onChangeTedarik : function(oEvent) {
 			var oButton = oEvent.getSource();

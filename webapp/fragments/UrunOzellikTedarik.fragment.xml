@@ -19,7 +19,7 @@
 		</TextArea>
 		
 		<Label text="{i18n>OzelDurumLabel}"/>
-		<Input id="idOzelDurumTedarik" value="{tedarik>/OzelDurumTedarik}" maxLength="100"/>
+		<Input id="idOzelDurumTedarik" value="{tedarik>/OzelDurum}" maxLength="100"/>
 		
 		<core:Title text="{i18n>GorselUploadTitle}" />
 		<u:FileUploader

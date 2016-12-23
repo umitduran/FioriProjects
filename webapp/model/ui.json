@@ -120,6 +120,22 @@
 			"editable" : false
 		}
 	},
+	"OdemeSekli" : {
+		"required": false,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
+	"TeslimSekli" : {
+		"required": false,
+		"visible": true,
+		"editable": true,
+		"10" : {
+			"editable" : false
+		}
+	},
 	"MinimumSiparis" : {
 		"required": true,
 		"visible": true,
@@ -131,12 +147,18 @@
 	"OdemeSekliAdi" : {
 		"required": false,
 		"visible": true,
-		"editable": false
+		"editable": false,
+		"10" : {
+			"editable" :false
+		}
 	},
 	"TeslimSekliAdi" : {
 		"required": false,
 		"visible": true,
-		"editable": false
+		"editable": false,
+		"10" : {
+			"editable" :false
+		}
 	},
 	"MarkaAdi" : {
 		"required": false,
@@ -151,11 +173,19 @@
 			"editable" : false
 		}
 	},
+	"OzelDurumTedarik" : {
+		"required" : false,
+		"visible" : true,
+		"editable" : true,
+		"display" : {
+			"editable" : false
+		}
+	},
 	"FiyatTedarik" : {
 		"required": true,
 		"visible": true,
 		"editable": true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
 	},
@@ -163,7 +193,7 @@
 		"required": true,
 		"visible": true,
 		"editable": true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
 	},
@@ -171,31 +201,41 @@
 		"required": true,
 		"visible": true,
 		"editable": true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
+	},
+	"OdemeSekliTedarikAdi" : {
+		"required": true,
+		"visible": true,
+		"editable": false
 	},
 	"TeslimSekliTedarik" : {
 		"required": true,
 		"visible": true,
 		"editable": true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
+	},
+	"TeslimSekliTedarikAdi" : {
+		"required": true,
+		"visible": true,
+		"editable": false
 	},
 	"MinimumSiparisTedarik" : {
 		"required": true,
 		"visible": true,
 		"editable": true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
 	},
-	"TeslimNoktasi" : {
-		"required" : true,
+	"UretimSuresi" : {
+		"required" : false,
 		"visible" : true,
 		"editable" : true,
-		"10" : {
+		"display" : {
 			"editable" : false
 		}
 	}

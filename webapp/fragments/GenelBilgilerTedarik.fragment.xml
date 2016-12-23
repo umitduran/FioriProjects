@@ -40,7 +40,7 @@
 	          <l:GridData span="L2 M2 S12"/>
 	        </layoutData>				        
 		</Input>
-        <Input id="idOdemeSekliTedarikAdi">
+        <Input id="idOdemeSekliTedarikAdi" value="{tedarik>/Metinler/OdemeKosuluAciklamasi}">
 	        <layoutData>
 	          <l:GridData span="L6 M6 S12"/>
 	        </layoutData>				        
@@ -51,7 +51,7 @@
 	          <l:GridData span="L2 M2 S12"/>
 	        </layoutData>				        
 		</Input>	
-		<Input id="idTeslimSekliTedarikAdi">
+		<Input id="idTeslimSekliTedarikAdi" value="{tedarik>/Metinler/TeslimSekliAciklamasi}">
 	        <layoutData>
 	          <l:GridData span="L6 M6 S12"/>
 	        </layoutData>				        
