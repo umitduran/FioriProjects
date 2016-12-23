@@ -5,10 +5,11 @@ sap.ui.define([
 	"sap/m/Token",
 	"sap/ui/core/format/DateFormat",
 	"sap/ui/model/json/JSONModel",
+	"sap/ui/model/odata/ODataModel",
 	"com/silverline/ticariurun/util/util",
 	"com/silverline/ticariurun/util/common",
 	"com/silverline/ticariurun/model/models"
-], function(Controller,MessageToast,MessageBox,Token,DateFormat,JSONModel,Util,Common,models) {
+], function(Controller,MessageToast,MessageBox,Token,DateFormat,JSONModel,ODataModel,Util,Common,models) {
 	"use strict";
 	return Controller.extend("com.silverline.ticariurun.controller.TalepFormu", {
 		onInit : function() {
@@ -224,6 +225,7 @@ sap.ui.define([
 			return bResult1 && bResult2 && bResult3 && bResult4 && bResult5;
 		},
 		onKaydet : function(oEvent) {
+			var oController = this;
 			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
 			if (!result) {
@@ -300,13 +302,39 @@ sap.ui.define([
 				if (oResponse.error) {
 					MessageToast.show("Hata Oluştu:"+oResponse.error.message.value);
 				} else { 
-			    	MessageToast.show(oResponse.d.TalepNumarasi+" numaralı talep yaratıldı!");
+			    	//MessageToast.show(oResponse.d.TalepNumarasi+" numaralı talep yaratıldı!");
+			    	oController.startBPM(oController,oResponse.d.TalepNumarasi);
 				}
 			});
 /*			eModel.attachRequestFailed(function () {
 				MessageToast.show("Hata oluştu!");
 			});			
 */		},
+		startBPM : function(oController, sTalepNumarasi) {
+			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
+			var bpmStartModel = new ODataModel(startURL, true);
+			bpmStartModel.setCountSupported(false);			
+
+			var startData = {};
+			startData.ProcessStartEvent = {};
+			startData.ProcessStartEvent.UrunTalebiType = {};
+			startData.ProcessStartEvent.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+			
+			bpmStartModel.create("/StartData",startData,null,
+					function (oData,response) {
+						var sTalepNumarasi = oData.ProcessStartEvent.UrunTalebiType.TalepNumarasi;
+						
+						var bModel = oController.getView().getModel("i18n");
+						var oBundle = bModel.getResourceBundle();		    	
+						var sMessage = oController.getBundleText("TalepSavedWithBPM",sTalepNumarasi);
+						MessageBox.success(sMessage);
+					},
+					function (oError) {
+						MessageBox.error("Hata oluştu!");
+					}
+			);			
+			
+		},
 		validateForm : function(sFormId) {
 			var oMainModel = this.getView().getModel();
 			var oUIModel = this.getView().getModel("ui");

@@ -20,6 +20,15 @@
       "description": "SAPUI5 Test Resources"
     },
     {
+      "path": "/bpmodata",
+      "target": {
+        "type": "destination",
+        "name": "SFP",
+        "entryPath": "/bpmodata"
+      },
+      "description": "BPM Odata Service"
+    },
+    {
       "path": "/logo~ui~talep",
       "target": {
         "type": "destination",
