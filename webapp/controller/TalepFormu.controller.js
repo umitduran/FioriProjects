@@ -20,8 +20,7 @@ sap.ui.define([
 	
 			if (taskId) {
 				this.taskId = taskId;
-				var bpmModel = models.createBPMModel(taskId);
-				this.getView().setModel(bpmModel, "bpm");
+				models.createBPMModel(this.getView(),taskId);
 			} else {
 				oView.byId("idUrunEkleButton").setVisible(false);	
 				oView.byId("idUrunTedarikTab").setVisible(false);
@@ -311,28 +310,46 @@ sap.ui.define([
 			});			
 */		},
 		startBPM : function(oController, sTalepNumarasi) {
+			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik";
 			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
-			var bpmStartModel = new ODataModel(startURL, true);
-			bpmStartModel.setCountSupported(false);			
-
-			var startData = {};
-			startData.ProcessStartEvent = {};
-			startData.ProcessStartEvent.UrunTalebiType = {};
-			startData.ProcessStartEvent.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+			var oBPMServletModel = new JSONModel(sGroupServiceURL);
+			oBPMServletModel.attachRequestCompleted(function(oEvent) {
+				
+				var oUrunTedarik = oBPMServletModel.getProperty("/Users");
+				
+				var bpmStartModel = new ODataModel(startURL, true);
+				bpmStartModel.setCountSupported(false);			
+				var startData = {};
+				startData.ProcessStartEvent = {};
+				startData.ProcessStartEvent.UrunTalebiType = {};
+				startData.ProcessStartEvent.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+				startData.ProcessStartEvent.UrunTalebiType.UrunTedarik = [];
+				jQuery.each(oUrunTedarik,function(key,el) {
+					var rowUrunTedarik = {
+						uniqueid : el.uniqueid,
+						name : el.name,
+						uniquename : el.uniquename
+					};
+					startData.ProcessStartEvent.UrunTalebiType.UrunTedarik.push(rowUrunTedarik);
+				});
+				bpmStartModel.create("/StartData",startData,null,
+						function (oData,response) {
+							var sTalepNumarasi = oData.ProcessStartEvent.UrunTalebiType.TalepNumarasi;
+							
+							var bModel = oController.getView().getModel("i18n");
+							var oBundle = bModel.getResourceBundle();		    	
+							var sMessage = oController.getBundleText("TalepSavedWithBPM",sTalepNumarasi);
+							MessageBox.success(sMessage);
+						},
+						function (oError) {
+							MessageBox.error("Hata oluştu!");
+						}
+				);			
+			});
 			
-			bpmStartModel.create("/StartData",startData,null,
-					function (oData,response) {
-						var sTalepNumarasi = oData.ProcessStartEvent.UrunTalebiType.TalepNumarasi;
-						
-						var bModel = oController.getView().getModel("i18n");
-						var oBundle = bModel.getResourceBundle();		    	
-						var sMessage = oController.getBundleText("TalepSavedWithBPM",sTalepNumarasi);
-						MessageBox.success(sMessage);
-					},
-					function (oError) {
-						MessageBox.error("Hata oluştu!");
-					}
-			);			
+			
+			
+			
 			
 		},
 		validateForm : function(sFormId) {

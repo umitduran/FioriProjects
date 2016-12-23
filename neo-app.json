@@ -29,6 +29,15 @@
       "description": "BPM Odata Service"
     },
     {
+      "path": "/lib~bpm",
+      "target": {
+        "type": "destination",
+        "name": "SFP",
+        "entryPath": "/lib~bpm"
+      },
+      "description": "lib~bpm"
+    },
+    {
       "path": "/logo~ui~talep",
       "target": {
         "type": "destination",

@@ -1,8 +1,10 @@
 sap.ui.define([
 	"sap/ui/model/json/JSONModel",
+	"sap/ui/model/odata/ODataModel",
+	"sap/m/MessageToast",
 	"sap/ui/Device",
 	"sap/ui/core/format/DateFormat"
-], function(JSONModel, Device,DateFormat) {
+], function(JSONModel, ODataModel,MessageToast,Device,DateFormat) {
 	"use strict";
 
 	return {
@@ -29,14 +31,36 @@ sap.ui.define([
 			oModel.setProperty('/TalepToMetinler',oTalepToMetinler);			
 			return oModel;
 		},
-		createBPMModel : function(taskId) {
-			var bpmData = {
-				TaskId : taskId,
-				TalepNumarasi : '46',
-				currentStep : '10'
-			};
-			var bpmModel = new JSONModel(bpmData);
-			return bpmModel;
+		createBPMModel : function(oView,taskId) {
+			
+			var taskDataSvcURL = "/bpmodata/taskdata.svc/" + taskId;
+			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
+			
+		    if (taskId != null) {
+		    	taskDataODataModel.read(
+		    			"/InputData", 
+		    			null,
+		    			{ 
+		    				"$expand":"UrunTalebiType" 
+		    			}, 		    			 
+		    			false, 
+						function(oData,oResponse) {
+		    				var sTalepNumarasi = oData.results[0].UrunTalebiType.TalepNumarasi;
+		    				var sCurrentStep = oData.results[0].UrunTalebiType.CurrentStep;
+							var bpmData = {
+								TaskId : taskId,
+								TalepNumarasi : sTalepNumarasi,
+								currentStep : sCurrentStep
+							};
+							var bpmModel = new JSONModel(bpmData);
+							oView.setModel(bpmModel, "bpm");
+		    			},
+						function(oError) {
+							//FIXME resource bundle'dan hata mesajı getirilecek.
+							MessageToast.show("Hata oluştu!");
+		    			}
+		    	); 	    				
+		    }
 		},
 		createUIModel: function() {
 			var sRootPath = jQuery.sap.getModulePath("com.silverline.ticariurun");   
