@@ -43,7 +43,7 @@
 	"HedefFiyatPB" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
+		"editable": false,
 		"10" : {
 			"editable" : false
 		}

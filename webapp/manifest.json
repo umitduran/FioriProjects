@@ -122,6 +122,12 @@
 					"transition": "slide",
 					"clearAggregation": true,
 					"viewName": "TedarikFormu"
+				},
+				"result" : {
+					"viewType":"XML",
+					"transition" : "slide",
+					"clearAggreagtion" : true,
+					"viewName" : "Result"
 				}
 			},
 			"routes": [
@@ -150,7 +156,15 @@
 					"target": [
 						"tedarikformu"
 					]
-				}
+				},
+				{
+					"name" : "result",
+					"pattern" : "result/{action}/{talepno}",
+					"greedy" : false,
+					"target" : [
+						"result"	
+						]
+				}		
 			],
 			"config": {
 				"controlId": "app",

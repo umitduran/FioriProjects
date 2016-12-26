@@ -225,6 +225,7 @@ sap.ui.define([
 		},
 		onKaydet : function(oEvent) {
 			var oController = this;
+			var oView = oController.getView();
 			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
 			if (!result) {
@@ -293,9 +294,23 @@ sap.ui.define([
 				});
 			});					
 			
-			eModel.create('/TalepSet', oTalep, null, null, null);
+			eModel.create('/TalepSet', oTalep, {
+				success : function (oResponse) {
+					var oTalepNumarasi = oResponse.TalepNumarasi;
+					oController.getRouter().navTo("result",{
+						action : 'success',
+						talepno : oTalepNumarasi
+					});
+				},
+				error : function (oError) {
+					oController.getRouter().navTo("result",{
+						action  : 'error'	
+					});
+					
+				}
+			});
 			
-			eModel.attachRequestCompleted(function (eEvent) {
+/*			eModel.attachRequestCompleted(function (eEvent) {
 				var sResponse = eEvent.getParameter("response");
 				var oResponse = JSON.parse(sResponse.responseText);
 				if (oResponse.error) {
@@ -304,7 +319,7 @@ sap.ui.define([
 			    	//MessageToast.show(oResponse.d.TalepNumarasi+" numaralı talep yaratıldı!");
 			    	oController.startBPM(oController,oResponse.d.TalepNumarasi);
 				}
-			});
+			});*/
 /*			eModel.attachRequestFailed(function () {
 				MessageToast.show("Hata oluştu!");
 			});			
