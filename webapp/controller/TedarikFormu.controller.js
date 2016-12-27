@@ -69,9 +69,10 @@ sap.ui.define([
 					oController._updateForms(oController._action);
 				} else if (sRouteName==="tedarikformuekle") {
 					oController._action = "";
+					oModel.setProperty("/Metinler",{});
+					oModel.setProperty("/Metinler/OdemeKosuluAciklamasi","");
+					oModel.setProperty("/Metinler/TeslimSekliAciklamasi","");
 					oView.setModel(oModel,"tedarik");
-					oModel.setProperty("/Metinler/OdemeKosuluAciklamasi");
-					oModel.setProperty("/Metinler/TeslimSekliAciklamasi");
 					oController._updateForms(oController._action);
 				}
 			},				
@@ -151,7 +152,7 @@ sap.ui.define([
 					oTedarik.Ekleyen=' ';
 					
 					eModel.create('/TedarikSet', oTedarik, null, null, null);
-						
+					//FIXME attach request completed düzeltilecek.	
 					eModel.attachRequestCompleted(function (eEvent) {
 						var sResponse = eEvent.getParameter("response");
 						var oResponse = JSON.parse(sResponse.responseText);

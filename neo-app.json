@@ -38,6 +38,15 @@
       "description": "lib~bpm"
     },
     {
+      "path": "/lib~bpmapi",
+      "target": {
+        "type": "destination",
+        "name": "SFP",
+        "entryPath": "/lib~bpmapi"
+      },
+      "description": "lib~bpmapi"
+    },
+    {
       "path": "/logo~ui~talep",
       "target": {
         "type": "destination",

@@ -35,6 +35,80 @@ sap.ui.define([
 				this._reloadTalepData();
 			}
 		},
+		onOnayla : function() {
+			this.claimAndComplete();
+		},
+		onRevizyon : function() {
+			this.claimAndComplete("Revizyon");
+		},
+		claimAndComplete : function(sAction) {
+			var oController = this;
+			var bpmModel = this.getView().getModel("bpm");				
+			if (bpmModel) {
+				var sTaskId = bpmModel.getProperty("/TaskId");
+				var sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");	
+				if (sTaskId) {
+					var aData = jQuery.ajax({
+			            type : "GET",
+			            contentType : "application/json",
+			            url : "/lib~bpmapi/TaskUtil?service=claim&taskid="+sTaskId, 
+			            async: false, 
+			            success : function(data,textStatus, jqXHR) {
+							if (data==="OK") {
+								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sAction);
+							} else {
+								oController._onGeneralError();
+							}
+			            },
+			            error : oController._onGeneralError
+					});
+				} 			
+			}
+		},		
+		_completeBPM : function(oController,sTaskId,sTalepNumarasi,sAction) {
+			var taskDataSvcURL = "/bpmodata/taskdata.svc/" + sTaskId;
+			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
+		
+			if (sAction) {
+				var faultData = {};
+				faultData.UrunTalebiType = {};
+				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+				faultData.UrunTalebiType.CurrentStep = "";
+				faultData.UrunTalebiType.Action = "";				
+				//silme!
+				// var faultData = {};		
+				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiType");
+				// faultData.Fault = fault;
+				taskDataODataModel.create("/"+sAction, faultData, null, 
+					function(oData,response){							
+						oController.getRouter().navTo("result",{
+							action : 'revizyon',
+							talepno : sTalepNumarasi
+						});
+					},
+					this.onGeneralError
+				);		
+			} else {
+				var outputData = {};
+				outputData.UrunTalebiType = {};
+				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+				outputData.UrunTalebiType.CurrentStep = "";
+				outputData.UrunTalebiType.Action = "";
+				taskDataODataModel.create("/OutputData", outputData, null, 
+					function(oData,response){							
+						oController.getRouter().navTo("result",{
+							action : 'approve',
+							talepno : sTalepNumarasi
+						});
+					},
+					this.onGeneralError
+				);		
+			}
+		},
+		_onGeneralError : function(oError) {
+			//FIXME 
+			//Genel bir hata mesajı verilecek. Result sayfasına gitmeden. Popup ile verilecek.
+		},
 		_reloadTalepData : function() {
 			var oView = this.getView();
 			var oMainModel = this.getView().getModel();
@@ -47,6 +121,11 @@ sap.ui.define([
 					}
 				}
 				if (sTalepNumarasi) {
+					var sText = "("+sTalepNumarasi+")";
+					var sTitle = this.getBundleText("TalepFormuTitle", sText);
+					var oPage = this.getView().byId("idTalepFormuPage");
+					oPage.setTitle(sTitle);
+
 					oView.setBusy(true);
 					this._loadTalepData(sTalepNumarasi);
 				}
@@ -75,7 +154,7 @@ sap.ui.define([
 					mainModel.setProperty('/HedefSiparisTarihi',oData.HedefSiparisTarihi.toLocaleDateString());
 					mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
 					mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
-					mainModel.setProperty('/Markalar',oData.Marka);
+					mainModel.setProperty('/Marka',oData.Marka);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 					
 					var oImage = oView.byId("idGorselImage");
@@ -174,20 +253,6 @@ sap.ui.define([
 			} else {
 				this.updateForms();		
 			}
-			
-			if (this.taskId) {
-				var bpmModel = this.getView().getModel("bpm");
-				var talepNumarasi = bpmModel.getProperty("/TalepNumarasi");
-				if (talepNumarasi) {		
-					var sText = "("+talepNumarasi+")";
-					var sTitle = this.getBundleText("TalepFormuTitle", sText);
-					// var i18nModel = this.getView().getModel("i18n");
-					// var oBundle = i18nModel.getResourceBundle();
-					// var sTitle = oBundle.getText("TalepFormuTitle", [sText]);					
-					var oPage = this.getView().byId("idTalepFormuPage");
-					oPage.setTitle(sTitle);
-				}
-			}
 		},
 		getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
 			var i18nModel = this.getView().getModel("i18n");
@@ -225,7 +290,6 @@ sap.ui.define([
 		},
 		onKaydet : function(oEvent) {
 			var oController = this;
-			var oView = oController.getView();
 			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
 			if (!result) {
@@ -296,42 +360,22 @@ sap.ui.define([
 			
 			eModel.create('/TalepSet', oTalep, {
 				success : function (oResponse) {
-					var oTalepNumarasi = oResponse.TalepNumarasi;
-					oController.getRouter().navTo("result",{
-						action : 'success',
-						talepno : oTalepNumarasi
-					});
+					var sTalepNumarasi = oResponse.TalepNumarasi;
+					oController.startBPM(oController,sTalepNumarasi);
 				},
 				error : function (oError) {
 					oController.getRouter().navTo("result",{
 						action  : 'error'	
 					});
-					
 				}
 			});
-			
-/*			eModel.attachRequestCompleted(function (eEvent) {
-				var sResponse = eEvent.getParameter("response");
-				var oResponse = JSON.parse(sResponse.responseText);
-				if (oResponse.error) {
-					MessageToast.show("Hata Oluştu:"+oResponse.error.message.value);
-				} else { 
-			    	//MessageToast.show(oResponse.d.TalepNumarasi+" numaralı talep yaratıldı!");
-			    	oController.startBPM(oController,oResponse.d.TalepNumarasi);
-				}
-			});*/
-/*			eModel.attachRequestFailed(function () {
-				MessageToast.show("Hata oluştu!");
-			});			
-*/		},
+		},
 		startBPM : function(oController, sTalepNumarasi) {
 			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik";
 			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
 			var oBPMServletModel = new JSONModel(sGroupServiceURL);
 			oBPMServletModel.attachRequestCompleted(function(oEvent) {
-				
 				var oUrunTedarik = oBPMServletModel.getProperty("/Users");
-				
 				var bpmStartModel = new ODataModel(startURL, true);
 				bpmStartModel.setCountSupported(false);			
 				var startData = {};
@@ -349,15 +393,15 @@ sap.ui.define([
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
-							var sTalepNumarasi = oData.ProcessStartEvent.UrunTalebiType.TalepNumarasi;
-							
-							var bModel = oController.getView().getModel("i18n");
-							var oBundle = bModel.getResourceBundle();		    	
-							var sMessage = oController.getBundleText("TalepSavedWithBPM",sTalepNumarasi);
-							MessageBox.success(sMessage);
+							oController.getRouter().navTo("result",{
+								action : 'success',
+								talepno : sTalepNumarasi
+							});
 						},
 						function (oError) {
-							MessageBox.error("Hata oluştu!");
+							oController.getRouter().navTo("result",{
+								action  : 'error'	
+							});
 						}
 				);			
 			});

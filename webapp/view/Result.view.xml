@@ -11,16 +11,16 @@
 		  navButtonPress="onNavBack"
 		  showNavButton="true">
 		<Panel id="idPanel">
-			<FlexBox heights="100%" alignItems="Center" justifyContent="Center">
+			<FlexBox height="100%" alignItems="Center" justifyContent="Center">
 				<items>
 					<l:VerticalLayout>
-						<FlexBox id="idSuccess" alignItems="Center" justifyContent="Center">
+						<FlexBox id="idSuccess" visible="{result>/success}" alignItems="Center" justifyContent="Center">
 							<core:Icon src="sap-icon://sys-enter" size="7em" color="#031E48"/>
 						</FlexBox>
-						<FlexBox id="idError" alignItems="Center" justifyContent="Center" visible="false">
+						<FlexBox id="idError" alignItems="Center" justifyContent="Center" visible="{result>/error}">
 							<core:Icon src="sap-icon://message-error" size="7em" color="#b20000"/>
 						</FlexBox>
-						<Text id="idMessage"/>
+						<Text id="idMessage" text="{result>/message}"/>
 					</l:VerticalLayout>
 				</items>
 			</FlexBox>

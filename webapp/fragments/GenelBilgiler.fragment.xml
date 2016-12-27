@@ -70,7 +70,7 @@
         </Input>		
 		
 		<Label id="idMarkaLabel" text="{i18n>MarkaLabel}"/>
-		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Markalar}" valueHelpOnly="true">
+		<Input id="idMarka" showValueHelp="true" valueHelpRequest="handleMarkaValueHelp" value="{/Marka}" valueHelpOnly="true">
 			<layoutData>
 				<l:GridData span="L2 M2 S12"/>
 			</layoutData>
