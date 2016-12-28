@@ -23,35 +23,44 @@ sap.ui.define([
 				var oComponent = this.getOwnerComponent();
 				return oComponent.getRouter();		
 			},
+			onNavBack : function () {
+				var oRouter = this.getRouter();
+				oRouter.navTo("talepformu", true);	
+			},
 			_handleRouteMatched : function (oEvent) {	
-				//FIXME Hata mesajları I18N den alınacak şekilde düzenlenecek.
-				// var bModel = oController.getView().getModel("i18n");
-				// var oBundle = bModel.getResourceBundle();		    	
-				// var sMessage = oController.getBundleText("TalepSavedWithBPM",sTalepNumarasi);
-				// MessageBox.success(sMessage);
-				
 				var resultModel = this.getView().getModel("result");
 				var sTalepNo = oEvent.getParameter("arguments").talepno;
 				var sAction  = oEvent.getParameter("arguments").action;
-				var sMessage = "";
+				
 				if (sAction === "success" && sTalepNo) {	
-					sMessage = sTalepNo + " numaralı talep yaratıldı!";
+					var sMessage = "";
+					var sMessageText = this.getBundleText("SuccessMessage");
+					sMessage = sTalepNo + sMessageText; 
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
 				} else if (sAction === "approve") {
-					sMessage = "Talep onaylandı ve bir sonraki adıma iletildi!";
+					var sMessageText = this.getBundleText("ApproveMessage");
+					sMessage = sTalepNo + sMessageText;
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
 				} else if (sAction === "revizyon") {
-					sMessage = "Talep revizyona gönderildi!";
+					var sMessageText = this.getBundleText("RevizyonMessage");
+					sMessage = sTalepNo + sMessageText;
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
 				} else {
-					sMessage = "Hata Olustu!";
+					var sMessageText = this.getBundleText("ErrorMessage");
+					sMessage = sMessageText;
 					resultModel.setProperty("/success",false);
 					resultModel.setProperty("/error",true);
 				}
 				resultModel.setProperty("/message",sMessage);
+			},
+			getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+				var i18nModel = this.getView().getModel("i18n");
+				var oBundle = i18nModel.getResourceBundle();
+				var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
+				return sValue;
 			}
 	});
 

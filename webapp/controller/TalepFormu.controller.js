@@ -652,6 +652,73 @@ sap.ui.define([
 				action : 'change',
 				itemno : sIndex
 			});
+		},
+		onUploadTestData : function () {
+		/*	var oTestModel = {};*/
+			var oController = this;
+			var oTestModel = { 
+				   "TalepNumarasi":"0000000000",
+				   "UrunGrubu":"09",
+				   "UrunOzellikleri":"Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir",
+				   "WebLink":"http://tr.lipsum.com/",
+				   "OzelDurum":"Richard McClintock, bir Lorem Ipsum",
+				   "HedefAdet":3,
+				   "HedefFiyat":"423.00",
+				   "HedefFiyatPB":"EUR",
+				   "MinimumSiparisMiktari":4,
+				   "Numune":"3231.00",
+				   "HedefSiparisTarihi":"2016-12-30T00:00:00",
+				   "OdemeSekli":"DBSV",
+				   "TeslimSekli":"EXW",
+				   "Marka":"02",
+				   "TalepToYorum":[  
+				      {  
+				         "TalepNumarasi":"",
+				         "KullaniciAdi":"",
+				         "YorumTarihi":"1800-01-01T00:00:00",
+				         "YorumSaati":"PT00H00M00S",
+				         "Yorum":"Yinelenen bir sayfa içeriğinin okuyucunun dikkatini dağıttığı bilinen bir gerçektir." 
+				      }
+				   ],
+				   "TalepToUlke":[  
+				      {  
+				         "TalepNumarasi":"",
+				         "KayitTipi":"H",
+				         "Ulke":"AN"
+				      },
+				      {  
+				         "TalepNumarasi":"",
+				         "KayitTipi":"H",
+				         "Ulke":"AF"
+				      },
+				      {  
+				         "TalepNumarasi":"",
+				         "KayitTipi":"K",
+				         "Ulke":"AR"
+				      },
+				      {  
+				         "TalepNumarasi":"",
+				         "KayitTipi":"K",
+				         "Ulke":"AL"
+				      }
+				   ]
+				
+			};
+			
+			var eModel = this.getView().getModel("ecc");
+			eModel.create('/TalepSet', oTestModel, {
+				success : function (oResponse) {
+					var sTalepNumarasi = oResponse.TalepNumarasi;
+					oController.startBPM(oController,sTalepNumarasi);
+				},
+				error : function (oError) {
+					oController.getRouter().navTo("result",{
+						action  : 'error'	
+					});
+				}
+			});
+
+
 		}
 	});
 });

@@ -151,19 +151,25 @@ sap.ui.define([
 					oTedarik.TedarikNumarasi = tData.TedarikNumarasi;
 					oTedarik.Ekleyen=' ';
 					
-					eModel.create('/TedarikSet', oTedarik, null, null, null);
-					//FIXME attach request completed düzeltilecek.	
-					eModel.attachRequestCompleted(function (eEvent) {
-						var sResponse = eEvent.getParameter("response");
-						var oResponse = JSON.parse(sResponse.responseText);
-						if (oResponse.error) {
-							MessageToast.show("Hata Oluştu:"+oResponse.error.message.value);
-						} else { 
-					    	MessageToast.show("Basari ile kaydedildi");
-					    	oController.onNavBack();
+					eModel.create('/TedarikSet', oTedarik, {
+						success : function (oResponse) {
+							var sMessageSuccess = oController.getBundleText("TedarikSuccess");
+							MessageToast.show(sMessageSuccess);
+							oController.onNavBack();
+						},
+						error  : function (oError) {
+							var sMessageError = oController.getBundleText("TedarikError");
+							MessageToast.show(sMessageError);
 						}
 					});
+					
 				}
+			},
+			getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+				var i18nModel = this.getView().getModel("i18n");
+				var oBundle = i18nModel.getResourceBundle();
+				var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
+				return sValue;
 			},
 			onGorselUploadComplete : function (oEvent) {
 				var sResponse = oEvent.getParameter("responseRaw");

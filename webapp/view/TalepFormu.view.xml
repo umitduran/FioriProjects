@@ -87,6 +87,7 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
+						<Button id="idTestButton" text="Test datasi ile gonder" type="Accept" press="onUploadTestData"/>
 						<Button id="idUrunEkleButton" text="{i18n>UrunEkleButton}" type="Accept" press="onUrunEkle" icon="sap-icon://add" />
 						<Button id="idUrunKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onKaydet"/>
 						<Button id="idOnaylaButton" text="{i18n>OnaylaButton}" type="Accept" press="onOnayla"/>

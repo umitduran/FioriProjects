@@ -238,5 +238,13 @@
 		"display" : {
 			"editable" : false
 		}
+	},
+	"Numune" : {
+		"required" : false,
+		"visible" : true,
+		"editable" : true,
+		"display"  : {
+			"editable" : false			
+		}
 	}
 }

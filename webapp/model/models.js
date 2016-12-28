@@ -56,11 +56,17 @@ sap.ui.define([
 							oView.setModel(bpmModel, "bpm");
 		    			},
 						function(oError) {
-							//FIXME resource bundle'dan hata mesajı getirilecek.
-							MessageToast.show("Hata oluştu!");
+							var sMessageError = this.getBundleText("ErrorMessage");
+							MessageToast.show(sMessageError);
 		    			}
 		    	); 	    				
 		    }
+		},
+		getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+			var i18nModel = this.getView().getModel("i18n");
+			var oBundle = i18nModel.getResourceBundle();
+			var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
+			return sValue;
 		},
 		createUIModel: function() {
 			var sRootPath = jQuery.sap.getModulePath("com.silverline.ticariurun");   
