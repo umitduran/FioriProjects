@@ -4,7 +4,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:u="sap.ui.unified"
 	xmlns:core="sap.ui.core">
-	<Table items="{/TedarikCollection}">
+	<Table id="idUrunTedarikTable" items="{/TedarikCollection}">
 		<headerToolbar>
 			<Toolbar>
 				<Title text="{i18n>TedarikListTitle}" level="H2"/>
@@ -50,7 +50,7 @@
 					<Text text="{Ekleyen}" />	
 					<Button type="Transparent" icon="sap-icon://display" press="onDisplayTedarik" />					
 		            <Button type="Transparent" visible="{Change}" icon="sap-icon://edit" press="onChangeTedarik" />
-		            <Button type="Transparent" visible="{Change}" icon="sap-icon://delete" press="onDeleteTedarik" />
+		            <Button type="Transparent" visible="{Delete}" icon="sap-icon://delete" press="onDeleteTedarik" />
 						
 				</cells>
 			</ColumnListItem>

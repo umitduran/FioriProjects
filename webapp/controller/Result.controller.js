@@ -31,25 +31,25 @@ sap.ui.define([
 				var resultModel = this.getView().getModel("result");
 				var sTalepNo = oEvent.getParameter("arguments").talepno;
 				var sAction  = oEvent.getParameter("arguments").action;
-				
+				var sMessageText = "";
 				if (sAction === "success" && sTalepNo) {	
 					var sMessage = "";
-					var sMessageText = this.getBundleText("SuccessMessage");
-					sMessage = sTalepNo + sMessageText; 
+					sMessageText = this.getBundleText("SuccessMessage");
+					sMessage = sTalepNo + " " + sMessageText; 
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
 				} else if (sAction === "approve") {
-					var sMessageText = this.getBundleText("ApproveMessage");
-					sMessage = sTalepNo + sMessageText;
+					sMessageText = this.getBundleText("ApproveMessage");
+					sMessage = sTalepNo + " " + sMessageText;
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
 				} else if (sAction === "revizyon") {
-					var sMessageText = this.getBundleText("RevizyonMessage");
-					sMessage = sTalepNo + sMessageText;
+					sMessageText = this.getBundleText("RevizyonMessage");
+					sMessage = sTalepNo + " " + sMessageText;
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
 				} else {
-					var sMessageText = this.getBundleText("ErrorMessage");
+					sMessageText = this.getBundleText("ErrorMessage");
 					sMessage = sMessageText;
 					resultModel.setProperty("/success",false);
 					resultModel.setProperty("/error",true);

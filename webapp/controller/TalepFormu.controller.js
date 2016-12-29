@@ -20,14 +20,22 @@ sap.ui.define([
 	
 			if (taskId) {
 				this.taskId = taskId;
-				models.createBPMModel(this.getView(),taskId);
+				models.createBPMModel(this, taskId);
 			} else {
-				oView.byId("idUrunEkleButton").setVisible(false);	
 				oView.byId("idUrunTedarikTab").setVisible(false);
-				oView.byId("idIconTabSeparator").destroy();	
 			}
-			
 			this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
+		},
+		modifyScreen : function(sCurrentStep) {
+			switch (sCurrentStep) {
+				case "20":
+					this.modifyScreen20();
+					break;
+			}
+		},
+		modifyScreen20 : function() {
+			var oTable = this.getView().byId("idUrunTedarikTable");
+			oTable.setMode(sap.m.ListMode.SingleSelectLeft);
 		},
 		_onRouteMatched : function(oEvent) {
 			var sRouteName = oEvent.getParameter("name");
@@ -36,7 +44,40 @@ sap.ui.define([
 			}
 		},
 		onOnayla : function() {
-			this.claimAndComplete();
+			var bpmModel = this.getView().getModel("bpm");
+			var sCurrentStep = bpmModel.getProperty("/currentStep");
+			switch (sCurrentStep) {
+				case "20":
+					this.onOnayla20(); 
+					break;
+				default :
+					this.claimAndComplete();
+					break;
+			}			
+		},
+		onOnayla20 : function() {
+			var oController = this;
+			var oTable = this.getView().byId("idUrunTedarikTable");
+			var oSelectedItem = oTable.getSelectedItem();
+			if (!oSelectedItem) {
+				MessageToast.show("Ürün Tedarik tabından ürün seçmelisiniz!");
+			} else {
+				var sPath = oSelectedItem.getBindingContextPath(); 
+				var oMainModel = this.getView().getModel();
+				var eccModel = this.getView().getModel("ecc");
+				var oTedarikData = oMainModel.getProperty(sPath);
+				var sTedarikNumarasi = oTedarikData.TedarikNumarasi;
+				eccModel.callFunction("/SelectUrunTedarik",{
+					urlParameters : {"TedarikNumarasi" : sTedarikNumarasi  },
+					success : function(oData, response) { 
+                    	oController.claimAndComplete();	
+                    }, 
+					error : function(oError){
+                    	oController._onGeneralError();
+                    }
+				}); 				
+				
+			}
 		},
 		onRevizyon : function() {
 			this.claimAndComplete("Revizyon");
@@ -112,12 +153,18 @@ sap.ui.define([
 		_reloadTalepData : function() {
 			var oView = this.getView();
 			var oMainModel = this.getView().getModel();
+			var bpmModel = this.getView().getModel("bpm");				
 			if (oMainModel) {
 				var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+				var sCurrentStep = "";
 				if (!sTalepNumarasi) {
-					var bpmModel = this.getView().getModel("bpm");				
 					if (bpmModel) {
 						sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");				
+						sCurrentStep = bpmModel.getProperty("/currentStep");
+					}
+				} else {
+					if (bpmModel) {
+						sCurrentStep = bpmModel.getProperty("/currentStep");
 					}
 				}
 				if (sTalepNumarasi) {
@@ -127,11 +174,11 @@ sap.ui.define([
 					oPage.setTitle(sTitle);
 
 					oView.setBusy(true);
-					this._loadTalepData(sTalepNumarasi);
+					this._loadTalepData(sTalepNumarasi,sCurrentStep);
 				}
 			}
 		},
-		_loadTalepData : function(sTalepNumarasi) {
+		_loadTalepData : function(sTalepNumarasi,sCurrentStep) {
 			var oView = this.getView();
 			var oComp = this.getOwnerComponent();
 			var mainModel = oComp.getModel();
@@ -175,6 +222,7 @@ sap.ui.define([
 					var aTedarik = [];
 					jQuery.each(oData.TalepToTedarik.results,function(key,el) {
 						var bChangeVisible = (sUsername===el.Ekleyen);
+						var bDeleteVisible = (sUsername===el.Ekleyen);
 						var row = {
 							TalepNumarasi : el.TalepNumarasi,
  							TedarikNumarasi : el.TedarikNumarasi,
@@ -189,9 +237,25 @@ sap.ui.define([
 							UretimSuresi : el.UretimSuresi,
 							Ekleyen : el.Ekleyen,
 							Metinler : el.TedarikToTedarikMetinler,
-							Change : bChangeVisible
+							Change : bChangeVisible,
+							Delete : bDeleteVisible,
+							Secildi : el.Secildi
 						};
-						aTedarik.push(row);
+						if (sCurrentStep==="30"||sCurrentStep==="31"||sCurrentStep==="50") {
+							if (el.Secildi==="X") {
+								row.Change = false;
+								row.Delete = false;
+								aTedarik.push(row);	
+							}
+						} else if (sCurrentStep==="40") { 
+							if (el.Secildi==="X") {
+								row.Delete = false;
+								aTedarik.push(row);	
+							}							
+						} else {
+							aTedarik.push(row);	
+						}
+						
 					}); 
 					mainModel.setProperty('/TedarikCollection',aTedarik);
 					
@@ -643,18 +707,28 @@ sap.ui.define([
             });		
 		},
 		onChangeTedarik : function(oEvent) {
+			var bpmModel = this.getView().getModel("bpm");
+			var sCurrentStep = bpmModel.getProperty("/currentStep");
+			
 			var oButton = oEvent.getSource();
 			var oItem = oButton.getParent();
 			var sPath = oItem.getBindingContextPath(); 
 			var sIndex = sPath.substring(sPath.lastIndexOf("/")+1);
-			//MessageToast.show(sIndex);
+			var sAction = "change";
+			if (sCurrentStep==="40") {
+				sAction = "revise";
+			}
 			this.getRouter().navTo("tedarikformu",{
-				action : 'change',
+				action : sAction,
 				itemno : sIndex
 			});
 		},
 		onUploadTestData : function () {
-		/*	var oTestModel = {};*/
+			//FIXME
+			// var oModel = this.getView().getModel();
+			// oModel.setProperty("/UrunOzellikleri","Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir");		
+		
+		
 			var oController = this;
 			var oTestModel = { 
 				   "TalepNumarasi":"0000000000",

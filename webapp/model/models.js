@@ -31,7 +31,7 @@ sap.ui.define([
 			oModel.setProperty('/TalepToMetinler',oTalepToMetinler);			
 			return oModel;
 		},
-		createBPMModel : function(oView,taskId) {
+		createBPMModel : function(oController,taskId) {
 			
 			var taskDataSvcURL = "/bpmodata/taskdata.svc/" + taskId;
 			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
@@ -53,7 +53,8 @@ sap.ui.define([
 								currentStep : sCurrentStep
 							};
 							var bpmModel = new JSONModel(bpmData);
-							oView.setModel(bpmModel, "bpm");
+							oController.getView().setModel(bpmModel, "bpm");
+							oController.modifyScreen(sCurrentStep);
 		    			},
 						function(oError) {
 							var sMessageError = this.getBundleText("ErrorMessage");

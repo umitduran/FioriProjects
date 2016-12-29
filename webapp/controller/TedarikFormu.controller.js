@@ -8,7 +8,6 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("com.silverline.ticariurun.controller.TedarikFormu", {
-
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -77,6 +76,7 @@ sap.ui.define([
 				}
 			},				
 			onNavBack: function () {
+				//FIXME Back ile geri dönüldüğünde refresh olmasın.
 				var oRouter = this.getRouter();
 				oRouter.navTo("talepformu", true);
 				// var oHistory = History.getInstance();
@@ -149,6 +149,7 @@ sap.ui.define([
 					oTedarik.UretimSuresi = tData.UretimSuresi;
 					oTedarik.MinimumSiparisMiktari = parseInt(tData.MinimumSiparisMiktari,10);
 					oTedarik.TedarikNumarasi = tData.TedarikNumarasi;
+					oTedarik.Secildi = tData.Secildi;
 					oTedarik.Ekleyen=' ';
 					
 					eModel.create('/TedarikSet', oTedarik, {

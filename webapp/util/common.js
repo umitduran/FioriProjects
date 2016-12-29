@@ -99,8 +99,8 @@ sap.ui.define([
 			}
 			if (currentStep==="Yeni") {
 				currentStep = "MT1";
-			} else if (currentStep==="") {
-				currentStep = "XX";
+			} else if (!currentStep || currentStep==="") {
+				currentStep = "00";
 			}
 		}
 		//frm panel veya simpleform oldugu zaman calisiyor. 

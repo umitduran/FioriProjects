@@ -21,7 +21,6 @@
 								text="{i18n>UrunGrubuTitle}">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunGrubu" type="XML"/> 	
 							</IconTabFilter>
-							<IconTabSeparator />
 							<IconTabFilter
 								id="idUrunOzellikTab"
 								icon="sap-icon://dishwasher"
@@ -31,7 +30,6 @@
 								key="UrunOzellik">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunOzellik" type="XML"/> 								
 							</IconTabFilter>
-							<IconTabSeparator icon="sap-icon://open-command-field" />
 							<IconTabFilter
 								id="idGenelBilgilerTab"
 								icon="sap-icon://message-information"
@@ -41,7 +39,6 @@
 								key="GenelBilgiler">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.GenelBilgiler" type="XML"/> 																								
 							</IconTabFilter>
-							<IconTabSeparator icon="sap-icon://open-command-field" />	
 							<IconTabFilter
 								id="idYorumlarTab"
 								icon="sap-icon://comment"
@@ -51,7 +48,6 @@
 								key="Yorumlar">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Yorumlar" type="XML"/> 																
 							</IconTabFilter>
-							<IconTabSeparator icon="sap-icon://open-command-field" />	
 							<IconTabFilter
 								id="idEklerTab"
 								icon="sap-icon://attachment"
@@ -61,7 +57,6 @@
 								key="Ekler">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Ekler" type="XML"/> 																
 							</IconTabFilter>	
-							<IconTabSeparator id="idIconTabSeparator" icon="sap-icon://open-command-field" />
 							<IconTabFilter
 								id="idUrunTedarikTab"
 								icon="sap-icon://customer-view"
@@ -71,7 +66,6 @@
 								key="UrunTedarik">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.UrunTedarik" type="XML"/> 																
 							</IconTabFilter>
-							<IconTabSeparator icon="sap-icon://open-command-field" />
 							<IconTabFilter
 								id="idNumuneTab"
 								icon="sap-icon://picture"

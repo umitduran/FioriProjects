@@ -5,9 +5,9 @@
 		"editable": true
 	},
 	"Comment" : {
-		"10" : {
-			"visible" : false
-		}	
+		"required": true,
+		"visible": true,
+		"editable": true
 	},
 	"AttachmentUpload" : {
 		"10" : {
@@ -27,137 +27,137 @@
 	"UrunGrubu" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"HedefFiyat" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"HedefFiyatPB" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"HedefAdet" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"MinimumSiparisMiktari" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"HedefSiparisTarihi" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"HedefUlke" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"TedarikKisiti" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"Marka" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"UrunOzellikleri" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"WebLink" : {
 		"required": false,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"OzelDurum" : {
 		"required": false,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"OdemeSekli" : {
 		"required": false,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"TeslimSekli" : {
 		"required": false,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"MinimumSiparis" : {
 		"required": true,
 		"visible": true,
-		"editable": true,
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},
 	"OdemeSekliAdi" : {
 		"required": false,
 		"visible": true,
 		"editable": false,
-		"10" : {
-			"editable" :false
+		"00" : {
+			"editable" : true
 		}
 	},
 	"TeslimSekliAdi" : {
 		"required": false,
 		"visible": true,
 		"editable": false,
-		"10" : {
-			"editable" :false
+		"00" : {
+			"editable" : true
 		}
 	},
 	"MarkaAdi" : {
@@ -169,6 +169,9 @@
 		"required" : true,
 		"visible" : true,
 		"editable" : true,
+		"revise" : {
+			"editable" : false
+		},
 		"display" : {
 			"editable" : false
 		}
@@ -177,6 +180,9 @@
 		"required" : false,
 		"visible" : true,
 		"editable" : true,
+		"revise" : {
+			"editable" : false
+		},
 		"display" : {
 			"editable" : false
 		}
@@ -185,6 +191,9 @@
 		"required": true,
 		"visible": true,
 		"editable": true,
+		"revise" : {
+			"editable" : false
+		},
 		"display" : {
 			"editable" : false
 		}
@@ -193,6 +202,9 @@
 		"required": true,
 		"visible": true,
 		"editable": true,
+		"revise" : {
+			"editable" : false
+		},
 		"display" : {
 			"editable" : false
 		}
@@ -227,6 +239,9 @@
 		"required": true,
 		"visible": true,
 		"editable": true,
+		"revise" : {
+			"editable" : false
+		},
 		"display" : {
 			"editable" : false
 		}
@@ -235,6 +250,9 @@
 		"required" : false,
 		"visible" : true,
 		"editable" : true,
+		"revise" : {
+			"editable" : false
+		},
 		"display" : {
 			"editable" : false
 		}
