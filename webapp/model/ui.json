@@ -264,5 +264,47 @@
 		"display"  : {
 			"editable" : false			
 		}
+	},
+	"UrunTedarikTab" : {
+		"visible" : true,
+		"00" : {
+			"visible" : false
+		}
+	},
+	"NumuneTab" : {
+		"visible" : false
+	},
+	"OnaylaButton" : {
+		"visible" : true,
+		"00" : {
+			"visible" : false
+		}	
+	},
+	"RevizyonButton" : {
+		"visible" : false,
+		"30" : {
+			"visible" : true
+		},	
+		"31" : {
+			"visible" : true
+		}	
+	},
+	"UrunKaydetButton" : {
+		"visible" : false,
+		"00" : {
+			"visible" : true
+		}	
+	},
+	"UrunEkleButton" : {
+		"visible" : false,
+		"10" : {
+			"visible" : true
+		}	
+	},
+	"TestButton" : {
+		"visible" : false,
+		"00" : {
+			"visible" : true
+		}	
 	}
 }

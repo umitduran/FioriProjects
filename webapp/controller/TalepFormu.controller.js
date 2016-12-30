@@ -21,8 +21,6 @@ sap.ui.define([
 			if (taskId) {
 				this.taskId = taskId;
 				models.createBPMModel(this, taskId);
-			} else {
-				oView.byId("idUrunTedarikTab").setVisible(false);
 			}
 			this.getRouter().attachRoutePatternMatched(this._onRouteMatched, this);
 		},
@@ -111,11 +109,13 @@ sap.ui.define([
 			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
 		
 			if (sAction) {
+				var mainModel = oController.getView().getModel();
+				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");
 				var faultData = {};
 				faultData.UrunTalebiType = {};
 				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
 				faultData.UrunTalebiType.CurrentStep = "";
-				faultData.UrunTalebiType.Action = "";				
+				faultData.UrunTalebiType.Action = ekleyen;				
 				//silme!
 				// var faultData = {};		
 				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiType");
@@ -310,7 +310,7 @@ sap.ui.define([
 			var oController = this;
 			var uiModel = this.getView().getModel("ui");
 			var oTest = uiModel.getProperty("/DEFAULT");
-			if(oTest===undefined) {
+			if(oTest===undefined) {//uiModel Yüklenmiş mi?
 				uiModel.attachRequestCompleted(function(oEvent){
 					oController.updateForms();
 				});
@@ -487,7 +487,9 @@ sap.ui.define([
 			this.updateForm("idUrunOzellikForm");
 			this.updateForm("idGenelBilgilerForm");
 			this.updateForm("idYorumlarForm");
-			this.updateForm("idEklerForm");			
+			this.updateForm("idEklerForm");	
+			this.updateForm("idMainTabBar");	
+			this.updateForm("idFooterToolbar");
 		},
 		updateForm : function(sFormId) {
 			var oMainModel = this.getView().getModel();

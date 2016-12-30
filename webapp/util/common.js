@@ -104,7 +104,14 @@ sap.ui.define([
 			}
 		}
 		//frm panel veya simpleform oldugu zaman calisiyor. 
-		var content = frm.getContent();
+		var frmType = frm.getMetadata().getName();
+		var content = [];
+		if (frmType==="sap.m.IconTabBar") {
+			content = frm.getAggregation("items");
+		} else {
+			content = frm.getContent();
+		}
+		
 		//var uimodel = sap.ui.getCore().getModel("uimodel");
 		var uidata = uimodel.getData();
 		var skip = ['sap.ui.core.Title','sap.m.ToolbarSpacer'];
@@ -113,7 +120,7 @@ sap.ui.define([
 		var editableTableElements = ['sap.m.Table'];
 		var editableListElements = ['sap.m.List'];
 		var editableUploadCollectionElements = ['sap.m.UploadCollection'];
-		var visibleElements = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.Button','sap.m.Panel','sap.m.TextArea','sap.m.CheckBox','sap.m.DatePicker'];
+		var visibleElements = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.Button','sap.m.Panel','sap.m.TextArea','sap.m.CheckBox','sap.m.DatePicker','sap.m.IconTabFilter'];
 		jQuery.each(content,function(key,el) {
 			var processed = false;
 			var type = el.getMetadata().getName();
