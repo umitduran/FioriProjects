@@ -301,6 +301,12 @@
 			"visible" : true
 		}	
 	},
+	"YorumEkleButton" : {
+		"visible" : true,
+		"00" : {
+			"visible" : false
+		}
+	},
 	"TestButton" : {
 		"visible" : false,
 		"00" : {

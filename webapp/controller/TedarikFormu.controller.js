@@ -155,8 +155,8 @@ sap.ui.define([
 					eModel.create('/TedarikSet', oTedarik, {
 						success : function (oResponse) {
 							var sMessageSuccess = oController.getBundleText("TedarikSuccess");
-							MessageToast.show(sMessageSuccess);
-							oController.onNavBack();
+							MessageToast.show(sMessageSuccess,{duration : 3000});
+							oController.getRouter().navTo("talepformu");
 						},
 						error  : function (oError) {
 							var sMessageError = oController.getBundleText("TedarikError");

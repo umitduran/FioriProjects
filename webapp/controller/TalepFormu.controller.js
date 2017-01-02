@@ -664,6 +664,36 @@ sap.ui.define([
 			Common.handleValueHelp(this,oEvent.getSource(),textEl,"MarkaKodu","Aciklama",oModel,"/MarkalarSet",this.getView(),"Marka");
 			
 		},
+		onYorumEkle : function () {
+			var oController = this;
+			var oModel = oController.getView().getModel();
+			var eccModel = oController.getView().getModel("ecc");
+			var sTalepNumarasi = oModel.getProperty("/TalepNumarasi");
+			var sYorum = oModel.getProperty("/Yorum");				
+			eccModel.callFunction("/YorumEkle",{
+				urlParameters : {
+					"TalepNumarasi" : sTalepNumarasi , 
+					"Yorum"  :  sYorum
+				},
+				success : function(oData, response) { 
+					var row = {};
+					var oDateFormat = DateFormat.getDateTimeInstance(
+						{
+							pattern: "dd/MM/yyyy"
+						});
+					row.KullaniciAdi = oModel.oData.Yorumlar[0].KullaniciAdi;
+					row.YorumSaati = oModel.oData.Yorumlar[0].YorumSaati;
+					row.YorumTarihi = oDateFormat.format(new Date());
+					row.Yorum = sYorum;
+					oModel.oData.Yorumlar.push(row);
+					oModel.refresh(true);
+					oController.byId("idComment").setValue("");
+                }, 
+				error : function(oError){
+                	oController._onGeneralError(oError);
+                }
+			}); 
+		},
 		onUrunEkle : function(oEvent) {
 			this.getRouter().navTo("tedarikformuekle");
 		},

@@ -140,6 +140,7 @@
 					],
 					"viewLevel": 1
 				},
+
 				{
 					"name": "tedarikformu",
 					"pattern": "tedarikformu/{action}/{itemno}",
