@@ -10,8 +10,9 @@
 		"editable": true
 	},
 	"AttachmentUpload" : {
-		"10" : {
-			"editable" : false
+		"editable": false,
+		"00" : {
+			"editable" : true
 		}
 	},	
 	"TalepEden" : {

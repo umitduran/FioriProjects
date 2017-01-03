@@ -123,11 +123,11 @@
 					"clearAggregation": true,
 					"viewName": "TedarikFormu"
 				},
-				"result" : {
-					"viewType":"XML",
-					"transition" : "slide",
-					"clearAggreagtion" : true,
-					"viewName" : "Result"
+				"result": {
+					"viewType": "XML",
+					"transition": "slide",
+					"clearAggreagtion": true,
+					"viewName": "Result"
 				}
 			},
 			"routes": [
@@ -140,7 +140,6 @@
 					],
 					"viewLevel": 1
 				},
-
 				{
 					"name": "tedarikformu",
 					"pattern": "tedarikformu/{action}/{itemno}",
@@ -159,13 +158,13 @@
 					]
 				},
 				{
-					"name" : "result",
-					"pattern" : "result/{action}/{talepno}",
-					"greedy" : false,
-					"target" : [
-						"result"	
-						]
-				}		
+					"name": "result",
+					"pattern": "result/{action}/{talepno}",
+					"greedy": false,
+					"target": [
+						"result"
+					]
+				}
 			],
 			"config": {
 				"controlId": "app",

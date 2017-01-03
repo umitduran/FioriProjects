@@ -492,10 +492,25 @@ sap.ui.define([
 		} else {
 			return false;
 		}
-
-	
-	
+	},
+	deleteFile: function(id) {
+		var aData = jQuery.ajax({
+            type : "POST",
+            contentType : "plain/text",
+            url : "/logo~ui~talep/DeleteServlet?id="+id,
+            dataType : "text",
+            data: id,
+            async: false, 
+            success : function(data,textStatus, jqXHR) { 
+            	return data;		            	
+            },
+            error : function(data,textStatus, jqXHR) {
+            	return data;            
+            }
+		});
+		return aData.responseText;
 	}
+	
 	
 };
 });

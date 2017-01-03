@@ -199,6 +199,7 @@ sap.ui.define([
 			}
 		},
 		_loadTalepData : function(sTalepNumarasi,sCurrentStep) {
+			var oController = this;
 			var oView = this.getView();
 			var oComp = this.getOwnerComponent();
 			var mainModel = oComp.getModel();
@@ -208,7 +209,7 @@ sap.ui.define([
 			
 			eccModel.read(sPath, 
 			{
-				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler"},
+				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler"},
 				success : function(oData,oResponse) {
 					mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
 					mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
@@ -313,9 +314,19 @@ sap.ui.define([
 						aYorumlar.push(row);
 					});
 					mainModel.setProperty('/Yorumlar',aYorumlar);
-					oView.setBusy(false);
 					
-				
+					var aEkler = [];
+					jQuery.each(oData.TalepToEkler.results,function(key,el) {
+						var row = {
+							TalepNumarasi : el.TalepNumarasi,
+							DocumentId : el.DocumentId,
+							FileName : el.FileName
+						};
+						aEkler.push(row) ;
+					});
+					mainModel.setProperty('/Attachments',aEkler);
+					oView.setBusy(false);
+					oController.updateForms();	
 				},
 				error : function(err) {
 					oView.setBusy(false);
@@ -441,6 +452,14 @@ sap.ui.define([
 					Ulke: key 
 				});
 			});					
+			oTalep.TalepToEkler = [];
+			jQuery.each(oData.Attachments, function(key,el) {
+				var rowAttachment = {
+					TalepNumarasi : '',
+					DocumentId : el.DocumentId
+				};
+				oTalep.TalepToEkler.push(rowAttachment);	
+			});
 			
 			eModel.create('/TalepSet', oTalep, {
 				success : function (oResponse) {
@@ -541,7 +560,32 @@ sap.ui.define([
 					}) 
 				);		
 		},		
-		onFileDeleted : function() {
+		onFileDeleted : function(oEvent) {
+			var oMainModel = this.getView().getModel();
+			var src = oEvent.getSource();
+			var sDeletedItemId = src.sDeletedItemId;
+			var items = src.getItems();
+			var item;
+			var idx;
+			jQuery.each(items, function(key,val) {
+				if (val.getId()===sDeletedItemId) {
+					item = val;
+					idx = key;
+				}
+			});
+			var fileName = item.getFileName();
+			var documentId = item.getDocumentId();
+			
+			var response = Common.deleteFile(documentId);
+			if (response==="OK") {
+				MessageBox.show(fileName+" dosyası silindi."+documentId);
+				var aEkler = oMainModel.getProperty('/Attachments');
+				aEkler.splice(idx,1);
+				oMainModel.setProperty('/Attachments',aEkler);
+			} else {
+				MessageBox.show("Hata oluştu :"+response);
+			}					
+			//this.deleteFileSAP(documentId,idx,fileName,fileType);			
 		},
 		onGorselUploadChange : function (oEvent) {
 			this.handleGorselUpload(oEvent);	
