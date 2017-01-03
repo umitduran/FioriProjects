@@ -50,7 +50,8 @@ sap.ui.define([
 							var bpmData = {
 								TaskId : taskId,
 								TalepNumarasi : sTalepNumarasi,
-								currentStep : sCurrentStep
+								currentStep : sCurrentStep,
+								refreshRequired : false
 							};
 							var bpmModel = new JSONModel(bpmData);
 							oController.getView().setModel(bpmModel, "bpm");

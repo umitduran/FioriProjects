@@ -44,6 +44,7 @@ sap.ui.define([
 		onOnayla : function() {
 			var bpmModel = this.getView().getModel("bpm");
 			var sCurrentStep = bpmModel.getProperty("/currentStep");
+			
 			switch (sCurrentStep) {
 				case "20":
 					this.onOnayla20(); 
@@ -52,6 +53,25 @@ sap.ui.define([
 					this.claimAndComplete();
 					break;
 			}			
+			this.setSAPStatus(sCurrentStep);
+		},
+		setSAPStatus : function(sCurrentStep) {
+			var oController = this;
+			var oMainModel = this.getView().getModel();
+			var eccModel = this.getView().getModel("ecc");
+			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+			//FIXME Function Import SAP'de geliştirilecek.
+			eccModel.callFunction("/SetTalepStatus",{
+				urlParameters : {"TalepNumarasi" : sTalepNumarasi,
+				                 "Status" : sCurrentStep},
+				success : function(oData, response) { 
+                	
+                }, 
+				error : function(oError){
+                	oController._onGeneralError();
+                }
+			}); 			
+			
 		},
 		onOnayla20 : function() {
 			var oController = this;
@@ -425,7 +445,8 @@ sap.ui.define([
 			eModel.create('/TalepSet', oTalep, {
 				success : function (oResponse) {
 					var sTalepNumarasi = oResponse.TalepNumarasi;
-					oController.startBPM(oController,sTalepNumarasi);
+					var sUrunGrubu = oResponse.UrunGrubu;
+					oController.startBPM(oController,sTalepNumarasi,sUrunGrubu);
 				},
 				error : function (oError) {
 					oController.getRouter().navTo("result",{
@@ -434,8 +455,8 @@ sap.ui.define([
 				}
 			});
 		},
-		startBPM : function(oController, sTalepNumarasi) {
-			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik";
+		startBPM : function(oController, sTalepNumarasi, sUrunGrubu) {
+			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik_"+sUrunGrubu;
 			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
 			var oBPMServletModel = new JSONModel(sGroupServiceURL);
 			oBPMServletModel.attachRequestCompleted(function(oEvent) {
@@ -815,7 +836,8 @@ sap.ui.define([
 			eModel.create('/TalepSet', oTestModel, {
 				success : function (oResponse) {
 					var sTalepNumarasi = oResponse.TalepNumarasi;
-					oController.startBPM(oController,sTalepNumarasi);
+					var sUrunGrubu = oResponse.UrunGrubu;
+					oController.startBPM(oController,sTalepNumarasi,sUrunGrubu);
 				},
 				error : function (oError) {
 					oController.getRouter().navTo("result",{
