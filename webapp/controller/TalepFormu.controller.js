@@ -49,11 +49,22 @@ sap.ui.define([
 				case "20":
 					this.onOnayla20(); 
 					break;
+				case "60": 
+					this.onOnayla60();
+					break;
 				default :
 					this.claimAndComplete();
 					break;
 			}			
 			this.setSAPStatus(sCurrentStep);
+		},
+		onOnayla60 : function() {
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {
+				this.claimAndComplete();
+			}
 		},
 		setSAPStatus : function(sCurrentStep) {
 			var oController = this;
@@ -63,7 +74,7 @@ sap.ui.define([
 			//FIXME Function Import SAP'de geliştirilecek.
 			eccModel.callFunction("/SetTalepStatus",{
 				urlParameters : {"TalepNumarasi" : sTalepNumarasi,
-				                 "Status" : sCurrentStep},
+				                 "Statu" : sCurrentStep},
 				success : function(oData, response) { 
                 	
                 }, 
@@ -100,6 +111,9 @@ sap.ui.define([
 		onRevizyon : function() {
 			this.claimAndComplete("Revizyon");
 		},
+		onBypass : function() {
+			this.claimAndComplete();
+		},
 		claimAndComplete : function(sAction) {
 			var oController = this;
 			var bpmModel = this.getView().getModel("bpm");				
@@ -114,7 +128,8 @@ sap.ui.define([
 			            async: false, 
 			            success : function(data,textStatus, jqXHR) {
 							if (data==="OK") {
-								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sAction);
+								var sCurrentStep = bpmModel.getProperty("/currentStep");								
+								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
 							} else {
 								oController._onGeneralError();
 							}
@@ -124,18 +139,16 @@ sap.ui.define([
 				} 			
 			}
 		},		
-		_completeBPM : function(oController,sTaskId,sTalepNumarasi,sAction) {
+		_completeBPM : function(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction) {
 			var taskDataSvcURL = "/bpmodata/taskdata.svc/" + sTaskId;
 			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
-		
+			
 			if (sAction) {
-				var mainModel = oController.getView().getModel();
-				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");
 				var faultData = {};
 				faultData.UrunTalebiType = {};
 				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
 				faultData.UrunTalebiType.CurrentStep = "";
-				faultData.UrunTalebiType.Action = ekleyen;				
+				faultData.UrunTalebiType.Action = "";	
 				//silme!
 				// var faultData = {};		
 				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiType");
@@ -150,11 +163,16 @@ sap.ui.define([
 					this.onGeneralError
 				);		
 			} else {
+				var mainModel = oController.getView().getModel();
+				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");				
 				var outputData = {};
 				outputData.UrunTalebiType = {};
 				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
 				outputData.UrunTalebiType.CurrentStep = "";
 				outputData.UrunTalebiType.Action = "";
+				if (sCurrentStep==="20") {
+					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
+				}				
 				taskDataODataModel.create("/OutputData", outputData, null, 
 					function(oData,response){							
 						oController.getRouter().navTo("result",{
@@ -223,6 +241,7 @@ sap.ui.define([
 					mainModel.setProperty('/OdemeSekli',oData.OdemeSekli);
 					mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
 					mainModel.setProperty('/Marka',oData.Marka);
+					mainModel.setProperty('/Numune',oData.Numune);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 					
 					var oImage = oView.byId("idGorselImage");
@@ -377,11 +396,14 @@ sap.ui.define([
 			this.updateIconColor("idUrunOzellikTab", bResult2);
 			var bResult3 = this.validateForm("idGenelBilgilerForm");
 			this.updateIconColor("idGenelBilgilerTab", bResult3);
-			var bResult4 = this.validateForm("idYorumlarForm");
-			this.updateIconColor("idYorumlarTab", bResult4);
+			var bResult4 = true;
+			//var bResult4 = this.validateForm("idYorumlarForm");
+			//this.updateIconColor("idYorumlarTab", bResult4);
 			var bResult5 = this.validateForm("idEklerForm");
 			this.updateIconColor("idEklerTab", bResult5);
-			return bResult1 && bResult2 && bResult3 && bResult4 && bResult5;
+			var bResult6 = this.validateForm("idNumuneForm");
+			this.updateIconColor("idNumuneTab", bResult6);
+			return bResult1 && bResult2 && bResult3 && bResult4 && bResult5 && bResult6;
 		},
 		onKaydet : function(oEvent) {
 			var oController = this;
@@ -519,8 +541,11 @@ sap.ui.define([
 			var oMainModel = this.getView().getModel();
 			var oUIModel = this.getView().getModel("ui");
 			var oMainForm = this.getView().byId(sFormId);
-			var oDummyModel = new JSONModel();
-			return Common.validateAll(oMainForm,oUIModel,oDummyModel,oMainModel);
+			var bpmModel = this.getView().getModel("bpm");
+			if (!bpmModel) {
+				bpmModel = new JSONModel();	
+			}
+			return Common.validateAll(oMainForm,oUIModel,bpmModel,oMainModel);
 		},
 		updateForms : function() {
 			this.updateForm("idUrunGrubuForm");
@@ -530,6 +555,7 @@ sap.ui.define([
 			this.updateForm("idEklerForm");	
 			this.updateForm("idMainTabBar");	
 			this.updateForm("idFooterToolbar");
+			this.updateForm("idNumuneForm");
 		},
 		updateForm : function(sFormId) {
 			var oMainModel = this.getView().getModel();

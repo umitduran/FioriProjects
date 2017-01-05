@@ -262,8 +262,11 @@
 		"required" : false,
 		"visible" : true,
 		"editable" : true,
-		"display"  : {
-			"editable" : false			
+		"60" : {
+			"required" : true
+		},
+		"70" : {
+			"editable" : false
 		}
 	},
 	"UrunTedarikTab" : {
@@ -273,7 +276,13 @@
 		}
 	},
 	"NumuneTab" : {
-		"visible" : false
+		"visible" : false,
+		"60" : {
+			"visible" : true
+		},
+		"70" : {
+			"visible" : true
+		}
 	},
 	"OnaylaButton" : {
 		"visible" : true,
@@ -307,6 +316,12 @@
 		"00" : {
 			"visible" : false
 		}
+	},
+	"BypassButton" : {
+		"visible" : false,
+		"90" : {
+			"visible" : true
+		}	
 	},
 	"TestButton" : {
 		"visible" : false,

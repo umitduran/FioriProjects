@@ -86,6 +86,7 @@
 							<Button id="idUrunKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onKaydet"/>
 							<Button id="idOnaylaButton" text="{i18n>OnaylaButton}" type="Accept" press="onOnayla"/>
 							<Button id="idRevizyonButton" text="{i18n>RevizyonButton}" type="Reject" press="onRevizyon"/>
+							<Button id="idBypassButton" text="{i18n>BypassButton}" type="Reject" press="onBypass"/>
 					</Toolbar>
 				</footer>
 			</Page>
