@@ -76,18 +76,12 @@ sap.ui.define([
 				}
 			},				
 			onNavBack: function () {
-				//FIXME Back ile geri dönüldüğünde refresh olmasın.
+				var oModel = this.getView().getModel();
+				oModel.setProperty('/refreshRequired',"noChange");
 				var oRouter = this.getRouter();
+				this._updateIconColor("idUrunOzellikTedarikTab", true);
+				this._updateIconColor("idGenelBilgilerTedarikTab", true);
 				oRouter.navTo("talepformu", true);
-				// var oHistory = History.getInstance();
-				// var sPreviousHash = oHistory.getPreviousHash();
-	
-				// if (sPreviousHash !== undefined) {
-				// 	window.history.go(-1);
-				// } else {
-				// 	var oRouter = this.getRouter();
-				// 	oRouter.navTo("talepformu", true);
-				// }
 			},	
 			_updateIconColor : function(idTab,state)  {
 				var oIconTab = this.getView().byId(idTab);			
@@ -156,6 +150,8 @@ sap.ui.define([
 						success : function (oResponse) {
 							var sMessageSuccess = oController.getBundleText("TedarikSuccess");
 							MessageToast.show(sMessageSuccess,{duration : 3000});
+							oController.byId("idGorselImageTedarik").setSrc("");
+							oController.byId("idGorselUploadTedarik").setValue("");
 							oController.getRouter().navTo("talepformu");
 						},
 						error  : function (oError) {

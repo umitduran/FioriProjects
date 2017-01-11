@@ -25,12 +25,15 @@ sap.ui.define([
 			},
 			onNavBack : function () {
 				var oRouter = this.getRouter();
+				var oModel = this.getView().getModel();
+				oModel.setProperty('/refreshRequired',"clear");
 				oRouter.navTo("talepformu", true);	
 			},
 			_handleRouteMatched : function (oEvent) {	
 				var resultModel = this.getView().getModel("result");
 				var sTalepNo = oEvent.getParameter("arguments").talepno;
 				var sAction  = oEvent.getParameter("arguments").action;
+
 				var sMessageText = "";
 				if (sAction === "success" && sTalepNo) {	
 					var sMessage = "";

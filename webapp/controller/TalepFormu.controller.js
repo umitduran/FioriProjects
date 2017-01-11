@@ -37,8 +37,25 @@ sap.ui.define([
 		},
 		_onRouteMatched : function(oEvent) {
 			var sRouteName = oEvent.getParameter("name");
-			if (sRouteName==="talepformu") {
-				this._reloadTalepData();
+			var oModel = this.getView().getModel();
+			var sRefreshRequired = oModel.getProperty("/refreshRequired");
+			
+			if (sRouteName === "talepformu" && sRefreshRequired === "clear") {
+				this.byId("idGorselImage").setSrc("");
+				this.byId("idGorselUpload").setValue("");
+				this.byId("idHedefUlke").removeAllTokens();
+				this.byId("idTedarikKisiti").removeAllTokens();
+				var sTalepEden = oModel.getProperty("/TalepEden");
+				var sTalepTarihi = oModel.getProperty("/TalepTarihi");
+				oModel.setData({});
+				oModel.setProperty('/TalepEden',sTalepEden);
+				oModel.setProperty('/TalepTarihi',sTalepTarihi);
+			}
+			else if (sRouteName === "talepformu" && sRefreshRequired === "noChange") {
+				delete oModel.oData.refreshRequired;
+			}
+			else if (sRouteName==="talepformu") {
+					this._reloadTalepData();
 			}
 		},
 		onOnayla : function() {
@@ -345,6 +362,8 @@ sap.ui.define([
 					});
 					mainModel.setProperty('/Attachments',aEkler);
 					oView.setBusy(false);
+					var oEklerTab = oView.byId("idEklerTab");
+					oEklerTab.setCount(aEkler.length);
 					oController.updateForms();	
 				},
 				error : function(err) {
@@ -793,7 +812,6 @@ sap.ui.define([
 			var oItem = oButton.getParent();
 			var sPath = oItem.getBindingContextPath(); 
 			var sIndex = sPath.substring(sPath.lastIndexOf("/")+1);
-			//MessageToast.show(sIndex);
 			this.getRouter().navTo("tedarikformu",{
 				action : 'display',
 				itemno : sIndex
