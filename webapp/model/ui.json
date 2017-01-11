@@ -254,13 +254,27 @@
 	},
 	"Numune" : {
 		"required" : false,
-		"visible" : true,
+		"visible" : false,
 		"editable" : true,
 		"60" : {
-			"required" : true
+			"required" : true,
+			"visible" : true
 		},
 		"70" : {
 			"editable" : false
+		}
+	},
+	"NumuneGeldi" : {
+		"visible" : false,
+		"70" : {
+			"visible" : true
+		}
+	},
+	"VarisNoktasi" : {
+		"visible" : false,
+		"70" : { 
+			"required" : true,
+			"visible" : true
 		}
 	},
 	"UrunTedarikTab" : {
