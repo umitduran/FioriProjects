@@ -327,7 +327,16 @@
 		},	
 		"31" : {
 			"visible" : true
-		}	
+		},
+		"210" : {
+			"visible" : true
+		},	
+		"250" : {
+			"visible" : true
+		},	
+		"260" : {
+			"visible" : true
+		}
 	},
 	"UrunKaydetButton" : {
 		"visible" : false,

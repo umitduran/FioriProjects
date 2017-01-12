@@ -210,7 +210,7 @@ sap.ui.define([
 			var taskDataSvcURL = "/bpmodata/taskdata.svc/" + sTaskId;
 			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
 			
-			if (sAction) {
+			if (sAction && sAction!=="NumuneGelmedi" && sAction!=="NumuneTalebi") {
 				var faultData = {};
 				faultData.UrunTalebiType = {};
 				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
@@ -236,7 +236,10 @@ sap.ui.define([
 				outputData.UrunTalebiType = {};
 				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
 				outputData.UrunTalebiType.CurrentStep = "";
-				outputData.UrunTalebiType.Action = "";
+				if (!sAction) {
+					sAction = "";
+				}
+				outputData.UrunTalebiType.Action = sAction;
 				if (sCurrentStep==="20") {
 					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
 				}				
@@ -932,7 +935,6 @@ sap.ui.define([
 				   "HedefFiyat":"423.00",
 				   "HedefFiyatPB":"EUR",
 				   "MinimumSiparisMiktari":4,
-				   "Numune":"3231.00",
 				   "HedefSiparisTarihi":"2016-12-30T00:00:00",
 				   "OdemeSekli":"DBSV",
 				   "TeslimSekli":"EXW",
