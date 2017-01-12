@@ -20,7 +20,7 @@
 			</layoutData>
 		</Input>
 		<Label id="idNumuneGeldiLabel" text="{i18n>NumuneGeldiLabel}"/>
-		<CheckBox id="idNumuneGeldi" selected="true" />
+		<CheckBox id="idNumuneGeldi" selected="false" />
 		<Label id="idVarisNoktasiLabel" text="{i18n>VarisNoktasiLabel}"/>
 		<Input id="idVarisNoktasi" value="{/VarisNoktasi}">
 			<layoutData>

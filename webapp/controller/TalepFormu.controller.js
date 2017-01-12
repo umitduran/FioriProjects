@@ -67,28 +67,72 @@ sap.ui.define([
 					this.onOnayla20(); 
 					break;
 				case "60": 
-					this.onOnayla60();
+					this.onOnayla60(sCurrentStep);
 					break;
+				case "70" : 
+					this._onOnayla70(sCurrentStep);
 				default :
 					this.claimAndComplete();
 					break;
 			}			
 			this.setSAPStatus(sCurrentStep);
 		},
-		onOnayla60 : function() {
+		onOnayla60 : function(sCurrentStep) {
+			var oController = this;
+			var oMainModel = this.getView().getModel();
+			var eccModel = this.getView().getModel("ecc");
+			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+ 			var sNumuneKodu = oMainModel.getProperty('/Numune');
 			var result = this.onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {
+				eccModel.callFunction("/SetNumuneKodu",{
+					urlParameters : {
+						"TalepNumarasi" : sTalepNumarasi,
+						"Statu" : sCurrentStep,
+						"Numune" : sNumuneKodu
+					},
+					success : function () {
+						
+					},
+					error : function () {
+						
+					}
+				});
 				this.claimAndComplete();
 			}
+		},
+		_onOnayla70 : function (sCurrentStep) {
+			var oController = this;
+			var oMainModel = this.getView().getModel();
+			var eccModel = this.getView().getModel("ecc");
+			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+			var sVarisNoktasi = oMainModel.getProperty('/VarisNoktasi');
+			var sNumuneGeldi = this.byId("idNumuneGeldi").getSelected();
+			
+			eccModel.callFunction("/UpdateNumuneInfo",{
+				urlParameters : {
+					"TalepNumarasi" : sTalepNumarasi,
+					"Statu" : sCurrentStep,
+					"VarisNoktasi" : sVarisNoktasi,
+					"NumuneGeldi" : sNumuneGeldi
+				},
+				success : function () {
+					
+				},
+				error : function () {
+					
+				}
+			});
+			this.claimAndComplete();
 		},
 		setSAPStatus : function(sCurrentStep) {
 			var oController = this;
 			var oMainModel = this.getView().getModel();
 			var eccModel = this.getView().getModel("ecc");
 			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
-			//FIXME Function Import SAP'de geliştirilecek.
+			
 			eccModel.callFunction("/SetTalepStatus",{
 				urlParameters : {"TalepNumarasi" : sTalepNumarasi,
 				                 "Statu" : sCurrentStep},
@@ -130,6 +174,12 @@ sap.ui.define([
 		},
 		onBypass : function() {
 			this.claimAndComplete();
+		},
+		onNumune : function () {
+			this.claimAndComplete("NumuneGelmedi");
+		},
+		onNumuneTalep : function () {
+			this.claimAndComplete("NumuneTalebi");	
 		},
 		claimAndComplete : function(sAction) {
 			var oController = this;
@@ -259,6 +309,8 @@ sap.ui.define([
 					mainModel.setProperty('/TeslimSekli',oData.TeslimSekli);
 					mainModel.setProperty('/Marka',oData.Marka);
 					mainModel.setProperty('/Numune',oData.Numune);
+					mainModel.setProperty('/NumuneGeldi',oData.NumuneGeldi);
+					mainModel.setProperty('/VarisNoktasi',oData.VarisNoktasi);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 					
 					var oImage = oView.byId("idGorselImage");
@@ -267,7 +319,6 @@ sap.ui.define([
 					var oUrunGrubuTab = oView.byId("idUrunGrubuTab");
 					oUrunGrubuTab.setText(oData.TalepToMetinler.UrunGrubuAciklamasi);
 					
-					oView.byId("idUrunKaydetButton").setVisible(false);
 					
 					var oTalepToMetinler = {};
 					mainModel.setProperty('/TalepToMetinler',oTalepToMetinler);

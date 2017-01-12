@@ -261,20 +261,36 @@
 			"visible" : true
 		},
 		"70" : {
+			"visible" : true,
 			"editable" : false
+		},
+		"80" : {
+			"visible" : true,
+			"editable" :false
 		}
 	},
 	"NumuneGeldi" : {
 		"visible" : false,
+		"editable" : false,
 		"70" : {
-			"visible" : true
+			"visible" : true,
+			"editable" : true
+		},
+		"80" : {
+			"visible" : true,
+			"editable" : false
 		}
 	},
 	"VarisNoktasi" : {
 		"visible" : false,
+		"editable" : false,
 		"70" : { 
-			"required" : true,
-			"visible" : true
+			"visible" : true,
+			"editable" : true
+		},
+		"80" : {
+			"visible" : true,
+			"editable" : false
 		}
 	},
 	"UrunTedarikTab" : {
@@ -290,13 +306,19 @@
 		},
 		"70" : {
 			"visible" : true
+		},
+		"80" : {
+			"visible" : true
 		}
 	},
 	"OnaylaButton" : {
 		"visible" : true,
 		"00" : {
 			"visible" : false
-		}	
+		},
+		"90" : {
+			"visible" : false
+		}
 	},
 	"RevizyonButton" : {
 		"visible" : false,
@@ -330,6 +352,18 @@
 		"90" : {
 			"visible" : true
 		}	
+	},
+	"NumuneGelmediButton" : {
+		"visible" : false,
+		"70" : {
+			"visible" : true
+		}
+	},
+	"NumuneTalebiButton" : {
+		"visible" : false,
+		"80" : {
+			"visible" : true
+		}
 	},
 	"TestButton" : {
 		"visible" : false,
