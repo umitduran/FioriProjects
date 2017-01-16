@@ -45,6 +45,12 @@ sap.ui.define([
 				if (sRouteName==="tedarikformu") {
 					var sItemNo = oEvent.getParameter("arguments").itemno;
 					var sAction = oEvent.getParameter("arguments").action; 
+					
+					var oData = oView.getModel().oData;
+					var sUrunGorseli = oData.TedarikCollection[sItemNo].UrunGorseli;
+					var oImage = oView.byId("idGorselImageTedarik");
+					oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+sUrunGorseli);
+					
 					oController._action = sAction;
 					if (!sItemNo && sItemNo==='')  {
 						oView.setModel(oModel,"tedarik");

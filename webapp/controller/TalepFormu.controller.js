@@ -316,6 +316,8 @@ sap.ui.define([
 					mainModel.setProperty('/VarisNoktasi',oData.VarisNoktasi);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 					
+					oController.byId("idNumuneGeldi").setSelected(oData.NumuneGeldi);
+					
 					var oImage = oView.byId("idGorselImage");
 					oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
 				

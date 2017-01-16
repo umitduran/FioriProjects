@@ -253,20 +253,30 @@
 		}
 	},
 	"Numune" : {
-		"required" : false,
-		"visible" : false,
-		"editable" : true,
+		"visible" : true,
+		"editable" : false,
+		
+		"00" : {
+			"visible" : false
+		},
+		"10" : {
+			"visible" : false
+		},
+		"20" : {
+			"visible" : false
+		},
+		"30" : {
+			"visible" : false
+		},
+		"40" : {
+			"visible" : false
+		},
+		"50" : {
+			"visible" : false
+		},
 		"60" : {
 			"required" : true,
-			"visible" : true
-		},
-		"70" : {
-			"visible" : true,
-			"editable" : false
-		},
-		"80" : {
-			"visible" : true,
-			"editable" :false
+			"editable" : true
 		}
 	},
 	"NumuneGeldi" : {
@@ -293,6 +303,31 @@
 			"editable" : false
 		}
 	},
+	"Malzeme" : {
+		"required" : false,
+		"visible" : false,
+		"editable" : false,
+		"230" : {
+			"visible" : true,
+			"editable" : true,
+			"required" : true
+		},
+		"240" : {
+			"visible" : true,
+			"editable" : false,
+			"required" : false
+		},
+		"250" : {
+			"visible" : true,
+			"editable" : false,
+			"required" : false
+		},
+		"260" : {
+			"visible" : true,
+			"editable" : false,
+			"required" : false
+		}
+	},
 	"UrunTedarikTab" : {
 		"visible" : true,
 		"00" : {
@@ -300,14 +335,40 @@
 		}
 	},
 	"NumuneTab" : {
+		"visible" : true,
+		
+		"00" : {
+			"visible" : false
+		},
+		"10" : {
+			"visible" : false
+		},
+		"20" : {
+			"visible" : false
+		},
+		"30" : {
+			"visible" : false
+		},
+		"40" : {
+			"visible" : false
+		},
+		"50" : {
+			"visible" : false
+		}
+	},
+	"MalzemeTab" : {
 		"visible" : false,
-		"60" : {
+		
+		"230" : {
 			"visible" : true
 		},
-		"70" : {
+		"240" : {
 			"visible" : true
 		},
-		"80" : {
+		"250" : {
+			"visible" : true
+		},
+		"260" : {
 			"visible" : true
 		}
 	},

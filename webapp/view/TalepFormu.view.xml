@@ -75,6 +75,15 @@
 								key="Numune">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Numune" type="XML"/> 																
 							</IconTabFilter>
+							<IconTabFilter
+								id="idMalzemeTab"
+								icon="sap-icon://business-objects-mobile"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>MalzemeTitle}"
+								key="Malzeme">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Malzeme" type="XML"/> 																
+							</IconTabFilter>
 						</items>
 					</IconTabBar>
 				</content>
