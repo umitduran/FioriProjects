@@ -528,7 +528,6 @@ sap.ui.define([
 			oTalep.HedefFiyat = parseFloat(oData.HedefFiyat).toFixed(2);
 			oTalep.HedefFiyatPB = oData.HedefFiyatPB;
 			oTalep.MinimumSiparisMiktari = parseInt(oData.MinimumSiparisMiktari,10);
-			oTalep.Numune = parseFloat(oData.Numune).toFixed(2);
 			
 			oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
 			oTalep.OdemeSekli = oData.OdemeSekli;
