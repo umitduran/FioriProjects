@@ -42,7 +42,7 @@
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button id="idUrunKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onUrunKaydet" icon="sap-icon://save" />
+						<Button id="idUrunTedarikKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onUrunKaydet" icon="sap-icon://save" />
 					</Toolbar>
 				</footer>
 				</Page>

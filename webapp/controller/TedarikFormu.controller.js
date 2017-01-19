@@ -40,13 +40,14 @@ sap.ui.define([
 			_onRouteMatched : function(oEvent) {
 				var oController = this; 
 				var oView = this.getView();
+				var oMainModel = oView.getModel();
 				var sRouteName = oEvent.getParameter("name");
 				var oModel = new JSONModel();
 				if (sRouteName==="tedarikformu") {
 					var sItemNo = oEvent.getParameter("arguments").itemno;
 					var sAction = oEvent.getParameter("arguments").action; 
 					
-					var oData = oView.getModel().oData;
+					var oData = oMainModel.getData();
 					var sUrunGorseli = oData.TedarikCollection[sItemNo].UrunGorseli;
 					var oImage = oView.byId("idGorselImageTedarik");
 					oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+sUrunGorseli);
@@ -55,7 +56,7 @@ sap.ui.define([
 					if (!sItemNo && sItemNo==='')  {
 						oView.setModel(oModel,"tedarik");
 					} else {
-						var oMainModel = oView.getModel();
+						
 						var oTedarikData = oMainModel.getProperty("/TedarikCollection/"+sItemNo);
 						oModel.setData(oTedarikData);
 						oView.setModel(oModel,"tedarik");
@@ -139,7 +140,7 @@ sap.ui.define([
 					var oTedarik = {};
 					
 					oTedarik.TalepNumarasi = oData.TalepNumarasi;
-					oTedarik.UrunGorseli = oData.UrunGorseli;
+					oTedarik.UrunGorseli = tData.UrunGorseli;
 					oTedarik.UrunOzellikleri = tData.UrunOzellikleri;
 					oTedarik.Fiyat = parseFloat(tData.Fiyat).toFixed(2);
 					oTedarik.OzelDurum = tData.OzelDurum;
@@ -187,7 +188,7 @@ sap.ui.define([
 					MessageToast.show("Dosya yükleme sırasında hata oluştu.");
 				} else {
 					MessageToast.show("Dosya başarı ile yüklendi :"+sResponse);
-					var oModel = this.getView().getModel();
+					var oModel = this.getView().getModel("tedarik");
 					var sFilename = oModel.getProperty("/GorselFileName");
 					oModel.setProperty("/UrunGorseli",sResponse);
 					var oImage = this.getView().byId("idGorselImageTedarik");
@@ -201,7 +202,7 @@ sap.ui.define([
 			handleGorselUpload : function(oEvent) {
 				var oModel = this.getView().getModel();
 				var oFileUploader = this.getView().byId("idGorselUploadTedarik");
-				var type = "DEF00";			
+				var type = "TUTD";			
 				var filename = oFileUploader.getValue();
 				if (!filename) {
 					MessageToast.show("Lütfen dosya seçiniz!");

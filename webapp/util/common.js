@@ -120,7 +120,7 @@ sap.ui.define([
 		var editableTableElements = ['sap.m.Table'];
 		var editableListElements = ['sap.m.List'];
 		var editableUploadCollectionElements = ['sap.m.UploadCollection'];
-		var visibleElements = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.Button','sap.m.Panel','sap.m.TextArea','sap.m.CheckBox','sap.m.DatePicker','sap.m.IconTabFilter'];
+		var visibleElements = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.Button','sap.m.Panel','sap.m.TextArea','sap.m.CheckBox','sap.m.DatePicker','sap.m.IconTabFilter','sap.ui.unified.FileUploader'];
 		jQuery.each(content,function(key,el) {
 			var processed = false;
 			var type = el.getMetadata().getName();
@@ -295,6 +295,15 @@ sap.ui.define([
 			}
 		}	
 		return validate;
+	},
+	resetFormValidation : function(frm) {
+		var content = frm.getContent();
+		content.forEach(function(el){	
+			if (el.getValueState &&
+			    el.getValueState() === sap.ui.core.ValueState.Error) {					
+				el.setValueState(sap.ui.core.ValueState.None);
+			}				
+		});
 	},
 	validateAll : function (frm,uimodel,bpmModel,mainModel) {
 		
@@ -509,8 +518,11 @@ sap.ui.define([
             }
 		});
 		return aData.responseText;
-	}
-	
-	
+	},
+	getBundleText : function (oModel,sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+		var oBundle = oModel.getResourceBundle();
+		var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
+		return sValue;
+	}	
 };
 });

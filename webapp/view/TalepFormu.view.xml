@@ -84,6 +84,15 @@
 								key="Malzeme">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Malzeme" type="XML"/> 																
 							</IconTabFilter>
+							<IconTabFilter
+								id="idIlgiliDokumanlarTab"
+								icon="sap-icon://documents"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>IlgiliDokumanlarTitle}"
+								key="IlgiliDokumanlar">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.IlgiliDokumanlar" type="XML"/> 																
+							</IconTabFilter>
 						</items>
 					</IconTabBar>
 				</content>

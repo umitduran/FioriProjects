@@ -291,13 +291,12 @@ sap.ui.define([
 			var oView = this.getView();
 			var oComp = this.getOwnerComponent();
 			var mainModel = oComp.getModel();
-			var sUsername = mainModel.getProperty("/Username");
 			var eccModel = oComp.getModel("ecc");
 			var sPath = '/TalepSet(\''+sTalepNumarasi+'\')';
 			
 			eccModel.read(sPath, 
 			{
-				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler"},
+				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler,TalepToIlgiliDokumanlar"},
 				success : function(oData,oResponse) {
 					mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
 					mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
@@ -315,6 +314,7 @@ sap.ui.define([
 					mainModel.setProperty('/NumuneGeldi',oData.NumuneGeldi);
 					mainModel.setProperty('/VarisNoktasi',oData.VarisNoktasi);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
+					mainModel.setProperty('/TalepEden',oData.TalepEden);
 					
 					oController.byId("idNumuneGeldi").setSelected(oData.NumuneGeldi);
 					
@@ -331,11 +331,15 @@ sap.ui.define([
 					mainModel.setProperty('/TalepToMetinler/OdemeKosuluAciklamasi',oData.TalepToMetinler.OdemeKosuluAciklamasi);
 					mainModel.setProperty('/TalepToMetinler/TeslimSekliAciklamasi',oData.TalepToMetinler.TeslimSekliAciklamasi);	
 					mainModel.setProperty('/TalepToMetinler/MarkaAciklamasi',oData.TalepToMetinler.MarkaAciklamasi);	
+					mainModel.setProperty('/TalepToMetinler/MevcutKullanici',oData.TalepToMetinler.MevcutKullanici);
 					
+					var sUsername = oData.TalepToMetinler.MevcutKullanici;
 					var aTedarik = [];
 					jQuery.each(oData.TalepToTedarik.results,function(key,el) {
-						var bChangeVisible = (sUsername===el.Ekleyen);
-						var bDeleteVisible = (sUsername===el.Ekleyen);
+						var bChangeVisible = (sUsername===el.Ekleyen && 
+						                      (sCurrentStep === "10" || sCurrentStep === "40") 
+						                     );
+						var bDeleteVisible = (sUsername===el.Ekleyen && sCurrentStep === "10");
 						var row = {
 							TalepNumarasi : el.TalepNumarasi,
  							TedarikNumarasi : el.TedarikNumarasi,
@@ -417,6 +421,19 @@ sap.ui.define([
 						aEkler.push(row) ;
 					});
 					mainModel.setProperty('/Attachments',aEkler);
+					
+					var aIlgiliDocs = [];
+					jQuery.each(oData.TalepToIlgiliDokumanlar.results,function(key,el) {
+						var row = {
+							TalepNumarasi : el.TalepNumarasi,
+							DocumentId : el.DocumentId,
+							FileName : el.FileName
+						};
+						aIlgiliDocs.push(row) ;
+					});
+					mainModel.setProperty('/MaterialDocuments',aIlgiliDocs);
+					
+					
 					oView.setBusy(false);
 					var oEklerTab = oView.byId("idEklerTab");
 					oEklerTab.setCount(aEkler.length);
@@ -606,11 +623,6 @@ sap.ui.define([
 						}
 				);			
 			});
-			
-			
-			
-			
-			
 		},
 		validateForm : function(sFormId) {
 			var oMainModel = this.getView().getModel();
@@ -639,13 +651,39 @@ sap.ui.define([
 			var bpmModel = this.getView().getModel("bpm");
 			Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel);
 		},
+		onIlgiliDokumanlarUploadChange : function(oEvent) {
+			var oMainModel = this.getView().getModel();
+			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+			if (!sTalepNumarasi) {
+				sTalepNumarasi = jQuery.sap.uid();
+			}
+			var sFilename = oEvent.mParameters.mParameters.newValue;// eslint-disable-line
+			var uc = oEvent.getSource();
+			var fileUploader = uc._oFileUploader;
+			fileUploader.addHeaderParameter( 
+					new sap.ui.unified.FileUploaderParameter({
+						name : "filename",
+						value : encodeURI(sFilename)
+					}) 
+				);		
+			fileUploader.addHeaderParameter( 
+					new sap.ui.unified.FileUploaderParameter({
+						name : "objid",
+						value : sTalepNumarasi
+					}) 
+				);				
+			fileUploader.addHeaderParameter( 
+				new sap.ui.unified.FileUploaderParameter({
+					name : "type",
+					value : "TUID" //Ticari Urun İlgili Doküman 
+				}) 
+			);					
+		},
 		onFileUploadChange : function(evt) {
 			var uc = evt.getSource();
 	
 			var filename = evt.mParameters.mParameters.newValue;// eslint-disable-line
 			
-			var mainModel = this.getView().getModel();
-			//var pid = mainModel.getProperty("/ProcessId");
 			var objid = jQuery.sap.uid();
 			var fileUploader = uc._oFileUploader;		
 			fileUploader.addHeaderParameter( 
@@ -659,7 +697,40 @@ sap.ui.define([
 						name : "objid",
 						value : objid
 					}) 
-				);		
+				);
+			fileUploader.addHeaderParameter( 
+				new sap.ui.unified.FileUploaderParameter({
+					name : "type",
+					value : "TUEK" //Ticari Urun Ek 
+				}) 
+			);					
+		},		
+		onIlgiliDokumanDeleted : function(oEvent) {
+			var oMainModel = this.getView().getModel();
+			var src = oEvent.getSource();
+			var sDeletedItemId = src.sDeletedItemId;
+			var items = src.getItems();
+			var item;
+			var idx;
+			jQuery.each(items, function(key,val) {
+				if (val.getId()===sDeletedItemId) {
+					item = val;
+					idx = key;
+				}
+			});
+			var fileName = item.getFileName();
+			var documentId = item.getDocumentId();
+			
+			var response = Common.deleteFile(documentId);
+			if (response==="OK") {
+				MessageBox.show(fileName+" dosyası silindi."+documentId);
+				var aEkler = oMainModel.getProperty('/Attachments');
+				aEkler.splice(idx,1);
+				oMainModel.setProperty('/Attachments',aEkler);
+			} else {
+				MessageBox.show("Hata oluştu :"+response);
+			}					
+			//this.deleteFileSAP(documentId,idx,fileName,fileType);			
 		},		
 		onFileDeleted : function(oEvent) {
 			var oMainModel = this.getView().getModel();
@@ -694,7 +765,6 @@ sap.ui.define([
 		handleGorselUpload : function(oEvent) {
 			var oModel = this.getView().getModel();
 			var oFileUploader = this.getView().byId("idGorselUpload");
-			var type = "DEF00";			
 			var filename = oFileUploader.getValue();
 			if (!filename) {
 				MessageToast.show("Lütfen dosya seçiniz!");
@@ -719,7 +789,7 @@ sap.ui.define([
 			oFileUploader.addHeaderParameter( 
 					new sap.ui.unified.FileUploaderParameter({
 						name : "type",
-						value : type
+						value : "TUGO" //Ticari Ürün Görsel 
 					}) 
 				);					
 			oFileUploader.setSendXHR(true);
@@ -756,6 +826,50 @@ sap.ui.define([
 			}	
 			
 		},
+		onIlgiliDokumanlarUploadComplete : function(oEvent) {
+			var params = oEvent.getParameters();
+			var status = params.getParameter("status");		
+			var response = params.getParameter("responseRaw");
+			var files = oEvent.getParameter("files");
+			var sUploadedFile;
+			if (files) {
+				sUploadedFile = oEvent.getParameter("files")[0].fileName;
+			}
+			if (!sUploadedFile) {
+				var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
+				sUploadedFile = aUploadedFile[0];
+			}
+			
+			var mainModel = this.getView().getModel();
+			var collection = mainModel.getProperty("/MaterialDocuments");
+			if (!collection) {
+				mainModel.setProperty("/MaterialDocuments",[]);
+				collection = mainModel.getProperty("/MaterialDocuments");
+			}
+
+			if (status !== 200) {
+				MessageToast.show("Hata oluştu :"+response);
+				collection.push({});			
+				mainModel.setProperty("/MaterialDocuments",collection);		
+				collection.pop();
+				mainModel.setProperty("/MaterialDocuments",collection);		
+			} else if (response.search("User authentication failed")>0) {
+				MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
+				collection.push({});			
+				mainModel.setProperty("/MaterialDocuments",collection);		
+				collection.pop();
+				mainModel.setProperty("/MaterialDocuments",collection);		
+			} else {
+				var row = {
+					ProcessNo : "",				
+					DocumentId : response,
+					FileName : sUploadedFile
+				};			
+				collection.unshift(row);
+				mainModel.setProperty("/MaterialDocuments",collection);
+				//this.saveFileDataSAP(row);
+			}			
+		}, 
 		onFileUploadComplete : function(oEvent) {
 			var params = oEvent.getParameters();
 			var status = params.getParameter("status");		

@@ -22,8 +22,15 @@ sap.ui.define([
 		},
 		createMainModel: function() {
 			var oModel = new JSONModel();
-			oModel.setProperty("/TalepEden","Abdulbasit Gülşen");
-			oModel.setProperty("/Username","DEVELOPER3");
+			var sFullName = "";
+			var sUserId = "";
+			if (sap.ushell) {
+				var oUserInfo = sap.ushell.Container.getUser();
+				sFullName = oUserInfo.getFullName();
+				sUserId = oUserInfo.getId();
+			}
+			oModel.setProperty("/TalepEden",sUserId);
+			oModel.setProperty("/Username",sUserId);
 			var oDateFormat = DateFormat.getInstance({pattern: "dd.MM.yyyy", style: "short"});
 			var sToday = oDateFormat.format(new Date());
 			oModel.setProperty("/TalepTarihi",sToday); 
@@ -54,7 +61,8 @@ sap.ui.define([
 								refreshRequired : false
 							};
 							var bpmModel = new JSONModel(bpmData);
-							oController.getView().setModel(bpmModel, "bpm");
+							var oComp = oController.getOwnerComponent();
+							oComp.setModel(bpmModel, "bpm");
 							oController.modifyScreen(sCurrentStep);
 		    			},
 						function(oError) {

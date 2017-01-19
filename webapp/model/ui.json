@@ -121,6 +121,24 @@
 			"editable" : true
 		}
 	},
+	"GorselUpload" : {
+		"visible" : false,
+		"00" : {
+			"visible" : true
+		}
+	},
+	"GorselUploadTedarik" : {
+		"visible" : false,
+		"10" : {
+			"visible" : true
+		},
+		"40" : {
+			"visible" : true
+		},
+		"change" : {
+			"visible" : true
+		}
+	},
 	"OdemeSekli" : {
 		"required": false,
 		"visible": true,
@@ -268,6 +286,9 @@
 		"30" : {
 			"visible" : false
 		},
+		"31" : {
+			"visible" : false
+		},
 		"40" : {
 			"visible" : false
 		},
@@ -280,27 +301,65 @@
 		}
 	},
 	"NumuneGeldi" : {
-		"visible" : false,
+		"visible" : true,
 		"editable" : false,
-		"70" : {
-			"visible" : true,
-			"editable" : true
+		"00" : {
+			"visible" : false
 		},
-		"80" : {
-			"visible" : true,
-			"editable" : false
+		"10" : {
+			"visible" : false
+		},
+		"20" : {
+			"visible" : false
+		},
+		"30" : {
+			"visible" : false
+		},
+		"31" : {
+			"visible" : false
+		},
+		"40" : {
+			"visible" : false
+		},
+		"50" : {
+			"visible" : false
+		},
+		"60" : {
+			"visible" : false
+		},		
+		"70" : {
+			"editable" : true
 		}
 	},
 	"VarisNoktasi" : {
-		"visible" : false,
+		"visible" : true,
 		"editable" : false,
-		"70" : { 
-			"visible" : true,
-			"editable" : true
+		"00" : {
+			"visible" : false
 		},
-		"80" : {
-			"visible" : true,
-			"editable" : false
+		"10" : {
+			"visible" : false
+		},
+		"20" : {
+			"visible" : false
+		},
+		"30" : {
+			"visible" : false
+		},
+		"31" : {
+			"visible" : false
+		},
+		"40" : {
+			"visible" : false
+		},
+		"50" : {
+			"visible" : false
+		},
+		"60" : {
+			"visible" : false
+		},		
+		"70" : {
+			"editable" : true
 		}
 	},
 	"Malzeme" : {
@@ -313,19 +372,13 @@
 			"required" : true
 		},
 		"240" : {
-			"visible" : true,
-			"editable" : false,
-			"required" : false
+			"visible" : true
 		},
 		"250" : {
-			"visible" : true,
-			"editable" : false,
-			"required" : false
+			"visible" : true
 		},
 		"260" : {
-			"visible" : true,
-			"editable" : false,
-			"required" : false
+			"visible" : true
 		}
 	},
 	"UrunTedarikTab" : {
@@ -349,6 +402,9 @@
 		"30" : {
 			"visible" : false
 		},
+		"31" : {
+			"visible" : false
+		},
 		"40" : {
 			"visible" : false
 		},
@@ -358,7 +414,6 @@
 	},
 	"MalzemeTab" : {
 		"visible" : false,
-		
 		"230" : {
 			"visible" : true
 		},
@@ -370,6 +425,24 @@
 		},
 		"260" : {
 			"visible" : true
+		}
+	},
+	"IlgiliDokumanlarTab" : {
+		"visible" : false,
+		"240" : {
+			"visible" : true
+		},
+		"250" : {
+			"visible" : true
+		},
+		"260" : {
+			"visible" : true
+		}
+	},
+	"IlgiliDokumanlar" : {
+		"editable" : false,
+		"240" : {
+			"editable" : true
 		}
 	},
 	"OnaylaButton" : {
@@ -405,6 +478,15 @@
 			"visible" : true
 		}	
 	},
+	"UrunTedarikKaydetButton" : {
+		"visible" : false,
+		"10" : {
+			"visible" : true
+		},	
+		"40" : {
+			"visible" : true
+		}	
+	},
 	"UrunEkleButton" : {
 		"visible" : false,
 		"10" : {
@@ -426,6 +508,9 @@
 	"NumuneGelmediButton" : {
 		"visible" : false,
 		"70" : {
+			"visible" : true
+		},
+		"190" : {
 			"visible" : true
 		}
 	},

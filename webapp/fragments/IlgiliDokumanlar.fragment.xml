@@ -1,0 +1,41 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	
+	<f:SimpleForm id="idIlgiliDokumanlarForm"
+	              editable="true" 
+	              layout="ResponsiveGridLayout" 
+	              labelSpanL="4" 
+	              labelSpanM="4" 
+	              labelSpanS="12"
+				  columnsL="2"
+				  columnsM="2">
+		<core:Title text="{i18n>IlgiliDokumanlarTitle}" />
+		<UploadCollection 
+			id="idIlgiliDokumanlar"
+			multiple="false"
+			sameFilenameAllowed="true"
+			showSeparators="All"
+			change="onIlgiliDokumanlarUploadChange"
+			fileDeleted="onIlgiliDokumanDeleted"
+			uploadComplete="onIlgiliDokumanlarUploadComplete"
+			numberOfAttachmentsText=" "
+			uploadUrl="/logo~ui~talep/UploadServlet"
+			noDataText=" "
+			items="{/MaterialDocuments}">
+			<items>
+				<UploadCollectionItem
+					fileName="{FileName}"
+					documentId="{DocumentId}"
+					url="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}"
+					visibleEdit="false">
+				</UploadCollectionItem>
+			</items>
+			<layoutData>
+				<l:GridData span="L6 M6 S12"/>
+			</layoutData>
+		</UploadCollection>
+	</f:SimpleForm>		
+</core:FragmentDefinition>
