@@ -369,8 +369,12 @@ sap.ui.define([
 								row.Delete = false;
 								aTedarik.push(row);	
 							}							
-						} else {
+						} else if (sCurrentStep==="10" || sCurrentStep==="20") { 
 							aTedarik.push(row);	
+						} else {
+							if (el.Secildi==="X") {
+								aTedarik.push(row);	
+							}
 						}
 						
 					}); 
