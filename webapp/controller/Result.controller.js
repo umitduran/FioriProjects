@@ -18,6 +18,7 @@ sap.ui.define([
 					error : false
 				});
 				this.getView().setModel(resultModel,"result");
+				
 			},
 			getRouter : function() {
 				var oComponent = this.getOwnerComponent();
@@ -29,7 +30,7 @@ sap.ui.define([
 				oModel.setProperty('/refreshRequired',"clear");
 				oRouter.navTo("talepformu", true);	
 			},
-			_handleRouteMatched : function (oEvent) {	
+			_handleRouteMatched : function (oEvent) {
 				var resultModel = this.getView().getModel("result");
 				var sTalepNo = oEvent.getParameter("arguments").talepno;
 				var sAction  = oEvent.getParameter("arguments").action;

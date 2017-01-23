@@ -83,6 +83,10 @@ sap.ui.define([
 				}
 			},				
 			onNavBack: function () {
+				var oUrunOzellikForm = this.getView().byId("idUrunOzellikTedarikForm");
+				var oGenelBilgilerForm = this.getView().byId("idGenelBilgilerTedarikForm");
+				Common.resetFormValidation(oUrunOzellikForm);
+				Common.resetFormValidation(oGenelBilgilerForm);
 				var oModel = this.getView().getModel();
 				oModel.setProperty('/refreshRequired',"noChange");
 				var oRouter = this.getRouter();

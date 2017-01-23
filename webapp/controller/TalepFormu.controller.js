@@ -71,19 +71,22 @@ sap.ui.define([
 					break;
 				case "70" : 
 					this._onOnayla70(sCurrentStep);
+					break;
+				case "230" : 
+					this._onOnayla230(sCurrentStep);
 				default :
-					this.claimAndComplete();
+					this._claimAndComplete();
 					break;
 			}			
 			this.setSAPStatus(sCurrentStep);
 		},
 		onOnayla60 : function(sCurrentStep) {
 			var oController = this;
-			var oMainModel = this.getView().getModel();
-			var eccModel = this.getView().getModel("ecc");
+			var oMainModel = oController.getView().getModel();
+			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
  			var sNumuneKodu = oMainModel.getProperty('/Numune');
-			var result = this.onBeforeKaydet();
+			var result = oController.onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {
@@ -100,16 +103,16 @@ sap.ui.define([
 						
 					}
 				});
-				this.claimAndComplete();
+				this._claimAndComplete();
 			}
 		},
 		_onOnayla70 : function (sCurrentStep) {
 			var oController = this;
-			var oMainModel = this.getView().getModel();
-			var eccModel = this.getView().getModel("ecc");
+			var oMainModel = oController.getView().getModel();
+			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
 			var sVarisNoktasi = oMainModel.getProperty('/VarisNoktasi');
-			var sNumuneGeldi = this.byId("idNumuneGeldi").getSelected();
+			var sNumuneGeldi = oController.byId("idNumuneGeldi").getSelected();
 			
 			eccModel.callFunction("/UpdateNumuneInfo",{
 				urlParameters : {
@@ -125,7 +128,28 @@ sap.ui.define([
 					
 				}
 			});
-			this.claimAndComplete();
+			this._claimAndComplete();
+		},
+		_onOnayla230 : function () {
+			var oController = this;
+			var oMainModel = oController.getView().getModel();
+			var eccModel = oController.getView().getModel("ecc");
+			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+			var sMalzeme = oMainModel.getProperty('/Malzeme');
+			
+			eccModel.callFunction("/SetMalzemeKodu",{
+				urlParameters : {
+					"TalepNumarasi" : sTalepNumarasi,
+					"Malzeme" : sMalzeme
+				},
+				success : function () {
+					
+				},
+				error : function () {
+					
+				}
+			});
+			this._claimAndComplete();
 		},
 		setSAPStatus : function(sCurrentStep) {
 			var oController = this;
@@ -160,7 +184,7 @@ sap.ui.define([
 				eccModel.callFunction("/SelectUrunTedarik",{
 					urlParameters : {"TedarikNumarasi" : sTedarikNumarasi  },
 					success : function(oData, response) { 
-                    	oController.claimAndComplete();	
+                    	oController._claimAndComplete();	
                     }, 
 					error : function(oError){
                     	oController._onGeneralError();
@@ -170,18 +194,18 @@ sap.ui.define([
 			}
 		},
 		onRevizyon : function() {
-			this.claimAndComplete("Revizyon");
+			this._claimAndComplete("Revizyon");
 		},
 		onBypass : function() {
-			this.claimAndComplete();
+			this._claimAndComplete();
 		},
 		onNumune : function () {
-			this.claimAndComplete("NumuneGelmedi");
+			this._claimAndComplete("NumuneGelmedi");
 		},
 		onNumuneTalep : function () {
-			this.claimAndComplete("NumuneTalebi");	
+			this._claimAndComplete("NumuneTalebi");	
 		},
-		claimAndComplete : function(sAction) {
+		_claimAndComplete : function(sAction) {
 			var oController = this;
 			var bpmModel = this.getView().getModel("bpm");				
 			if (bpmModel) {
@@ -221,13 +245,14 @@ sap.ui.define([
 				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiType");
 				// faultData.Fault = fault;
 				taskDataODataModel.create("/"+sAction, faultData, null, 
-					function(oData,response){							
+					function(oData,response){
 						oController.getRouter().navTo("result",{
 							action : 'revizyon',
 							talepno : sTalepNumarasi
 						});
+						
 					},
-					this.onGeneralError
+					this._onGeneralError
 				);		
 			} else {
 				var mainModel = oController.getView().getModel();
@@ -244,13 +269,13 @@ sap.ui.define([
 					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
 				}				
 				taskDataODataModel.create("/OutputData", outputData, null, 
-					function(oData,response){							
+					function(oData,response){
 						oController.getRouter().navTo("result",{
 							action : 'approve',
 							talepno : sTalepNumarasi
 						});
 					},
-					this.onGeneralError
+					this._onGeneralError
 				);		
 			}
 		},
@@ -578,16 +603,17 @@ sap.ui.define([
 				success : function (oResponse) {
 					var sTalepNumarasi = oResponse.TalepNumarasi;
 					var sUrunGrubu = oResponse.UrunGrubu;
-					oController.startBPM(oController,sTalepNumarasi,sUrunGrubu);
+					oController._startBPM(oController,sTalepNumarasi,sUrunGrubu);
 				},
 				error : function (oError) {
 					oController.getRouter().navTo("result",{
 						action  : 'error'	
 					});
+					
 				}
 			});
 		},
-		startBPM : function(oController, sTalepNumarasi, sUrunGrubu) {
+		_startBPM : function(oController, sTalepNumarasi, sUrunGrubu) {
 			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik_"+sUrunGrubu;
 			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
 			var oBPMServletModel = new JSONModel(sGroupServiceURL);
@@ -1093,7 +1119,7 @@ sap.ui.define([
 				success : function (oResponse) {
 					var sTalepNumarasi = oResponse.TalepNumarasi;
 					var sUrunGrubu = oResponse.UrunGrubu;
-					oController.startBPM(oController,sTalepNumarasi,sUrunGrubu);
+					oController._startBPM(oController,sTalepNumarasi,sUrunGrubu);
 				},
 				error : function (oError) {
 					oController.getRouter().navTo("result",{
