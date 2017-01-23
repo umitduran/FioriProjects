@@ -78,7 +78,7 @@ sap.ui.define([
 					this._claimAndComplete();
 					break;
 			}			
-			this.setSAPStatus(sCurrentStep);
+			this._setSAPStatus(sCurrentStep,null);
 		},
 		onOnayla60 : function(sCurrentStep) {
 			var oController = this;
@@ -151,12 +151,13 @@ sap.ui.define([
 			});
 			this._claimAndComplete();
 		},
-		setSAPStatus : function(sCurrentStep) {
+		_setSAPStatus : function(sCurrentStep,sTalepNumarasi) {
 			var oController = this;
-			var oMainModel = this.getView().getModel();
-			var eccModel = this.getView().getModel("ecc");
-			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
-			
+			if (sTalepNumarasi === null) {
+				var oMainModel = oController.getView().getModel();
+				sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');            
+			}
+			var eccModel = oController.getView().getModel("ecc");
 			eccModel.callFunction("/SetTalepStatus",{
 				urlParameters : {"TalepNumarasi" : sTalepNumarasi,
 				                 "Statu" : sCurrentStep},
@@ -248,7 +249,8 @@ sap.ui.define([
 					function(oData,response){
 						oController.getRouter().navTo("result",{
 							action : 'revizyon',
-							talepno : sTalepNumarasi
+							talepno : sTalepNumarasi,
+							backbutton : false
 						});
 						
 					},
@@ -272,7 +274,8 @@ sap.ui.define([
 					function(oData,response){
 						oController.getRouter().navTo("result",{
 							action : 'approve',
-							talepno : sTalepNumarasi
+							talepno : sTalepNumarasi,
+							backbutton : false
 						});
 					},
 					this._onGeneralError
@@ -524,6 +527,7 @@ sap.ui.define([
 		},
 		onKaydet : function(oEvent) {
 			var oController = this;
+			oController.getView().setBusy(true);
 			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
 			if (!result) {
@@ -636,14 +640,18 @@ sap.ui.define([
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
+							oController._setSAPStatus("10",sTalepNumarasi);
+							oController.getView().setBusy(false);
 							oController.getRouter().navTo("result",{
 								action : 'success',
-								talepno : sTalepNumarasi
+								talepno : sTalepNumarasi,
+								backbutton : true
 							});
 						},
 						function (oError) {
 							oController.getRouter().navTo("result",{
-								action  : 'error'	
+								action  : 'error',
+								backbutton : true
 							});
 						}
 				);			

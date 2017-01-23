@@ -32,8 +32,14 @@ sap.ui.define([
 			},
 			_handleRouteMatched : function (oEvent) {
 				var resultModel = this.getView().getModel("result");
-				var sTalepNo = oEvent.getParameter("arguments").talepno;
-				var sAction  = oEvent.getParameter("arguments").action;
+				var pArguments = oEvent.getParameter("arguments");
+				var sTalepNo = pArguments.talepno;
+				var sAction  = pArguments.action;
+				var oBackButton = pArguments.backbutton;
+				
+				if (oBackButton === "true") {
+					this.byId("idPage").setShowNavButton(true);                         
+				}
 
 				var sMessageText = "";
 				if (sAction === "success" && sTalepNo) {	

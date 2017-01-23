@@ -9,7 +9,7 @@
 	<Page id="idPage" 
 		  title="{i18n>TalepResultTitle}"
 		  navButtonPress="onNavBack"
-		  showNavButton="true">
+		  showNavButton="false">
 		<Panel id="idPanel">
 			<FlexBox height="100%" alignItems="Center" justifyContent="Center">
 				<items>
