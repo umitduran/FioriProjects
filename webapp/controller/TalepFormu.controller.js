@@ -77,8 +77,7 @@ sap.ui.define([
 				default :
 					this._claimAndComplete();
 					break;
-			}			
-			this._setSAPStatus(sCurrentStep,null);
+			}
 		},
 		onOnayla60 : function(sCurrentStep) {
 			var oController = this;
@@ -222,6 +221,7 @@ sap.ui.define([
 							if (data==="OK") {
 								var sCurrentStep = bpmModel.getProperty("/currentStep");								
 								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
+								oController._setSAPStatus(sCurrentStep, sTalepNumarasi);
 							} else {
 								oController._onGeneralError();
 							}
@@ -341,6 +341,7 @@ sap.ui.define([
 					mainModel.setProperty('/Numune',oData.Numune);
 					mainModel.setProperty('/NumuneGeldi',oData.NumuneGeldi);
 					mainModel.setProperty('/VarisNoktasi',oData.VarisNoktasi);
+					mainModel.setProperty('/Malzeme',oData.Malzeme);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 					mainModel.setProperty('/TalepEden',oData.TalepEden);
 					
