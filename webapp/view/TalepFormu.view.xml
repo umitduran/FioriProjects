@@ -105,7 +105,8 @@
 							<Button id="idOnaylaButton" text="{i18n>OnaylaButton}" type="Accept" press="onOnayla"/>
 							<Button id="idRevizyonButton" text="{i18n>RevizyonButton}" type="Reject" press="onRevizyon"/>
 							<Button id="idBypassButton" text="{i18n>BypassButton}" type="Reject" press="onBypass"/>
-							<Button id="idNumuneGelmediButton" text="{i18n>NumuneGelmediButton}" type="Reject" press="onNumune"/>
+							<Button id="idNumuneAlinmayacakButton" text="{i18n>NumuneAlinmayacakButton}" type="Reject" press="onNumuneAlinmayacak"/>
+							<Button id="idFinalNumuneAlinmayacakButton" text="{i18n>FinalNumuneAlinmayacakButton}" type="Reject" press="onFinalNumuneAlinmayacak"/>
 							<Button id="idNumuneTalebiButton" text="{i18n>NumuneTalebiButton}" type="Reject" press="onNumuneTalep"/>
 					</Toolbar>
 				</footer>

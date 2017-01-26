@@ -452,6 +452,9 @@
 		},
 		"90" : {
 			"visible" : false
+		},
+		"200" : {
+			"visible" : false
 		}
 	},
 	"RevizyonButton" : {
@@ -462,6 +465,9 @@
 		"31" : {
 			"visible" : true
 		},
+		"200" : {
+			"visible" : true
+		},	
 		"210" : {
 			"visible" : true
 		},	
@@ -503,13 +509,19 @@
 		"visible" : false,
 		"90" : {
 			"visible" : true
+		},	
+		"200" : {
+			"visible" : true
 		}	
 	},
-	"NumuneGelmediButton" : {
+	"NumuneAlinmayacakButton" : {
 		"visible" : false,
 		"70" : {
 			"visible" : true
-		},
+		}
+	},
+	"FinalNumuneAlinmayacakButton" : {
+		"visible" : false,
 		"190" : {
 			"visible" : true
 		}
@@ -517,6 +529,9 @@
 	"NumuneTalebiButton" : {
 		"visible" : false,
 		"80" : {
+			"visible" : true
+		},
+		"220" : {
 			"visible" : true
 		}
 	},
