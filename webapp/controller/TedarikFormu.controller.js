@@ -131,8 +131,10 @@ sap.ui.define([
 			},
 			onUrunKaydet : function () {
 				var oController = this;
+				oController.getView().setBusy(true);
 				var result = this._onBeforeKaydet();
 				if (!result) {
+					oController.getView().setBusy(false);
 					MessageToast.show("Tüm zorunlu alanları doldurun!");
 					return;
 				} else {
@@ -159,6 +161,7 @@ sap.ui.define([
 					
 					eModel.create('/TedarikSet', oTedarik, {
 						success : function (oResponse) {
+							oController.getView().setBusy(false);
 							var sMessageSuccess = oController.getBundleText("TedarikSuccess");
 							MessageToast.show(sMessageSuccess,{duration : 3000});
 							oController.byId("idGorselImageTedarik").setSrc("");
@@ -166,6 +169,7 @@ sap.ui.define([
 							oController.getRouter().navTo("talepformu");
 						},
 						error  : function (oError) {
+							oController.getView().setBusy(false);
 							var sMessageError = oController.getBundleText("TedarikError");
 							MessageToast.show(sMessageError);
 						}

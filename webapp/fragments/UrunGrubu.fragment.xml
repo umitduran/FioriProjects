@@ -12,9 +12,17 @@
 	              labelSpanS="12">
 		
 		<Label id="idTalepEdenLabel" text="{i18n>TalepEdenLabel}"/>
-		<Input id="idTalepEden" value="{/TalepEden}" />
+		<Input id="idTalepEden" value="{/TalepEden}" >
+			<layoutData>
+	          <l:GridData span="L4 M2 S12"/>
+	        </layoutData>
+		</Input>
 		<Label id="idTalepTarihiLabel" text="{i18n>TalepTarihiLabel}"/>
-		<DatePicker id="idTalepTarihi" value="{/TalepTarihi}" valueFormat="dd.MM.yyyy" displayFormat="dd.MM.yyyy"/>
+		<DatePicker id="idTalepTarihi" value="{/TalepTarihi}" valueFormat="dd.MM.yyyy" displayFormat="dd.MM.yyyy"> 
+			<layoutData>
+	          <l:GridData span="L4 M2 S12"/>
+	        </layoutData>
+		</DatePicker> 
 		<Label id="idUrunGrubuLabel" text="{i18n>UrunGrubuLabel}"/>
 		<ComboBox id="idUrunGrubu"
 		          items="{genel>/UrunGrubuSet}" 

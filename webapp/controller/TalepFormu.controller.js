@@ -398,7 +398,7 @@ sap.ui.define([
 							Delete : bDeleteVisible,
 							Secildi : el.Secildi
 						};
-						if (sCurrentStep==="30"||sCurrentStep==="31"||sCurrentStep==="50") {
+						if (sCurrentStep==="30"||sCurrentStep==="31"||sCurrentStep==="50"||sCurrentStep==="32") {
 							if (el.Secildi==="X") {
 								row.Change = false;
 								row.Delete = false;
@@ -547,6 +547,7 @@ sap.ui.define([
 			var oModel = this.getView().getModel();
 			var result = this.onBeforeKaydet();
 			if (!result) {
+				oController.getView().setBusy(false);
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 				return;
 			}
@@ -582,6 +583,7 @@ sap.ui.define([
 				{
 					TalepNumarasi : '',
 					KullaniciAdi : '',
+					TalepDurumu : '00',
 					YorumTarihi : "1800-01-01T00:00:00",
 					YorumSaati : 'PT00H00M00S',
 					Yorum : oData.Yorum
@@ -627,6 +629,7 @@ sap.ui.define([
 					oController._startBPM(oController,sTalepNumarasi,sUrunGrubu,sMarka); 
 				},
 				error : function (oError) {
+					oController.getView().setBusy(false);
 					oController.getRouter().navTo("result",{
 						action  : 'error'	
 					});
@@ -658,7 +661,7 @@ sap.ui.define([
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
-							oController._setSAPStatus("10",sTalepNumarasi);
+							oController._setSAPStatus("00",sTalepNumarasi);
 							oController.getView().setBusy(false);
 							oController.getRouter().navTo("result",{
 								action : 'success',
@@ -667,6 +670,7 @@ sap.ui.define([
 							});
 						},
 						function (oError) {
+							oController.getView().setBusy(false);
 							oController.getRouter().navTo("result",{
 								action  : 'error',
 								backbutton : true

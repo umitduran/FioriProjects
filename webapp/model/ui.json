@@ -289,6 +289,9 @@
 		"31" : {
 			"visible" : false
 		},
+		"32" : {
+			"visible" : false
+		},
 		"40" : {
 			"visible" : false
 		},
@@ -316,6 +319,9 @@
 			"visible" : false
 		},
 		"31" : {
+			"visible" : false
+		},
+		"32" : {
 			"visible" : false
 		},
 		"40" : {
@@ -347,6 +353,9 @@
 			"visible" : false
 		},
 		"31" : {
+			"visible" : false
+		},
+		"32" : {
 			"visible" : false
 		},
 		"40" : {
@@ -403,6 +412,9 @@
 			"visible" : false
 		},
 		"31" : {
+			"visible" : false
+		},
+		"32" : {
 			"visible" : false
 		},
 		"40" : {
@@ -463,6 +475,9 @@
 			"visible" : true
 		},	
 		"31" : {
+			"visible" : true
+		},	
+		"32" : {
 			"visible" : true
 		},
 		"200" : {
