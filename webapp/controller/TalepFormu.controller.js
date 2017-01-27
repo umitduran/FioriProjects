@@ -62,6 +62,7 @@ sap.ui.define([
 			this._claimAndComplete("Iptal");
 		},
 		onOnayla : function() {
+			this.getView().setBusy(true);
 			var bpmModel = this.getView().getModel("bpm");
 			var sCurrentStep = bpmModel.getProperty("/currentStep");
 			
@@ -167,6 +168,7 @@ sap.ui.define([
                 	
                 }, 
 				error : function(oError){
+					oController.getView().setBusy(false);
                 	oController._onGeneralError();
                 }
 			}); 			
@@ -190,6 +192,7 @@ sap.ui.define([
                     	oController._claimAndComplete();	
                     }, 
 					error : function(oError){
+						oController.getView().setBusy(false);                                                                     
                     	oController._onGeneralError();
                     }
 				}); 				
@@ -229,10 +232,14 @@ sap.ui.define([
 								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
 								oController._setSAPStatus(sCurrentStep, sTalepNumarasi,sAction);
 							} else {
+								oController.getView().setBusy(false);
 								oController._onGeneralError();
 							}
 			            },
-			            error : oController._onGeneralError
+			            error : function () {
+			            	oController.getView().setBusy(false);
+			            	oController._onGeneralError;	
+			            }
 					});
 				} 			
 			}
@@ -289,6 +296,7 @@ sap.ui.define([
 				if (sAction==="Iptal") {
 					sResultAction = "cancel";
 				}
+				this.getView().setBusy(false);
 				taskDataODataModel.create("/OutputData", outputData, null, 
 					function(oData,response){
 						oController.getRouter().navTo("result",{

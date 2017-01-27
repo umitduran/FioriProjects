@@ -94,13 +94,13 @@
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.IlgiliDokumanlar" type="XML"/> 																
 							</IconTabFilter>
 							<IconTabFilter
-								id="idStatuTab"
+								id="idLogTab"
 								icon="sap-icon://status-in-process"
 								design="Horizontal"
 								iconColor="Positive"
-								text="{i18n>StatuTitle}"
-								key="Statu">
-								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Statu" type="XML"/> 																
+								text="{i18n>LogTitle}"
+								key="Log">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Log" type="XML"/> 																
 							</IconTabFilter>
 						</items>
 					</IconTabBar>
