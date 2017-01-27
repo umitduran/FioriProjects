@@ -58,6 +58,11 @@ sap.ui.define([
 					sMessage = sTalepNo + " " + sMessageText;
 					resultModel.setProperty("/success",true);
 					resultModel.setProperty("/error",false);
+				} else if (sAction === "cancel") {
+					sMessageText = this.getBundleText("CancelMessage");
+					sMessage = sTalepNo + " " + sMessageText;
+					resultModel.setProperty("/success",false) ;
+					resultModel.setProperty("/error",true);
 				} else {
 					sMessageText = this.getBundleText("ErrorMessage");
 					sMessage = sMessageText;

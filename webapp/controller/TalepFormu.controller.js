@@ -58,6 +58,9 @@ sap.ui.define([
 					this._reloadTalepData();
 			}
 		},
+		onIptal : function() {
+			this._claimAndComplete("Iptal");
+		},
 		onOnayla : function() {
 			var bpmModel = this.getView().getModel("bpm");
 			var sCurrentStep = bpmModel.getProperty("/currentStep");
@@ -150,7 +153,7 @@ sap.ui.define([
 			});
 			this._claimAndComplete();
 		},
-		_setSAPStatus : function(sCurrentStep,sTalepNumarasi) {
+		_setSAPStatus : function(sCurrentStep,sTalepNumarasi,sAction) {
 			var oController = this;
 			if (sTalepNumarasi === null) {
 				var oMainModel = oController.getView().getModel();
@@ -224,7 +227,7 @@ sap.ui.define([
 							if (data==="OK") {
 								var sCurrentStep = bpmModel.getProperty("/currentStep");								
 								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
-								oController._setSAPStatus(sCurrentStep, sTalepNumarasi);
+								oController._setSAPStatus(sCurrentStep, sTalepNumarasi,sAction);
 							} else {
 								oController._onGeneralError();
 							}
@@ -240,6 +243,7 @@ sap.ui.define([
 			
 			if (sAction && sAction!=="NumuneAlinmayacak"
 						&& sAction!=="FinalNumuneAlinmayacak" 
+						&& sAction!=="Iptal" 
 			            && sAction!=="NumuneTalebi") {
 				var faultData = {};
 				faultData.UrunTalebiType = {};
@@ -281,10 +285,14 @@ sap.ui.define([
 				if (sCurrentStep==="20") {
 					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
 				}				
+				var sResultAction = "approve";
+				if (sAction==="Iptal") {
+					sResultAction = "cancel";
+				}
 				taskDataODataModel.create("/OutputData", outputData, null, 
 					function(oData,response){
 						oController.getRouter().navTo("result",{
-							action : 'approve',
+							action : sResultAction,
 							talepno : sTalepNumarasi,
 							backbutton : false
 						});

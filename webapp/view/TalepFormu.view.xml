@@ -117,6 +117,7 @@
 							<Button id="idNumuneAlinmayacakButton" text="{i18n>NumuneAlinmayacakButton}" type="Reject" press="onNumuneAlinmayacak"/>
 							<Button id="idFinalNumuneAlinmayacakButton" text="{i18n>FinalNumuneAlinmayacakButton}" type="Reject" press="onFinalNumuneAlinmayacak"/>
 							<Button id="idNumuneTalebiButton" text="{i18n>NumuneTalebiButton}" type="Reject" press="onNumuneTalep"/>
+							<Button id="idIptalButton" text="{i18n>IptalButton}" type="Reject" press="onIptal"/>
 					</Toolbar>
 				</footer>
 			</Page>
