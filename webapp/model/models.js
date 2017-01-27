@@ -54,6 +54,10 @@ sap.ui.define([
 						function(oData,oResponse) {
 		    				var sTalepNumarasi = oData.results[0].UrunTalebiType.TalepNumarasi;
 		    				var sCurrentStep = oData.results[0].UrunTalebiType.CurrentStep;
+		    				var sCustomCurrentStep = jQuery.sap.getUriParameters().get("currentStep");
+		    				if (sCustomCurrentStep) {
+		    					sCurrentStep = sCustomCurrentStep; 
+		    				}
 							var bpmData = {
 								TaskId : taskId,
 								TalepNumarasi : sTalepNumarasi,
