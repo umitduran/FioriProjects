@@ -248,9 +248,6 @@ sap.ui.define([
 			}			
 		},
 		_claimAndComplete : function(sAction) {
-			if (!sAction) {
-				sAction = "Onayla";
-			}
 			var oController = this;
 			var bpmModel = this.getView().getModel("bpm");				
 			if (bpmModel) {
@@ -266,6 +263,9 @@ sap.ui.define([
 							if (data==="OK") {
 								var sCurrentStep = bpmModel.getProperty("/currentStep");								
 								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
+								if (!sAction) {
+									sAction = "Onayla";
+								}
 								oController._setSAPStatus(sCurrentStep, sTalepNumarasi,sAction);
 								oController._yorumEkle();
 							} else {
