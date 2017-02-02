@@ -86,7 +86,7 @@
 							</IconTabFilter>
 							<IconTabFilter
 								id="idIlgiliDokumanlarTab"
-								icon="sap-icon://documents"
+								icon="sap-icon://document"
 								design="Horizontal"
 								iconColor="Positive"
 								text="{i18n>IlgiliDokumanlarTitle}"
@@ -94,8 +94,17 @@
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.IlgiliDokumanlar" type="XML"/> 																
 							</IconTabFilter>
 							<IconTabFilter
+								id="idDokumanTurleriTab"
+								icon="sap-icon://documents"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>DokumanTurleriTitle}"
+								key="DokumanTurleri">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.DokumanTurleri" type="XML"/> 																
+							</IconTabFilter>
+							<IconTabFilter
 								id="idLogTab"
-								icon="sap-icon://status-in-process"
+								icon="sap-icon://history"
 								design="Horizontal"
 								iconColor="Positive"
 								text="{i18n>LogTitle}"

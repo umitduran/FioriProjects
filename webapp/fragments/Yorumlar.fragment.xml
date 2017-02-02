@@ -34,7 +34,8 @@
 		  	senderActive="false"
 		    sender="{KullaniciAdi}"
 		    timestamp="{YorumTarihi}"
-		    text="{Yorum}" />
+		    text="{Yorum}" 
+		    info="{Statu}"/>
 		</List>									
 	</f:SimpleForm>
 

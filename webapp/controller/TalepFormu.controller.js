@@ -495,6 +495,8 @@ sap.ui.define([
 					
 					
 					oView.setBusy(false);
+					var oLogTab = oView.byId("idIlgiliDokumanlarTab");
+					oLogTab.setCount(aIlgiliDocs.length);
 					var oEklerTab = oView.byId("idEklerTab");
 					oEklerTab.setCount(aEkler.length);
 					oController.updateForms();	
@@ -599,7 +601,7 @@ sap.ui.define([
 				{
 					TalepNumarasi : '',
 					KullaniciAdi : '',
-					TalepDurumu : '00',
+					Statu : '00',
 					YorumTarihi : "1800-01-01T00:00:00",
 					YorumSaati : 'PT00H00M00S',
 					Yorum : oData.Yorum
@@ -1016,6 +1018,7 @@ sap.ui.define([
 		},
 		onYorumEkle : function () {
 			var oController = this;
+			var sStatu ; 
 			var oModel = oController.getView().getModel();
 			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oModel.getProperty("/TalepNumarasi");
@@ -1023,7 +1026,8 @@ sap.ui.define([
 			eccModel.callFunction("/YorumEkle",{
 				urlParameters : {
 					"TalepNumarasi" : sTalepNumarasi , 
-					"Yorum"  :  sYorum
+					"Yorum"  :  sYorum,
+					"Statu" : sStatu
 				},
 				success : function(oData, response) { 
 					var row = {};
