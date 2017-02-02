@@ -12,14 +12,39 @@
 	              labelSpanS="12"
 				  columnsL="2"
 				  columnsM="2">
-		
+		<core:Title text="{i18n>MalzemeVeIlgiliDokumanlarTitle}" />
 		<Label id="idMalzemeLabel" text="{i18n>MalzemeLabel}"/>
 		<Input id="idMalzeme" value="{/Malzeme}">
 			<layoutData>
-				<l:GridData span="L3 M2 S12"/>
+				<l:GridData span="L6 M8 S12"/>
 			</layoutData>
 		</Input>
-		
+		<core:Title text="" />
+		<UploadCollection 
+			id="idIlgiliDokumanlar"
+			multiple="false"
+			sameFilenameAllowed="true"
+			showSeparators="All"
+			change="onIlgiliDokumanlarUploadChange"
+			fileDeleted="onIlgiliDokumanDeleted"
+			uploadComplete="onIlgiliDokumanlarUploadComplete"
+			numberOfAttachmentsText=" "
+			uploadUrl="/logo~ui~talep/UploadServlet"
+			noDataText=" "
+			items="{/MaterialDocuments}">
+			<items>
+				<UploadCollectionItem
+					fileName="{FileName}"
+					documentId="{DocumentId}"
+					url="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}"
+					visibleEdit="false">
+				</UploadCollectionItem>
+			</items>
+			<layoutData>
+				<l:GridData span="L12 M12 S12"/>
+			</layoutData>
+		</UploadCollection>	
+		<core:Title text="" />
 	</f:SimpleForm>
 
 </core:FragmentDefinition>

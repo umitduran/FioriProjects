@@ -59,9 +59,19 @@ sap.ui.define([
 			}
 		},
 		onIptal : function() {
-			this._claimAndComplete("Iptal");
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {			
+				this._claimAndComplete("Iptal");
+			}
 		},
 		onOnayla : function() {
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				return;
+			}			
 			this.getView().setBusy(true);
 			var bpmModel = this.getView().getModel("bpm");
 			var sCurrentStep = bpmModel.getProperty("/currentStep");
@@ -89,25 +99,20 @@ sap.ui.define([
 			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
  			var sNumuneKodu = oMainModel.getProperty('/Numune');
-			var result = oController.onBeforeKaydet();
-			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {
-				eccModel.callFunction("/SetNumuneKodu",{
-					urlParameters : {
-						"TalepNumarasi" : sTalepNumarasi,
-						"Statu" : sCurrentStep,
-						"Numune" : sNumuneKodu
-					},
-					success : function () {
-						
-					},
-					error : function () {
-						
-					}
-				});
-				this._claimAndComplete();
-			}
+			eccModel.callFunction("/SetNumuneKodu",{
+				urlParameters : {
+					"TalepNumarasi" : sTalepNumarasi,
+					"Statu" : sCurrentStep,
+					"Numune" : sNumuneKodu
+				},
+				success : function () {
+					
+				},
+				error : function () {
+					
+				}
+			});
+			this._claimAndComplete();
 		},
 		_onOnayla70 : function (sCurrentStep) {
 			var oController = this;
@@ -163,7 +168,9 @@ sap.ui.define([
 			var eccModel = oController.getView().getModel("ecc");
 			eccModel.callFunction("/SetTalepStatus",{
 				urlParameters : {"TalepNumarasi" : sTalepNumarasi,
-				                 "Statu" : sCurrentStep},
+				                 "Statu" : sCurrentStep,
+								 "Action" : sAction
+				},
 				success : function(oData, response) { 
                 	
                 }, 
@@ -180,6 +187,7 @@ sap.ui.define([
 			var oSelectedItem = oTable.getSelectedItem();
 			if (!oSelectedItem) {
 				MessageToast.show("Ürün Tedarik tabından ürün seçmelisiniz!");
+				oController.getView().setBusy(false);   
 			} else {
 				var sPath = oSelectedItem.getBindingContextPath(); 
 				var oMainModel = this.getView().getModel();
@@ -200,21 +208,49 @@ sap.ui.define([
 			}
 		},
 		onRevizyon : function() {
-			this._claimAndComplete("Revizyon");
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {			
+				this._claimAndComplete("Revizyon");
+			}			
 		},
 		onBypass : function() {
-			this._claimAndComplete();
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {			
+				this._claimAndComplete();
+			}			
 		},
 		onNumuneAlinmayacak : function() {
-			this._claimAndComplete("NumuneAlinmayacak");
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {			
+				this._claimAndComplete("NumuneAlinmayacak");
+			}			
 		},
 		onFinalNumuneAlinmayacak : function() {
-			this._claimAndComplete("FinalNumuneAlinmayacak");
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {			
+				this._claimAndComplete("FinalNumuneAlinmayacak");
+			}			
 		},
 		onNumuneTalep : function () {
-			this._claimAndComplete("NumuneTalebi");	
+			var result = this.onBeforeKaydet();
+			if (!result) {
+				MessageToast.show("Tüm zorunlu alanları doldurun!");
+			} else {			
+				this._claimAndComplete("NumuneTalebi");	
+			}			
 		},
 		_claimAndComplete : function(sAction) {
+			if (!sAction) {
+				sAction = "Onayla";
+			}
 			var oController = this;
 			var bpmModel = this.getView().getModel("bpm");				
 			if (bpmModel) {
@@ -231,6 +267,7 @@ sap.ui.define([
 								var sCurrentStep = bpmModel.getProperty("/currentStep");								
 								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
 								oController._setSAPStatus(sCurrentStep, sTalepNumarasi,sAction);
+								oController._yorumEkle();
 							} else {
 								oController.getView().setBusy(false);
 								oController._onGeneralError();
@@ -351,7 +388,7 @@ sap.ui.define([
 			
 			eccModel.read(sPath, 
 			{
-				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler,TalepToIlgiliDokumanlar"},
+				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler,TalepToIlgiliDokumanlar,TalepToLog"},
 				success : function(oData,oResponse) {
 					mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
 					mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
@@ -463,7 +500,8 @@ sap.ui.define([
 							KullaniciAdi : el.KullaniciAdi,
 							YorumTarihi : el.YorumTarihi,
 							YorumSaati : el.YorumSaati,
-							Yorum : el.Yorum
+							Yorum : el.Yorum,
+							Statu : el.Statu
 						};
 						row.YorumTarihi = oDateFormat.format(row.YorumTarihi);
 						
@@ -493,10 +531,24 @@ sap.ui.define([
 					});
 					mainModel.setProperty('/MaterialDocuments',aIlgiliDocs);
 					
+					var aLogs = [];
+					jQuery.each(oData.TalepToLog.results,function(key,el) {
+						var row = {
+							TalepNumarasi : el.TalepNumarasi,
+							CurrentStep : el.CurrentStep,
+							Action : el.Action,
+							Degistiren : el.Degistiren,
+							DegisiklikTarihi : el.DegisiklikTarihi,
+							DegisiklikSaati : el.DegisiklikSaati
+						};
+						aLogs.push(row) ;
+					});
+					mainModel.setProperty('/LogCollection',aLogs);
+					
+					var oLogTab = oView.byId("idLogTab");
+					oLogTab.setCount(aLogs.length);
 					
 					oView.setBusy(false);
-					var oLogTab = oView.byId("idIlgiliDokumanlarTab");
-					oLogTab.setCount(aIlgiliDocs.length);
 					var oEklerTab = oView.byId("idEklerTab");
 					oEklerTab.setCount(aEkler.length);
 					oController.updateForms();	
@@ -550,9 +602,8 @@ sap.ui.define([
 			this.updateIconColor("idUrunOzellikTab", bResult2);
 			var bResult3 = this.validateForm("idGenelBilgilerForm");
 			this.updateIconColor("idGenelBilgilerTab", bResult3);
-			var bResult4 = true;
-			//var bResult4 = this.validateForm("idYorumlarForm");
-			//this.updateIconColor("idYorumlarTab", bResult4);
+			var bResult4 = this.validateForm("idYorumlarForm");
+			this.updateIconColor("idYorumlarTab", bResult4);
 			var bResult5 = this.validateForm("idEklerForm");
 			this.updateIconColor("idEklerTab", bResult5);
 			var bResult6 = this.validateForm("idNumuneForm");
@@ -679,7 +730,7 @@ sap.ui.define([
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
-							oController._setSAPStatus("00",sTalepNumarasi);
+							oController._setSAPStatus("00",sTalepNumarasi,"TalepYarat");
 							oController.getView().setBusy(false);
 							oController.getRouter().navTo("result",{
 								action : 'success',
@@ -716,6 +767,7 @@ sap.ui.define([
 			this.updateForm("idMainTabBar");	
 			this.updateForm("idFooterToolbar");
 			this.updateForm("idNumuneForm");
+			this.updateForm("idMalzemeForm");
 		},
 		updateForm : function(sFormId) {
 			var oMainModel = this.getView().getModel();
@@ -1016,32 +1068,35 @@ sap.ui.define([
 			Common.handleValueHelp(this,oEvent.getSource(),textEl,"MarkaKodu","Aciklama",oModel,"/MarkalarSet",this.getView(),"Marka");
 			
 		},
-		onYorumEkle : function () {
+		_yorumEkle : function () {
 			var oController = this;
-			var sStatu ; 
 			var oModel = oController.getView().getModel();
 			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oModel.getProperty("/TalepNumarasi");
 			var sYorum = oModel.getProperty("/Yorum");				
+			var bpmModel = this.getView().getModel("bpm");
+			var sCurrentStep = bpmModel.getProperty("/currentStep");
+			
 			eccModel.callFunction("/YorumEkle",{
 				urlParameters : {
 					"TalepNumarasi" : sTalepNumarasi , 
 					"Yorum"  :  sYorum,
-					"Statu" : sStatu
+					"Statu" : sCurrentStep
 				},
 				success : function(oData, response) { 
-					var row = {};
-					var oDateFormat = DateFormat.getDateTimeInstance(
-						{
-							pattern: "dd/MM/yyyy"
-						});
-					row.KullaniciAdi = oModel.oData.Yorumlar[0].KullaniciAdi;
-					row.YorumSaati = oModel.oData.Yorumlar[0].YorumSaati;
-					row.YorumTarihi = oDateFormat.format(new Date());
-					row.Yorum = sYorum;
-					oModel.oData.Yorumlar.push(row);
-					oModel.refresh(true);
-					oController.byId("idComment").setValue("");
+					// var row = {};
+					// var oDateFormat = DateFormat.getDateTimeInstance(
+					// 	{
+					// 		pattern: "dd/MM/yyyy"
+					// 	});
+					// row.KullaniciAdi = oModel.oData.Yorumlar[0].KullaniciAdi;
+					// row.YorumSaati = oModel.oData.Yorumlar[0].YorumSaati;
+					// row.YorumTarihi = oDateFormat.format(new Date());
+					// row.Yorum = sYorum;
+					// row.Statu = sCurrentStep;
+					// oModel.oData.Yorumlar.push(row);
+					// oModel.refresh(true);
+					// oController.byId("idComment").setValue("");
                 }, 
 				error : function(oError){
                 	oController._onGeneralError(oError);
@@ -1108,6 +1163,24 @@ sap.ui.define([
 				itemno : sIndex
 			});
 		},
+	    ConvertActionToIcon : function(action) {
+	        if (action==='TalepYarat') {
+	            return "sap-icon://create-form";
+	        } else if (action==='Onay') {
+	            return "sap-icon://accept";
+	        } else {
+	            return "sap-icon://task";
+	        }
+	    },
+	    ConvertActionToIconColor : function(action) {
+	        if (action==='TalepYarat') {
+	            return "#4BC202";
+	        } else if (action==='Onay') {
+	            return "#4BC202";
+	        } else {
+	            return "#000000";
+	        }
+	    },		
 		onUploadTestData : function () {
 			//FIXME
 			// var oModel = this.getView().getModel();

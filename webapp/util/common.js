@@ -120,7 +120,7 @@ sap.ui.define([
 		var editableTableElements = ['sap.m.Table'];
 		var editableListElements = ['sap.m.List'];
 		var editableUploadCollectionElements = ['sap.m.UploadCollection'];
-		var visibleElements = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.Button','sap.m.Panel','sap.m.TextArea','sap.m.CheckBox','sap.m.DatePicker','sap.m.IconTabFilter','sap.ui.unified.FileUploader'];
+		var visibleElements = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.Button','sap.m.Panel','sap.m.TextArea','sap.m.CheckBox','sap.m.DatePicker','sap.m.IconTabFilter','sap.ui.unified.FileUploader','sap.m.UploadCollection'];
 		jQuery.each(content,function(key,el) {
 			var processed = false;
 			var type = el.getMetadata().getName();

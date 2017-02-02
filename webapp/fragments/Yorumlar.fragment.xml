@@ -19,19 +19,12 @@
 				<l:GridData span="L12 M12 S12"/>
 			</layoutData>
 	 	</TextArea>
-	 	<Button id="idYorumEkleButton" text="{i18n>YorumKaydet}" press="onYorumEkle">		
-			<layoutData>
-				<l:GridData span="L2 M2 S12" indent="L10 M10"/>
-			</layoutData>	
-	 	</Button>
 		<List
-		  showSeparators="Inner"
 		  showNoData="false"
 		  items="{/Yorumlar}" >
 		  <FeedListItem
-		  	showIcon="false" 
-		  	maxCharacters="100"
-		  	senderActive="false"
+		  	showIcon="true"  
+		  	senderActive="true"
 		    sender="{KullaniciAdi}"
 		    timestamp="{YorumTarihi}"
 		    text="{Yorum}" 

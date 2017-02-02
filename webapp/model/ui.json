@@ -439,9 +439,11 @@
 			"visible" : true
 		}
 	},
-	"IlgiliDokumanlarTab" : {
+	"IlgiliDokumanlar" : {
+		"editable" : false,
 		"visible" : false,
 		"240" : {
+			"editable" : true,
 			"visible" : true
 		},
 		"250" : {
@@ -449,12 +451,6 @@
 		},
 		"260" : {
 			"visible" : true
-		}
-	},
-	"IlgiliDokumanlar" : {
-		"editable" : false,
-		"240" : {
-			"editable" : true
 		}
 	},
 	"OnaylaButton" : {
