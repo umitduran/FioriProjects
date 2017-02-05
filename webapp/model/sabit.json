@@ -12,5 +12,23 @@
 			"key": "USD",
 			"value": "Dolar"
 		}
+	],
+	"DokumanTurleri" : [
+		{
+			"key": "ZU61",
+			"value": "Garanti Belgesi"
+		},
+		{
+			"key": "ZM81",
+			"value": "Patlamış Resim"
+		},
+		{
+			"key": "ZR11",
+			"value": "Yedek Parça Listesi"
+		},
+		{
+			"key": "ZR21",
+			"value": "Teknik Çizimler"
+		}
 	]
 }

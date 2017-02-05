@@ -59,7 +59,7 @@ sap.ui.define([
 			}
 		},
 		onIptal : function() {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {			
@@ -67,7 +67,7 @@ sap.ui.define([
 			}
 		},
 		onOnayla : function() {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 				return;
@@ -78,22 +78,24 @@ sap.ui.define([
 			
 			switch (sCurrentStep) {
 				case "20":
-					this.onOnayla20(); 
+					this._onOnayla20(); 
 					break;
 				case "60": 
-					this.onOnayla60(sCurrentStep);
+					this._onOnayla60(sCurrentStep);
 					break;
 				case "70" : 
 					this._onOnayla70(sCurrentStep);
 					break;
 				case "230" : 
 					this._onOnayla230(sCurrentStep);
+				case "240" :
+					this._onOnayla240(sCurrentStep);
 				default :
 					this._claimAndComplete();
 					break;
 			}
 		},
-		onOnayla60 : function(sCurrentStep) {
+		_onOnayla60 : function(sCurrentStep) {
 			var oController = this;
 			var oMainModel = oController.getView().getModel();
 			var eccModel = oController.getView().getModel("ecc");
@@ -159,6 +161,23 @@ sap.ui.define([
 			});
 			this._claimAndComplete();
 		},
+		_onOnayla240 : function () {
+			var oController = this;
+			var oMainModel = oController.getView().getModel();
+			var oList = oMainModel.getData().MaterialDocuments;
+			var eccModel = oController.getView().getModel("ecc");
+			var oDocumentList = {};
+			
+			jQuery.each(oList, function (key,el) {
+				var row = {
+					TalepNumarasi : el.TalepNumarasi,
+					Documentid : el.DocumentId,
+					Documenttype : el.Documenttype
+					
+				};	
+			});
+			
+		},
 		_setSAPStatus : function(sCurrentStep,sTalepNumarasi,sAction) {
 			var oController = this;
 			if (sTalepNumarasi === null) {
@@ -181,7 +200,7 @@ sap.ui.define([
 			}); 			
 			
 		},
-		onOnayla20 : function() {
+		_onOnayla20 : function() {
 			var oController = this;
 			var oTable = this.getView().byId("idUrunTedarikTable");
 			var oSelectedItem = oTable.getSelectedItem();
@@ -208,7 +227,7 @@ sap.ui.define([
 			}
 		},
 		onRevizyon : function() {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {			
@@ -216,7 +235,7 @@ sap.ui.define([
 			}			
 		},
 		onBypass : function() {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {			
@@ -224,7 +243,7 @@ sap.ui.define([
 			}			
 		},
 		onNumuneAlinmayacak : function() {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {			
@@ -232,7 +251,7 @@ sap.ui.define([
 			}			
 		},
 		onFinalNumuneAlinmayacak : function() {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {			
@@ -240,7 +259,7 @@ sap.ui.define([
 			}			
 		},
 		onNumuneTalep : function () {
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
 			} else {			
@@ -380,8 +399,8 @@ sap.ui.define([
 		},
 		_loadTalepData : function(sTalepNumarasi,sCurrentStep) {
 			var oController = this;
-			var oView = this.getView();
-			var oComp = this.getOwnerComponent();
+			var oView = oController.getView();
+			var oComp = oController.getOwnerComponent();
 			var mainModel = oComp.getModel();
 			var eccModel = oComp.getModel("ecc");
 			var sPath = '/TalepSet(\''+sTalepNumarasi+'\')';
@@ -508,6 +527,8 @@ sap.ui.define([
 						aYorumlar.push(row);
 					});
 					mainModel.setProperty('/Yorumlar',aYorumlar);
+					//var oYorumlarTab = oView().byId("idYorumlarTab");
+					//oYorumlarTab.setCount(aYorumlar.length);
 					
 					var aEkler = [];
 					jQuery.each(oData.TalepToEkler.results,function(key,el) {
@@ -585,7 +606,7 @@ sap.ui.define([
 			var sSelectedItemText  = oEvent.getSource().getSelectedItem().getText();
 			oUrunGrubuTab.setText(sSelectedItemText);
 		},
-		updateIconColor : function(idTab,state)  {
+		_updateIconColor : function(idTab,state)  {
 			var oIconTab = this.getView().byId(idTab);			
 			if (oIconTab) {
 				var sColor = "Positive";
@@ -595,26 +616,28 @@ sap.ui.define([
 				oIconTab.setIconColor(sColor);
 			}
 		},
-		onBeforeKaydet : function() {
-	 		var bResult1 = this.validateForm("idUrunGrubuForm");
-			this.updateIconColor("idUrunGrubuTab", bResult1);
-			var bResult2 = this.validateForm("idUrunOzellikForm");
-			this.updateIconColor("idUrunOzellikTab", bResult2);
-			var bResult3 = this.validateForm("idGenelBilgilerForm");
-			this.updateIconColor("idGenelBilgilerTab", bResult3);
-			var bResult4 = this.validateForm("idYorumlarForm");
-			this.updateIconColor("idYorumlarTab", bResult4);
-			var bResult5 = this.validateForm("idEklerForm");
-			this.updateIconColor("idEklerTab", bResult5);
-			var bResult6 = this.validateForm("idNumuneForm");
-			this.updateIconColor("idNumuneTab", bResult6);
-			return bResult1 && bResult2 && bResult3 && bResult4 && bResult5 && bResult6;
+		_onBeforeKaydet : function() {
+	 		var bResult1 = this._validateForm("idUrunGrubuForm");
+			this._updateIconColor("idUrunGrubuTab", bResult1);
+			var bResult2 = this._validateForm("idUrunOzellikForm");
+			this._updateIconColor("idUrunOzellikTab", bResult2);
+			var bResult3 = this._validateForm("idGenelBilgilerForm");
+			this._updateIconColor("idGenelBilgilerTab", bResult3);
+			var bResult4 = this._validateForm("idYorumlarForm");
+			this._updateIconColor("idYorumlarTab", bResult4);
+			var bResult5 = this._validateForm("idEklerForm");
+			this._updateIconColor("idEklerTab", bResult5);
+			var bResult6 = this._validateForm("idNumuneForm");
+			this._updateIconColor("idNumuneTab", bResult6);
+			var bResult7 = this._validateForm("idMalzemeForm");
+			this._updateIconColor("idMalzemeTab", bResult7);
+			return bResult1 && bResult2 && bResult3 && bResult4 && bResult5 && bResult6 && bResult7;
 		},
 		onKaydet : function(oEvent) {
 			var oController = this;
 			oController.getView().setBusy(true);
 			var oModel = this.getView().getModel();
-			var result = this.onBeforeKaydet();
+			var result = this._onBeforeKaydet();
 			if (!result) {
 				oController.getView().setBusy(false);
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
@@ -748,7 +771,7 @@ sap.ui.define([
 				);			
 			});
 		},
-		validateForm : function(sFormId) {
+		_validateForm : function(sFormId) {
 			var oMainModel = this.getView().getModel();
 			var oUIModel = this.getView().getModel("ui");
 			var oMainForm = this.getView().byId(sFormId);
@@ -1166,21 +1189,32 @@ sap.ui.define([
 	    ConvertActionToIcon : function(action) {
 	        if (action==='TalepYarat') {
 	            return "sap-icon://create-form";
-	        } else if (action==='Onay') {
+	        } else if (action==='Onayla') {
 	            return "sap-icon://accept";
-	        } else {
+	        } else if (action === 'Revizyon') {
+	        	return "sap-icon://to-be-reviewed";
+	        }else if (action === 'NumuneAlinmayacak') {
+	        	return "sap-icon://decline";
+	        }else {
 	            return "sap-icon://task";
 	        }
 	    },
 	    ConvertActionToIconColor : function(action) {
 	        if (action==='TalepYarat') {
 	            return "#4BC202";
-	        } else if (action==='Onay') {
+	        } else if (action==='Onayla') {
 	            return "#4BC202";
-	        } else {
+	        } else if (action === 'Revizyon') {
+	        	return "#FE2E2E";
+	        }else if (action === 'NumuneAlinmayacak') {
+	        	return "#FE2E2E";
+	        }else {
 	            return "#000000";
 	        }
-	    },		
+	    },
+	    titleClicked : function () {
+	    
+	    },
 		onUploadTestData : function () {
 			//FIXME
 			// var oModel = this.getView().getModel();
