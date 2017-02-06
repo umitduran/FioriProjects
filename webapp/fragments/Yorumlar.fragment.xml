@@ -14,7 +14,7 @@
 				columnsL="1"
 				columnsM="1">
 		<core:Title text="{i18n>YorumlarTitle}" />
-	 	<TextArea id="idComment"  value="{/Yorum}" width="100%" maxLength="200" rows="5">		
+	 	<TextArea id="idComment"  value="{/Yorum}" width="100%" maxLength="200" rows="5">
 			<layoutData>
 				<l:GridData span="L12 M12 S12"/>
 			</layoutData>
@@ -28,7 +28,7 @@
 		    sender="{KullaniciAdi}"
 		    timestamp="{YorumTarihi}"
 		    text="{Yorum}" 
-		    info="{Statu}"/>
+		    info="{StatuText}"/>
 		</List>									
 	</f:SimpleForm>
 

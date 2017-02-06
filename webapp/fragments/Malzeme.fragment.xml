@@ -20,7 +20,7 @@
 			</layoutData>
 		</Input>
 		<core:Title text="" />
-	<Table id="idIlgiliDokumanlarTable" >
+	<Table id="idIlgiliDokumanlarTable" items="{/MaterialDocuments}">
 		<headerToolbar>
 			<Toolbar>
 				<Title text="{i18n>IlgiliDokumanlarListTitle}" level="H2"/>
@@ -37,41 +37,15 @@
 		<items>
 			<ColumnListItem>
 				<cells>		
-					<UploadCollection 
-						id="idIlgiliDokumanlar"
-						multiple="false"
-						sameFilenameAllowed="true"
-						showSeparators="All"
-						change="onIlgiliDokumanlarUploadChange"
-						fileDeleted="onIlgiliDokumanDeleted"
-						uploadComplete="onIlgiliDokumanlarUploadComplete"
-						numberOfAttachmentsText=" "
-						uploadUrl="/logo~ui~talep/UploadServlet"
-						noDataText=" "
-						items="{/MaterialDocuments}">
-						<items>
-							<UploadCollectionItem
-								fileName="{FileName}"
-								documentId="{DocumentId}"
-								url="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}"
-								visibleEdit="false">
-			
-									
-							<ComboBox id="idDokumanTurleri"
-					        		  items="{sabit>/DokumanTurleri}">
-								<core:Item key="{sabit>key}" text="{sabit>value}" />
-							        <layoutData>
-							          <l:GridData span="L3 M3 S12"/>
-							        </layoutData>				        							
-							</ComboBox>	
-			
-							</UploadCollectionItem>
-						</items>
-						<layoutData>
-							<l:GridData span="L6 M6 S12"/>
-						</layoutData>
-					</UploadCollection>
-
+					<ObjectIdentifier title="{FileName}" />	
+					<ComboBox id="idDokumanTurleri"
+			        		  items="{sabit>/DokumanTurleri}"
+			        		  selectionChange="onDokumantTuruChanged">
+						<core:Item key="{sabit>key}" text="{sabit>value}" />
+					        <layoutData>
+					          <l:GridData span="L3 M3 S12"/>
+					        </layoutData>				        							
+					</ComboBox>	
 
 				</cells>
 			</ColumnListItem>

@@ -88,8 +88,8 @@ sap.ui.define([
 					break;
 				case "230" : 
 					this._onOnayla230(sCurrentStep);
-				case "240" :
-					this._onOnayla240(sCurrentStep);
+				case "260" :
+					this._onOnayla260(sCurrentStep);
 				default :
 					this._claimAndComplete();
 					break;
@@ -161,12 +161,12 @@ sap.ui.define([
 			});
 			this._claimAndComplete();
 		},
-		_onOnayla240 : function () {
+		_onOnayla260 : function () {
 			var oController = this;
 			var oMainModel = oController.getView().getModel();
 			var oList = oMainModel.getData().MaterialDocuments;
 			var eccModel = oController.getView().getModel("ecc");
-			var oDocumentList = {};
+			var oDocumentList = [];
 			
 			jQuery.each(oList, function (key,el) {
 				var row = {
@@ -175,8 +175,16 @@ sap.ui.define([
 					Documenttype : el.Documenttype
 					
 				};	
+				oDocumentList.push(row);
 			});
-			
+			eccModel.create('/Dokumanlar', oDocumentList, {
+				success : function () {
+					oController.getView().setBusy(false);
+				},
+				error : function () {
+					oController.getView().setBusy(false);	
+				}
+			});
 		},
 		_setSAPStatus : function(sCurrentStep,sTalepNumarasi,sAction) {
 			var oController = this;
@@ -520,7 +528,8 @@ sap.ui.define([
 							YorumTarihi : el.YorumTarihi,
 							YorumSaati : el.YorumSaati,
 							Yorum : el.Yorum,
-							Statu : el.Statu
+							Statu : el.Statu,
+							StatuText : el.StatuText
 						};
 						row.YorumTarihi = oDateFormat.format(row.YorumTarihi);
 						
@@ -605,6 +614,12 @@ sap.ui.define([
 			var oUrunGrubuTab = this.getView().byId("idUrunGrubuTab");
 			var sSelectedItemText  = oEvent.getSource().getSelectedItem().getText();
 			oUrunGrubuTab.setText(sSelectedItemText);
+		},
+		onDokumantTuruChanged : function (oEvent) {
+			var oParameters = oEvent.getParameter();
+			var oContext = oParameters.getBindingContext("sabit");
+			var oSelectedKey = oContext.getObject().key;
+			
 		},
 		_updateIconColor : function(idTab,state)  {
 			var oIconTab = this.getView().byId(idTab);			
