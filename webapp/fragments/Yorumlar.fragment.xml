@@ -19,17 +19,46 @@
 				<l:GridData span="L12 M12 S12"/>
 			</layoutData>
 	 	</TextArea>
-		<List
-		  showNoData="false"
-		  items="{/Yorumlar}" >
-		  <FeedListItem
-		  	showIcon="true"  
-		  	senderActive="true"
-		    sender="{KullaniciAdi}"
-		    timestamp="{YorumTarihi}"
-		    text="{Yorum}" 
-		    info="{StatuText}"/>
-		</List>									
+		<Table items="{/Yorumlar}">
+			<layoutData>
+				<l:GridData span="L12 M12 S12"/>
+			</layoutData>
+			<columns>
+	            <Column width="3em">
+	                <Text text=""/>
+	            </Column>
+				<Column width="10em">
+					<Text text="{i18n>CommentTableKullaniciAdi}" />
+				</Column>			
+				<Column width="15em">
+					<Text text="{i18n>CommentTableStatuText}" />
+				</Column>			
+				<Column width="8em">
+					<Text text="{i18n>CommentTableYorumTarihi}" />
+				</Column>			
+				<Column width="8em">
+					<Text text="{i18n>CommentTableYorumSaati}" />
+				</Column>			
+				<Column>
+					<Text text="{i18n>CommentTableYorum}" />
+				</Column>			
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>			
+						<core:Icon src="sap-icon://comment"/>					
+						<Text text ="{KullaniciAdi}" />	
+						<Text text="{StatuText}" />
+						<Text text="{YorumTarihi}" />
+						<Text text="{
+							path: 'YorumSaati',
+							type: 'sap.ui.model.odata.type.Time'}" />
+
+					 	<TextArea value="{Yorum}" tooltip="{Yorum}" editable="false" width="100%" rows="2" />
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>	 	
 	</f:SimpleForm>
 
 </core:FragmentDefinition>

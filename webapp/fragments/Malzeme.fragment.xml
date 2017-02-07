@@ -64,7 +64,7 @@
 						      href="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}" />
 						<ComboBox id="idDokumanTurleri"
 				        		  items="{sabit>/DokumanTurleri}"
-				        		  selectionChange="onDokumantTuruChanged">
+				        		  selectedKey="{DocumentType}">
 							<core:Item key="{sabit>key}" text="{sabit>value}" />
 						        <layoutData>
 						          <l:GridData span="L3 M3 S12"/>

@@ -162,27 +162,16 @@ sap.ui.define([
 			this._claimAndComplete();
 		},
 		_onOnayla270 : function () {
-			var oController = this;
-			var oMainModel = oController.getView().getModel();
-			var oList = oMainModel.getData().MaterialDocuments;
-			var eccModel = oController.getView().getModel("ecc");
-			var oDocumentList = [];
-			
-			jQuery.each(oList, function (key,el) {
-				var row = {
-					TalepNumarasi : el.TalepNumarasi,
-					Documentid : el.DocumentId,
-					Documenttype : el.Documenttype
-					
-				};	
-				oDocumentList.push(row);
-			});
+			var oView = this.getView();
+			var oMainModel = oView.getModel();
+			var oDocumentList = oMainModel.getProperty("/MaterialDocuments");
+			var eccModel = oView.getModel("ecc");
 			eccModel.create('/Dokumanlar', oDocumentList, {
 				success : function () {
-					oController.getView().setBusy(false);
+					oView.setBusy(false);
 				},
 				error : function () {
-					oController.getView().setBusy(false);	
+					oView.setBusy(false);	
 				}
 			});
 		},
@@ -317,10 +306,10 @@ sap.ui.define([
 						&& sAction!=="Iptal" 
 			            && sAction!=="NumuneTalebi") {
 				var faultData = {};
-				faultData.UrunTalebiInType = {};
-				faultData.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
-				faultData.UrunTalebiInType.CurrentStep = "";
-				faultData.UrunTalebiInType.Action = "";	
+				faultData.UrunTalebiType = {};
+				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+				faultData.UrunTalebiType.CurrentStep = "";
+				faultData.UrunTalebiType.Action = "";	
 				//silme!
 				// var faultData = {};		
 				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiInType");
@@ -340,21 +329,21 @@ sap.ui.define([
 				var mainModel = oController.getView().getModel();
 				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");				
 				var outputData = {};
-				outputData.UrunTalebiInType = {};
-				outputData.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
-				outputData.UrunTalebiInType.CurrentStep = "";
+				outputData.UrunTalebiType = {};
+				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+				outputData.UrunTalebiType.CurrentStep = "";
 				if (sCurrentStep==="10") {
 					var aTedarik = mainModel.getProperty('/TedarikCollection');
 					if (aTedarik) {
-						outputData.UrunTalebiInType.UrunSayisi = aTedarik.length;
+						outputData.UrunTalebiType.UrunSayisi = aTedarik.length;
 					}
 				}
 				if (!sAction) {
 					sAction = "";
 				}
-				outputData.UrunTalebiInType.Action = sAction;
+				outputData.UrunTalebiType.Action = sAction;
 				if (sCurrentStep==="20") {
-					outputData.UrunTalebiInType.UrunTedarikIlgiliKisi = ekleyen;	
+					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
 				}				
 				var sResultAction = "approve";
 				if (sAction==="Iptal") {
@@ -615,33 +604,33 @@ sap.ui.define([
 			var sSelectedItemText  = oEvent.getSource().getSelectedItem().getText();
 			oUrunGrubuTab.setText(sSelectedItemText);
 		},
-		onDokumantTuruChanged : function (oEvent) {
-			var oMainModel = this.getView().getModel();
-			var eccModel = this.getView().getModel("ecc");
-			var oParameters = oEvent.getParameter("selectedItem");
-			var oContext = oParameters.getBindingContext("sabit");
-			var sSelectedKey = oContext.getObject().key;
-			var sPathType = oContext.sPath;
-			var sIndex = sPathType.substring(sPathType.lastIndexOf("/")+1);
+		// onDokumantTuruChanged : function (oEvent) {
+		// 	var oMainModel = this.getView().getModel();
+		// 	var eccModel = this.getView().getModel("ecc");
+		// 	var oParameters = oEvent.getParameter("selectedItem");
+		// 	var oContext = oParameters.getBindingContext("sabit");
+		// 	var sSelectedKey = oContext.getObject().key;
+		// 	var sPathType = oContext.sPath;
+		// 	var sIndex = sPathType.substring(sPathType.lastIndexOf("/")+1);
 		
-			var sPathId = oEvent.getParameters().id;
-			var sIndexId = sPathId.substring(sPathId.lastIndexOf("-")+1);
-			var oMaterialDocuments = oMainModel.getProperty('/MaterialDocuments');
-			var sDocumentId = oMaterialDocuments[sIndexId].DocumentId;
-			var sTalepNumarasi = oMaterialDocuments[sIndexId].TalepNumarasi;
+		// 	var sPathId = oEvent.getParameters().id;
+		// 	var sIndexId = sPathId.substring(sPathId.lastIndexOf("-")+1);
+		// 	var oMaterialDocuments = oMainModel.getProperty('/MaterialDocuments');
+		// 	var sDocumentId = oMaterialDocuments[sIndexId].DocumentId;
+		// 	var sTalepNumarasi = oMaterialDocuments[sIndexId].TalepNumarasi;
 			
-			var Dokumanlar = [];	
+		// 	var Dokumanlar = [];	
 
-			var row = {
-				TalepNumarasi : sTalepNumarasi,
-				Documentid : sDocumentId,
-				Documenttype : sSelectedKey
-			};
-			Dokumanlar = oMainModel.getProperty("/Dokumanlar");
-			Dokumanlar.push(row);
-			oMainModel.setProperty("/Dokumanlar",Dokumanlar);
+		// 	var row = {
+		// 		TalepNumarasi : sTalepNumarasi,
+		// 		Documentid : sDocumentId,
+		// 		Documenttype : sSelectedKey
+		// 	};
+		// 	Dokumanlar = oMainModel.getProperty("/Dokumanlar");
+		// 	Dokumanlar.push(row);
+		// 	oMainModel.setProperty("/Dokumanlar",Dokumanlar);
 			
-		},
+		// },
 		_updateIconColor : function(idTab,state)  {
 			var oIconTab = this.getView().byId(idTab);			
 			if (oIconTab) {
@@ -1228,7 +1217,7 @@ sap.ui.define([
 	        } else if (action==='Onayla') {
 	            return "sap-icon://accept";
 	        } else if (action === 'Revizyon') {
-	        	return "sap-icon://to-be-reviewed";
+	        	return "sap-icon://undo";
 	        }else if (action === 'NumuneAlinmayacak') {
 	        	return "sap-icon://decline";
 	        }else {
