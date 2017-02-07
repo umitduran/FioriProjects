@@ -317,13 +317,13 @@ sap.ui.define([
 						&& sAction!=="Iptal" 
 			            && sAction!=="NumuneTalebi") {
 				var faultData = {};
-				faultData.UrunTalebiType = {};
-				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
-				faultData.UrunTalebiType.CurrentStep = "";
-				faultData.UrunTalebiType.Action = "";	
+				faultData.UrunTalebiInType = {};
+				faultData.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
+				faultData.UrunTalebiInType.CurrentStep = "";
+				faultData.UrunTalebiInType.Action = "";	
 				//silme!
 				// var faultData = {};		
-				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiType");
+				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiInType");
 				// faultData.Fault = fault;
 				taskDataODataModel.create("/"+sAction, faultData, null, 
 					function(oData,response){
@@ -340,21 +340,21 @@ sap.ui.define([
 				var mainModel = oController.getView().getModel();
 				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");				
 				var outputData = {};
-				outputData.UrunTalebiType = {};
-				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
-				outputData.UrunTalebiType.CurrentStep = "";
+				outputData.UrunTalebiInType = {};
+				outputData.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
+				outputData.UrunTalebiInType.CurrentStep = "";
 				if (sCurrentStep==="10") {
 					var aTedarik = mainModel.getProperty('/TedarikCollection');
 					if (aTedarik) {
-						outputData.UrunTalebiType.UrunSayisi = aTedarik.length;
+						outputData.UrunTalebiInType.UrunSayisi = aTedarik.length;
 					}
 				}
 				if (!sAction) {
 					sAction = "";
 				}
-				outputData.UrunTalebiType.Action = sAction;
+				outputData.UrunTalebiInType.Action = sAction;
 				if (sCurrentStep==="20") {
-					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
+					outputData.UrunTalebiInType.UrunTedarikIlgiliKisi = ekleyen;	
 				}				
 				var sResultAction = "approve";
 				if (sAction==="Iptal") {
@@ -746,7 +746,7 @@ sap.ui.define([
 		},
 		_startBPM : function(oController, sTalepNumarasi, sUrunGrubu, sMarka) {
 			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik_"+sUrunGrubu;
-			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
+			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm2/Urun Talebi";
 			var oBPMServletModel = new JSONModel(sGroupServiceURL);
 			oBPMServletModel.attachRequestCompleted(function(oEvent) {
 				var oUrunTedarik = oBPMServletModel.getProperty("/Users");
@@ -754,17 +754,17 @@ sap.ui.define([
 				bpmStartModel.setCountSupported(false);			
 				var startData = {};
 				startData.ProcessStartEvent = {};
-				startData.ProcessStartEvent.UrunTalebiType = {};
-				startData.ProcessStartEvent.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
-				startData.ProcessStartEvent.UrunTalebiType.Marka = sMarka;
-				startData.ProcessStartEvent.UrunTalebiType.UrunTedarik = [];
+				startData.ProcessStartEvent.UrunTalebiInType = {};
+				startData.ProcessStartEvent.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
+				startData.ProcessStartEvent.UrunTalebiInType.Marka = sMarka;
+				startData.ProcessStartEvent.UrunTalebiInType.UrunTedarik = [];
 				jQuery.each(oUrunTedarik,function(key,el) {
 					var rowUrunTedarik = {
 						uniqueid : el.uniqueid,
 						name : el.name,
 						uniquename : el.uniquename
 					};
-					startData.ProcessStartEvent.UrunTalebiType.UrunTedarik.push(rowUrunTedarik);
+					startData.ProcessStartEvent.UrunTalebiInType.UrunTedarik.push(rowUrunTedarik);
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
