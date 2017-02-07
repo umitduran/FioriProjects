@@ -88,8 +88,8 @@ sap.ui.define([
 					break;
 				case "230" : 
 					this._onOnayla230(sCurrentStep);
-				case "260" :
-					this._onOnayla260(sCurrentStep);
+				case "270" :
+					this._onOnayla270(sCurrentStep);
 				default :
 					this._claimAndComplete();
 					break;
@@ -161,7 +161,7 @@ sap.ui.define([
 			});
 			this._claimAndComplete();
 		},
-		_onOnayla260 : function () {
+		_onOnayla270 : function () {
 			var oController = this;
 			var oMainModel = oController.getView().getModel();
 			var oList = oMainModel.getData().MaterialDocuments;
@@ -616,9 +616,30 @@ sap.ui.define([
 			oUrunGrubuTab.setText(sSelectedItemText);
 		},
 		onDokumantTuruChanged : function (oEvent) {
-			var oParameters = oEvent.getParameter();
+			var oMainModel = this.getView().getModel();
+			var eccModel = this.getView().getModel("ecc");
+			var oParameters = oEvent.getParameter("selectedItem");
 			var oContext = oParameters.getBindingContext("sabit");
-			var oSelectedKey = oContext.getObject().key;
+			var sSelectedKey = oContext.getObject().key;
+			var sPathType = oContext.sPath;
+			var sIndex = sPathType.substring(sPathType.lastIndexOf("/")+1);
+		
+			var sPathId = oEvent.getParameters().id;
+			var sIndexId = sPathId.substring(sPathId.lastIndexOf("-")+1);
+			var oMaterialDocuments = oMainModel.getProperty('/MaterialDocuments');
+			var sDocumentId = oMaterialDocuments[sIndexId].DocumentId;
+			var sTalepNumarasi = oMaterialDocuments[sIndexId].TalepNumarasi;
+			
+			var Dokumanlar = [];	
+
+			var row = {
+				TalepNumarasi : sTalepNumarasi,
+				Documentid : sDocumentId,
+				Documenttype : sSelectedKey
+			};
+			Dokumanlar = oMainModel.getProperty("/Dokumanlar");
+			Dokumanlar.push(row);
+			oMainModel.setProperty("/Dokumanlar",Dokumanlar);
 			
 		},
 		_updateIconColor : function(idTab,state)  {
