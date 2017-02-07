@@ -141,6 +141,9 @@ sap.ui.define([
 			if (id.endsWith('Label')) {
 				id = id.replace('Label','');
 			}
+			if (id.endsWith('Title')) {
+				id = id.replace('Title','');
+			}
 			var uiObj = that._generateUIObj(uidata,id,currentStep);			
 			
 			if (requiredElements.indexOf(type)>=0) {

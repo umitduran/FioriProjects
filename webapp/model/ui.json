@@ -388,6 +388,9 @@
 		},
 		"260" : {
 			"visible" : true
+		},
+		"270" : {
+			"visible" : true
 		}
 	},
 	"UrunTedarikTab" : {
@@ -437,9 +440,12 @@
 		},
 		"260" : {
 			"visible" : true
+		},
+		"270" : {
+			"visible" : true
 		}
 	},
-	"IlgiliDokumanlar" : {
+	"IlgiliDokumanlarUpload" : {
 		"editable" : false,
 		"visible" : false,
 		"240" : {
@@ -452,6 +458,12 @@
 		"260" : {
 			"visible" : true
 		}
+	},
+	"DokumanTurleriTable" : {
+		"visible" : false,
+		"270" : {
+			"visible" : true
+		}		
 	},
 	"OnaylaButton" : {
 		"visible" : true,

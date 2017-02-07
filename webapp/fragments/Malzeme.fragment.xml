@@ -7,66 +7,73 @@
 	<f:SimpleForm id="idMalzemeForm"
 	              editable="true" 
 	              layout="ResponsiveGridLayout" 
-	              labelSpanL="4" 
-	              labelSpanM="4" 
-	              labelSpanS="12"
+	              labelSpanL="2" 
+	              labelSpanM="2" 
+	              labelSpanS="4"
 				  columnsL="1"
-				  columnsM="2">
-		<core:Title text="{i18n>MalzemeVeIlgiliDokumanlarTitle}" />
+				  columnsM="1">
+		<core:Title text="{i18n>MalzemeTitle}" />
 		<Label id="idMalzemeLabel" text="{i18n>MalzemeLabel}"/>
 		<Input id="idMalzeme" value="{/Malzeme}">
 			<layoutData>
-				<l:GridData span="L3 M8 S12"/>
+				<l:GridData span="L4 M4 S6"/>
 			</layoutData>
 		</Input>
-		<core:Title text="" />
-
-	<Table id="idIlgiliDokumanlarTable" items="{/MaterialDocuments}">
-		<headerToolbar>
-			<Toolbar>
-				<Title text="{i18n>IlgiliDokumanlarListTitle}" level="H2"/>
-			</Toolbar>
-		</headerToolbar>	
-		<columns>
-			<Column width="24em">
-				<Text text="{i18n>ColumnDokumanName}" />
-			</Column>			
-			<Column hAlign="Right">
-				<Text text="{i18n>ColumnDokumanTuru}" />
-			</Column>
-		</columns>
-		<items>
-			<ColumnListItem>
-				<cells>		
-					<ObjectIdentifier title="{FileName}" />	
-					<ComboBox id="idDokumanTurleri"
-			        		  items="{sabit>/DokumanTurleri}"
-			        		  selectionChange="onDokumantTuruChanged">
-						<core:Item key="{sabit>key}" text="{sabit>value}" />
-					        <layoutData>
-					          <l:GridData span="L3 M3 S12"/>
-					        </layoutData>				        							
-					</ComboBox>	
-
-				</cells>
-			</ColumnListItem>
-		</items>
-		
-		
-		
-		
-	</Table>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
+		<core:Title id="idIlgiliDokumanlarUploadTitle" text="{i18n>IlgiliDokumanlarTitle}" />
+		<UploadCollection 
+			id="idIlgiliDokumanlarUpload"
+			multiple="false"
+			sameFilenameAllowed="true"
+			showSeparators="All"
+			change="onIlgiliDokumanlarUploadChange"
+			fileDeleted="onIlgiliDokumanDeleted"
+			uploadComplete="onIlgiliDokumanlarUploadComplete"
+			numberOfAttachmentsText=" "
+			uploadUrl="/logo~ui~talep/UploadServlet"
+			noDataText=" "
+			items="{/MaterialDocuments}">
+			<items>
+				<UploadCollectionItem
+					fileName="{FileName}"
+					documentId="{DocumentId}"
+					url="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}"
+					visibleEdit="false">
+				</UploadCollectionItem>
+			</items>
+			<layoutData>
+				<l:GridData span="L12 M12 S12"/>
+			</layoutData>
+		</UploadCollection>
+		<Table id="idDokumanTurleriTable" items="{/MaterialDocuments}">
+			<layoutData>
+				<l:GridData span="L12 M12 S12"/>
+			</layoutData>			
+			<columns>
+				<Column width="24em">
+					<Text text="{i18n>ColumnDokumanName}" />
+				</Column>			
+				<Column hAlign="Right">
+					<Text text="{i18n>ColumnDokumanTuru}" />
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>		
+						<Link text="{FileName}" 
+						      target="_blank" 
+						      href="/logo~ui~talep/DownloadServlet?id={DocumentId}&amp;filename={FileName}" />
+						<ComboBox id="idDokumanTurleri"
+				        		  items="{sabit>/DokumanTurleri}"
+				        		  selectionChange="onDokumantTuruChanged">
+							<core:Item key="{sabit>key}" text="{sabit>value}" />
+						        <layoutData>
+						          <l:GridData span="L3 M3 S12"/>
+						        </layoutData>				        							
+						</ComboBox>	
+	
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
 	</f:SimpleForm>
-
 </core:FragmentDefinition>
