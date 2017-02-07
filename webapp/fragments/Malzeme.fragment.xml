@@ -20,6 +20,7 @@
 			</layoutData>
 		</Input>
 		<core:Title text="" />
+
 	<Table id="idIlgiliDokumanlarTable" items="{/MaterialDocuments}">
 		<headerToolbar>
 			<Toolbar>
