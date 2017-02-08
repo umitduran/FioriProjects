@@ -385,7 +385,7 @@ sap.ui.define([
 				}
 				if (sTalepNumarasi) {
 					var sText = "("+sTalepNumarasi+")";
-					var sTitle = this.getBundleText("TalepFormuTitle", sText);
+					var sTitle = this._getBundleText("TalepFormuTitle", sText);
 					var oPage = this.getView().byId("idTalepFormuPage");
 					oPage.setTitle(sTitle);
 
@@ -593,7 +593,7 @@ sap.ui.define([
 				this.updateForms();		
 			}
 		},
-		getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+		_getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
 			var i18nModel = this.getView().getModel("i18n");
 			var oBundle = i18nModel.getResourceBundle();
 			var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
@@ -1182,13 +1182,13 @@ sap.ui.define([
 			
             eccModel.remove(sTedarikPath,{
                 success : function(oData,oResponse) {
-                    var sMessageSuccess = oController.getBundleText("RecordDeleted");
+                    var sMessageSuccess = oController._getBundleText("RecordDeleted");
                     MessageToast.show(sMessageSuccess);
                     oController._loadTalepData(sTalepNumarasi);
                     oView.setBusy(false) ;
                 },
                 error : function(oError) {
-                    var sMessageError = oController.getBundleText("ErrorOccured");
+                    var sMessageError = oController._getBundleText("ErrorOccured");
                     MessageBox.error(sMessageError);
                     oView.setBusy(false) ;
                 }
