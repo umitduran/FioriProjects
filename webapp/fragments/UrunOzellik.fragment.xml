@@ -40,6 +40,7 @@
 			height="250px"
 			densityAware="false"
 			decorative="false"/>
+
 	</f:SimpleForm>
 
 </core:FragmentDefinition>

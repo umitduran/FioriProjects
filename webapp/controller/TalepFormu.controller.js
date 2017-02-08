@@ -60,16 +60,16 @@ sap.ui.define([
 		},
 		onIptal : function() {
 			var result = this._onBeforeKaydet();
-			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {			
-				this._claimAndComplete("Iptal");
-			}
+            if (!result) {
+                var sWarning = this._getBundleText("warningMessage");
+                MessageToast.show("sWarning");
+            } else this._claimAndComplete("Iptal");
 		},
 		onOnayla : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage")
+				MessageToast.show("sWarning");
 				return;
 			}			
 			this.getView().setBusy(true);
@@ -88,8 +88,8 @@ sap.ui.define([
 					break;
 				case "230" : 
 					this._onOnayla230(sCurrentStep);
-				case "270" :
-					this._onOnayla270(sCurrentStep);
+				case "260" :
+					this._onOnayla260(sCurrentStep);
 				default :
 					this._claimAndComplete();
 					break;
@@ -108,10 +108,10 @@ sap.ui.define([
 					"Numune" : sNumuneKodu
 				},
 				success : function () {
-					
+
 				},
 				error : function () {
-					
+
 				}
 			});
 			this._claimAndComplete();
@@ -123,7 +123,7 @@ sap.ui.define([
 			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
 			var sVarisNoktasi = oMainModel.getProperty('/VarisNoktasi');
 			var sNumuneGeldi = oController.byId("idNumuneGeldi").getSelected();
-			
+
 			eccModel.callFunction("/UpdateNumuneInfo",{
 				urlParameters : {
 					"TalepNumarasi" : sTalepNumarasi,
@@ -132,10 +132,10 @@ sap.ui.define([
 					"NumuneGeldi" : sNumuneGeldi
 				},
 				success : function () {
-					
+
 				},
 				error : function () {
-					
+
 				}
 			});
 			this._claimAndComplete();
@@ -146,32 +146,43 @@ sap.ui.define([
 			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
 			var sMalzeme = oMainModel.getProperty('/Malzeme');
-			
+
 			eccModel.callFunction("/SetMalzemeKodu",{
 				urlParameters : {
 					"TalepNumarasi" : sTalepNumarasi,
 					"Malzeme" : sMalzeme
 				},
 				success : function () {
-					
+
 				},
 				error : function () {
-					
+
 				}
 			});
 			this._claimAndComplete();
 		},
-		_onOnayla270 : function () {
-			var oView = this.getView();
-			var oMainModel = oView.getModel();
-			var oDocumentList = oMainModel.getProperty("/MaterialDocuments");
-			var eccModel = oView.getModel("ecc");
+		_onOnayla260 : function () {
+			var oController = this;
+			var oMainModel = oController.getView().getModel();
+			var oList = oMainModel.getData().MaterialDocuments;
+			var eccModel = oController.getView().getModel("ecc");
+			var oDocumentList = [];
+
+			jQuery.each(oList, function (key,el) {
+				var row = {
+					TalepNumarasi : el.TalepNumarasi,
+					Documentid : el.DocumentId,
+					Documenttype : el.Documenttype
+
+				};
+				oDocumentList.push(row);
+			});
 			eccModel.create('/Dokumanlar', oDocumentList, {
 				success : function () {
-					oView.setBusy(false);
+					oController.getView().setBusy(false);
 				},
 				error : function () {
-					oView.setBusy(false);	
+					oController.getView().setBusy(false);
 				}
 			});
 		},
@@ -179,7 +190,7 @@ sap.ui.define([
 			var oController = this;
 			if (sTalepNumarasi === null) {
 				var oMainModel = oController.getView().getModel();
-				sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');            
+				sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
 			}
 			var eccModel = oController.getView().getModel("ecc");
 			eccModel.callFunction("/SetTalepStatus",{
@@ -187,15 +198,15 @@ sap.ui.define([
 				                 "Statu" : sCurrentStep,
 								 "Action" : sAction
 				},
-				success : function(oData, response) { 
-                	
-                }, 
+				success : function(oData, response) {
+
+                },
 				error : function(oError){
 					oController.getView().setBusy(false);
                 	oController._onGeneralError();
                 }
-			}); 			
-			
+			});
+
 		},
 		_onOnayla20 : function() {
 			var oController = this;
@@ -203,81 +214,81 @@ sap.ui.define([
 			var oSelectedItem = oTable.getSelectedItem();
 			if (!oSelectedItem) {
 				MessageToast.show("Ürün Tedarik tabından ürün seçmelisiniz!");
-				oController.getView().setBusy(false);   
+				oController.getView().setBusy(false);
 			} else {
-				var sPath = oSelectedItem.getBindingContextPath(); 
+				var sPath = oSelectedItem.getBindingContextPath();
 				var oMainModel = this.getView().getModel();
 				var eccModel = this.getView().getModel("ecc");
 				var oTedarikData = oMainModel.getProperty(sPath);
 				var sTedarikNumarasi = oTedarikData.TedarikNumarasi;
 				eccModel.callFunction("/SelectUrunTedarik",{
 					urlParameters : {"TedarikNumarasi" : sTedarikNumarasi  },
-					success : function(oData, response) { 
-                    	oController._claimAndComplete();	
-                    }, 
+					success : function(oData, response) {
+                    	oController._claimAndComplete();
+                    },
 					error : function(oError){
-						oController.getView().setBusy(false);                                                                     
+						oController.getView().setBusy(false);
                     	oController._onGeneralError();
                     }
-				}); 				
-				
+				});
+
 			}
 		},
 		onRevizyon : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {			
+			} else {
 				this._claimAndComplete("Revizyon");
-			}			
+			}
 		},
 		onBypass : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {			
+			} else {
 				this._claimAndComplete();
-			}			
+			}
 		},
 		onNumuneAlinmayacak : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {			
+			} else {
 				this._claimAndComplete("NumuneAlinmayacak");
-			}			
+			}
 		},
 		onFinalNumuneAlinmayacak : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {			
+			} else {
 				this._claimAndComplete("FinalNumuneAlinmayacak");
-			}			
+			}
 		},
 		onNumuneTalep : function () {
 			var result = this._onBeforeKaydet();
 			if (!result) {
 				MessageToast.show("Tüm zorunlu alanları doldurun!");
-			} else {			
-				this._claimAndComplete("NumuneTalebi");	
-			}			
+			} else {
+				this._claimAndComplete("NumuneTalebi");
+			}
 		},
 		_claimAndComplete : function(sAction) {
 			var oController = this;
-			var bpmModel = this.getView().getModel("bpm");				
+			var bpmModel = this.getView().getModel("bpm");
 			if (bpmModel) {
 				var sTaskId = bpmModel.getProperty("/TaskId");
-				var sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");	
+				var sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");
 				if (sTaskId) {
 					var aData = jQuery.ajax({
 			            type : "GET",
 			            contentType : "application/json",
-			            url : "/lib~bpmapi/TaskUtil?service=claim&taskid="+sTaskId, 
-			            async: false, 
+			            url : "/lib~bpmapi/TaskUtil?service=claim&taskid="+sTaskId,
+			            async: false,
 			            success : function(data,textStatus, jqXHR) {
 							if (data==="OK") {
-								var sCurrentStep = bpmModel.getProperty("/currentStep");								
+								var sCurrentStep = bpmModel.getProperty("/currentStep");
 								oController._completeBPM(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction);
 								if (!sAction) {
 									sAction = "Onayla";
@@ -291,43 +302,43 @@ sap.ui.define([
 			            },
 			            error : function () {
 			            	oController.getView().setBusy(false);
-			            	oController._onGeneralError;	
+			            	oController._onGeneralError;
 			            }
 					});
-				} 			
+				}
 			}
-		},		
+		},
 		_completeBPM : function(oController,sTaskId,sTalepNumarasi,sCurrentStep,sAction) {
 			var taskDataSvcURL = "/bpmodata/taskdata.svc/" + sTaskId;
 			var taskDataODataModel = new ODataModel(taskDataSvcURL, true);
-			
+
 			if (sAction && sAction!=="NumuneAlinmayacak"
-						&& sAction!=="FinalNumuneAlinmayacak" 
-						&& sAction!=="Iptal" 
+						&& sAction!=="FinalNumuneAlinmayacak"
+						&& sAction!=="Iptal"
 			            && sAction!=="NumuneTalebi") {
 				var faultData = {};
 				faultData.UrunTalebiType = {};
 				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
 				faultData.UrunTalebiType.CurrentStep = "";
-				faultData.UrunTalebiType.Action = "";	
+				faultData.UrunTalebiType.Action = "";
 				//silme!
-				// var faultData = {};		
-				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiInType");
+				// var faultData = {};
+				// var fault = taskDataODataModel.getProperty("/Revizyon('" + sTaskId + "')/UrunTalebiType");
 				// faultData.Fault = fault;
-				taskDataODataModel.create("/"+sAction, faultData, null, 
+				taskDataODataModel.create("/"+sAction, faultData, null,
 					function(oData,response){
 						oController.getRouter().navTo("result",{
 							action : 'revizyon',
 							talepno : sTalepNumarasi,
 							backbutton : false
 						});
-						
+
 					},
 					this._onGeneralError
-				);		
+				);
 			} else {
 				var mainModel = oController.getView().getModel();
-				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");				
+				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");
 				var outputData = {};
 				outputData.UrunTalebiType = {};
 				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
@@ -343,14 +354,14 @@ sap.ui.define([
 				}
 				outputData.UrunTalebiType.Action = sAction;
 				if (sCurrentStep==="20") {
-					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;	
-				}				
+					outputData.UrunTalebiType.UrunTedarikIlgiliKisi = ekleyen;
+				}
 				var sResultAction = "approve";
 				if (sAction==="Iptal") {
 					sResultAction = "cancel";
 				}
 				this.getView().setBusy(false);
-				taskDataODataModel.create("/OutputData", outputData, null, 
+				taskDataODataModel.create("/OutputData", outputData, null,
 					function(oData,response){
 						oController.getRouter().navTo("result",{
 							action : sResultAction,
@@ -359,23 +370,23 @@ sap.ui.define([
 						});
 					},
 					this._onGeneralError
-				);		
+				);
 			}
 		},
 		_onGeneralError : function(oError) {
-			//FIXME 
+			//FIXME
 			//Genel bir hata mesajı verilecek. Result sayfasına gitmeden. Popup ile verilecek.
 		},
 		_reloadTalepData : function() {
 			var oView = this.getView();
 			var oMainModel = this.getView().getModel();
-			var bpmModel = this.getView().getModel("bpm");				
+			var bpmModel = this.getView().getModel("bpm");
 			if (oMainModel) {
 				var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
 				var sCurrentStep = "";
 				if (!sTalepNumarasi) {
 					if (bpmModel) {
-						sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");				
+						sTalepNumarasi = bpmModel.getProperty("/TalepNumarasi");
 						sCurrentStep = bpmModel.getProperty("/currentStep");
 					}
 				} else {
@@ -401,8 +412,8 @@ sap.ui.define([
 			var mainModel = oComp.getModel();
 			var eccModel = oComp.getModel("ecc");
 			var sPath = '/TalepSet(\''+sTalepNumarasi+'\')';
-			
-			eccModel.read(sPath, 
+
+			eccModel.read(sPath,
 			{
 				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler,TalepToIlgiliDokumanlar,TalepToLog"},
 				success : function(oData,oResponse) {
@@ -424,29 +435,29 @@ sap.ui.define([
 					mainModel.setProperty('/Malzeme',oData.Malzeme);
 					mainModel.setProperty('/TalepNumarasi',oData.TalepNumarasi);
 					mainModel.setProperty('/TalepEden',oData.TalepEden);
-					
+
 					oController.byId("idNumuneGeldi").setSelected(oData.NumuneGeldi);
-					
+
 					var oImage = oView.byId("idGorselImage");
 					oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+oData.UrunGorseli);
-				
+
 					var oUrunGrubuTab = oView.byId("idUrunGrubuTab");
 					oUrunGrubuTab.setText(oData.TalepToMetinler.UrunGrubuAciklamasi);
-					
-					
+
+
 					var oTalepToMetinler = {};
 					mainModel.setProperty('/TalepToMetinler',oTalepToMetinler);
-					
+
 					mainModel.setProperty('/TalepToMetinler/OdemeKosuluAciklamasi',oData.TalepToMetinler.OdemeKosuluAciklamasi);
-					mainModel.setProperty('/TalepToMetinler/TeslimSekliAciklamasi',oData.TalepToMetinler.TeslimSekliAciklamasi);	
-					mainModel.setProperty('/TalepToMetinler/MarkaAciklamasi',oData.TalepToMetinler.MarkaAciklamasi);	
+					mainModel.setProperty('/TalepToMetinler/TeslimSekliAciklamasi',oData.TalepToMetinler.TeslimSekliAciklamasi);
+					mainModel.setProperty('/TalepToMetinler/MarkaAciklamasi',oData.TalepToMetinler.MarkaAciklamasi);
 					mainModel.setProperty('/TalepToMetinler/MevcutKullanici',oData.TalepToMetinler.MevcutKullanici);
-					
+
 					var sUsername = oData.TalepToMetinler.MevcutKullanici;
 					var aTedarik = [];
 					jQuery.each(oData.TalepToTedarik.results,function(key,el) {
-						var bChangeVisible = (sUsername===el.Ekleyen && 
-						                      (sCurrentStep === "10" || sCurrentStep === "40") 
+						var bChangeVisible = (sUsername===el.Ekleyen &&
+						                      (sCurrentStep === "10" || sCurrentStep === "40")
 						                     );
 						var bDeleteVisible = (sUsername===el.Ekleyen && sCurrentStep === "10");
 						var row = {
@@ -471,24 +482,24 @@ sap.ui.define([
 							if (el.Secildi==="X") {
 								row.Change = false;
 								row.Delete = false;
-								aTedarik.push(row);	
+								aTedarik.push(row);
 							}
-						} else if (sCurrentStep==="40") { 
+						} else if (sCurrentStep==="40") {
 							if (el.Secildi==="X") {
 								row.Delete = false;
-								aTedarik.push(row);	
-							}							
-						} else if (sCurrentStep==="10" || sCurrentStep==="20") { 
-							aTedarik.push(row);	
+								aTedarik.push(row);
+							}
+						} else if (sCurrentStep==="10" || sCurrentStep==="20") {
+							aTedarik.push(row);
 						} else {
 							if (el.Secildi==="X") {
-								aTedarik.push(row);	
+								aTedarik.push(row);
 							}
 						}
-						
-					}); 
+
+					});
 					mainModel.setProperty('/TedarikCollection',aTedarik);
-					
+
 					var oUrunTedarikTab = oView.byId("idUrunTedarikTab");
 					oUrunTedarikTab.setCount(aTedarik.length);
 					var oHedefUlke = oView.byId("idHedefUlke");
@@ -497,14 +508,14 @@ sap.ui.define([
 					oTedarikKisiti.destroyTokens();
 					jQuery.each(oData.TalepToUlke.results,function(key,el) {
 						var oToken = new Token(
-							{key: el.Ulke, 
+							{key: el.Ulke,
 							text: el.UlkeAdi});
 						if (el.KayitTipi==="H") {
 							oHedefUlke.addToken(oToken);
 						} else if (el.KayitTipi==="K") {
 							oTedarikKisiti.addToken(oToken);
 						}
-					}); 
+					});
 					var aYorumlar = [];
 					var oDateFormat = DateFormat.getDateTimeInstance(
 						{
@@ -521,13 +532,13 @@ sap.ui.define([
 							StatuText : el.StatuText
 						};
 						row.YorumTarihi = oDateFormat.format(row.YorumTarihi);
-						
+
 						aYorumlar.push(row);
 					});
 					mainModel.setProperty('/Yorumlar',aYorumlar);
 					//var oYorumlarTab = oView().byId("idYorumlarTab");
 					//oYorumlarTab.setCount(aYorumlar.length);
-					
+
 					var aEkler = [];
 					jQuery.each(oData.TalepToEkler.results,function(key,el) {
 						var row = {
@@ -538,7 +549,7 @@ sap.ui.define([
 						aEkler.push(row) ;
 					});
 					mainModel.setProperty('/Attachments',aEkler);
-					
+
 					var aIlgiliDocs = [];
 					jQuery.each(oData.TalepToIlgiliDokumanlar.results,function(key,el) {
 						var row = {
@@ -549,7 +560,7 @@ sap.ui.define([
 						aIlgiliDocs.push(row) ;
 					});
 					mainModel.setProperty('/MaterialDocuments',aIlgiliDocs);
-					
+
 					var aLogs = [];
 					jQuery.each(oData.TalepToLog.results,function(key,el) {
 						var row = {
@@ -563,24 +574,24 @@ sap.ui.define([
 						aLogs.push(row) ;
 					});
 					mainModel.setProperty('/LogCollection',aLogs);
-					
+
 					var oLogTab = oView.byId("idLogTab");
 					oLogTab.setCount(aLogs.length);
-					
+
 					oView.setBusy(false);
 					var oEklerTab = oView.byId("idEklerTab");
 					oEklerTab.setCount(aEkler.length);
-					oController.updateForms();	
+					oController.updateForms();
 				},
 				error : function(err) {
 					oView.setBusy(false);
-				}							
-			});			
+				}
+			});
 		},
 		getRouter : function() {
 			var oComponent = this.getOwnerComponent();
-			return oComponent.getRouter();		
-		},		
+			return oComponent.getRouter();
+		},
 		onBeforeRendering : function() {
 			var oController = this;
 			var uiModel = this.getView().getModel("ui");
@@ -590,13 +601,13 @@ sap.ui.define([
 					oController.updateForms();
 				});
 			} else {
-				this.updateForms();		
+				this.updateForms();
 			}
 		},
 		_getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
 			var i18nModel = this.getView().getModel("i18n");
 			var oBundle = i18nModel.getResourceBundle();
-			var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
+			var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);
 			return sValue;
 		},
 		onUrunGrubuChanged : function (oEvent) {
@@ -604,40 +615,19 @@ sap.ui.define([
 			var sSelectedItemText  = oEvent.getSource().getSelectedItem().getText();
 			oUrunGrubuTab.setText(sSelectedItemText);
 		},
-		// onDokumantTuruChanged : function (oEvent) {
-		// 	var oMainModel = this.getView().getModel();
-		// 	var eccModel = this.getView().getModel("ecc");
-		// 	var oParameters = oEvent.getParameter("selectedItem");
-		// 	var oContext = oParameters.getBindingContext("sabit");
-		// 	var sSelectedKey = oContext.getObject().key;
-		// 	var sPathType = oContext.sPath;
-		// 	var sIndex = sPathType.substring(sPathType.lastIndexOf("/")+1);
-		
-		// 	var sPathId = oEvent.getParameters().id;
-		// 	var sIndexId = sPathId.substring(sPathId.lastIndexOf("-")+1);
-		// 	var oMaterialDocuments = oMainModel.getProperty('/MaterialDocuments');
-		// 	var sDocumentId = oMaterialDocuments[sIndexId].DocumentId;
-		// 	var sTalepNumarasi = oMaterialDocuments[sIndexId].TalepNumarasi;
-			
-		// 	var Dokumanlar = [];	
+		onDokumantTuruChanged : function (oEvent) {
+			var oParameters = oEvent.getParameter();
+			var oContext = oParameters.getBindingContext("sabit");
+			var oSelectedKey = oContext.getObject().key;
 
-		// 	var row = {
-		// 		TalepNumarasi : sTalepNumarasi,
-		// 		Documentid : sDocumentId,
-		// 		Documenttype : sSelectedKey
-		// 	};
-		// 	Dokumanlar = oMainModel.getProperty("/Dokumanlar");
-		// 	Dokumanlar.push(row);
-		// 	oMainModel.setProperty("/Dokumanlar",Dokumanlar);
-			
-		// },
+		},
 		_updateIconColor : function(idTab,state)  {
-			var oIconTab = this.getView().byId(idTab);			
+			var oIconTab = this.getView().byId(idTab);
 			if (oIconTab) {
 				var sColor = "Positive";
 				if (!state) {
 					sColor = "Negative";
-				} 
+				}
 				oIconTab.setIconColor(sColor);
 			}
 		},
@@ -670,14 +660,14 @@ sap.ui.define([
 			}
 			var dHedefSipiarisTarihi = new Date(oModel.getProperty("/HedefSiparisTarihi"));
 			var validDate = Common.compareDate(dHedefSipiarisTarihi,new Date(),false);
-			if (!validDate) {
-				var oHedefSiparisTarihi = this.getView().byId("idHedefSiparisTarihi");
-				oHedefSiparisTarihi.setValueState(sap.ui.core.ValueState.Error);
-				oHedefSiparisTarihi.setValueStateText("Geçersiz Tarih");	
-				MessageToast.show("Hedef Sipariş Tarihi geçmiş tarih girilemez!");
-				return;
-			}
-			
+            if (!validDate) {
+                var oHedefSiparisTarihi = this.getView().byId("idHedefSiparisTarihi");
+                oHedefSiparisTarihi.setValueState(sap.ui.core.ValueState.Error);
+                oHedefSiparisTarihi.setValueStateText("Geçersiz Tarih");
+                MessageToast.show("Hedef Sipariş Tarihi geçmiş tarih girilemez!");
+                return;
+            }
+
 			var oData = oModel.getData();
 			var eModel = this.getView().getModel("ecc");
 			var oTalep = {};
@@ -686,15 +676,15 @@ sap.ui.define([
 			oTalep.UrunOzellikleri = oData.UrunOzellikleri;
 			oTalep.WebLink = oData.WebLink;
 			oTalep.OzelDurum = oData.OzelDurum;
-			oTalep.UrunGorseli = oData.UrunGorseli; 
+			oTalep.UrunGorseli = oData.UrunGorseli;
 			oTalep.HedefAdet = parseInt(oData.HedefAdet,10);
 			oTalep.HedefFiyat = parseFloat(oData.HedefFiyat).toFixed(2);
 			oTalep.HedefFiyatPB = oData.HedefFiyatPB;
 			oTalep.MinimumSiparisMiktari = parseInt(oData.MinimumSiparisMiktari,10);
-			
-			oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";                         
+
+			oTalep.HedefSiparisTarihi = oData.HedefSiparisTarihi + "T00:00:00";
 			oTalep.OdemeSekli = oData.OdemeSekli;
-			oTalep.TeslimSekli = oData.TeslimSekli;  
+			oTalep.TeslimSekli = oData.TeslimSekli;
 			oTalep.Marka = oData.Marka;
 			oTalep.TalepToYorum = [
 				{
@@ -706,7 +696,7 @@ sap.ui.define([
 					Yorum : oData.Yorum
 				}
 			];
-			
+
 			var oHedefUlke = this.getView().byId("idHedefUlke");
 			var tokens = oHedefUlke.getTokens();
 			oTalep.TalepToUlke = [];
@@ -715,66 +705,66 @@ sap.ui.define([
 				oTalep.TalepToUlke.push({
 					TalepNumarasi : '',
 					KayitTipi : 'H',
-					Ulke: key 
+					Ulke: key
 				});
-			});					
-			
-			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");			
+			});
+
+			var oTedarikKisiti = this.getView().byId("idTedarikKisiti");
 			var tokenstk = oTedarikKisiti.getTokens();
 			jQuery.each(tokenstk, function(idx,token) {
 				var key = token.getKey();
 				oTalep.TalepToUlke.push({
 					TalepNumarasi : '',
 					KayitTipi : 'K',
-					Ulke: key 
+					Ulke: key
 				});
-			});					
+			});
 			oTalep.TalepToEkler = [];
 			jQuery.each(oData.Attachments, function(key,el) {
 				var rowAttachment = {
 					TalepNumarasi : '',
 					DocumentId : el.DocumentId
 				};
-				oTalep.TalepToEkler.push(rowAttachment);	
+				oTalep.TalepToEkler.push(rowAttachment);
 			});
-			
+
 			eModel.create('/TalepSet', oTalep, {
 				success : function (oResponse) {
 					var sTalepNumarasi = oResponse.TalepNumarasi;
 					var sUrunGrubu = oResponse.UrunGrubu;
 					var sMarka = oResponse.Marka;
-					oController._startBPM(oController,sTalepNumarasi,sUrunGrubu,sMarka); 
+					oController._startBPM(oController,sTalepNumarasi,sUrunGrubu,sMarka);
 				},
 				error : function (oError) {
 					oController.getView().setBusy(false);
 					oController.getRouter().navTo("result",{
-						action  : 'error'	
+						action  : 'error'
 					});
-					
+
 				}
 			});
 		},
 		_startBPM : function(oController, sTalepNumarasi, sUrunGrubu, sMarka) {
 			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik_"+sUrunGrubu;
-			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm2/Urun Talebi";
+			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
 			var oBPMServletModel = new JSONModel(sGroupServiceURL);
 			oBPMServletModel.attachRequestCompleted(function(oEvent) {
 				var oUrunTedarik = oBPMServletModel.getProperty("/Users");
 				var bpmStartModel = new ODataModel(startURL, true);
-				bpmStartModel.setCountSupported(false);			
+				bpmStartModel.setCountSupported(false);
 				var startData = {};
 				startData.ProcessStartEvent = {};
-				startData.ProcessStartEvent.UrunTalebiInType = {};
-				startData.ProcessStartEvent.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
-				startData.ProcessStartEvent.UrunTalebiInType.Marka = sMarka;
-				startData.ProcessStartEvent.UrunTalebiInType.UrunTedarik = [];
+				startData.ProcessStartEvent.UrunTalebiType = {};
+				startData.ProcessStartEvent.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
+				startData.ProcessStartEvent.UrunTalebiType.Marka = sMarka;
+				startData.ProcessStartEvent.UrunTalebiType.UrunTedarik = [];
 				jQuery.each(oUrunTedarik,function(key,el) {
 					var rowUrunTedarik = {
 						uniqueid : el.uniqueid,
 						name : el.name,
 						uniquename : el.uniquename
 					};
-					startData.ProcessStartEvent.UrunTalebiInType.UrunTedarik.push(rowUrunTedarik);
+					startData.ProcessStartEvent.UrunTalebiType.UrunTedarik.push(rowUrunTedarik);
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
@@ -793,7 +783,7 @@ sap.ui.define([
 								backbutton : true
 							});
 						}
-				);			
+				);
 			});
 		},
 		_validateForm : function(sFormId) {
@@ -802,7 +792,7 @@ sap.ui.define([
 			var oMainForm = this.getView().byId(sFormId);
 			var bpmModel = this.getView().getModel("bpm");
 			if (!bpmModel) {
-				bpmModel = new JSONModel();	
+				bpmModel = new JSONModel();
 			}
 			return Common.validateAll(oMainForm,oUIModel,bpmModel,oMainModel);
 		},
@@ -811,8 +801,8 @@ sap.ui.define([
 			this.updateForm("idUrunOzellikForm");
 			this.updateForm("idGenelBilgilerForm");
 			this.updateForm("idYorumlarForm");
-			this.updateForm("idEklerForm");	
-			this.updateForm("idMainTabBar");	
+			this.updateForm("idEklerForm");
+			this.updateForm("idMainTabBar");
 			this.updateForm("idFooterToolbar");
 			this.updateForm("idNumuneForm");
 			this.updateForm("idMalzemeForm");
@@ -833,51 +823,51 @@ sap.ui.define([
 			var sFilename = oEvent.mParameters.mParameters.newValue;// eslint-disable-line
 			var uc = oEvent.getSource();
 			var fileUploader = uc._oFileUploader;
-			fileUploader.addHeaderParameter( 
+			fileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "filename",
 						value : encodeURI(sFilename)
-					}) 
-				);		
-			fileUploader.addHeaderParameter( 
+					})
+				);
+			fileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "objid",
 						value : sTalepNumarasi
-					}) 
-				);				
-			fileUploader.addHeaderParameter( 
+					})
+				);
+			fileUploader.addHeaderParameter(
 				new sap.ui.unified.FileUploaderParameter({
 					name : "type",
-					value : "TUID" //Ticari Urun İlgili Doküman 
-				}) 
-			);					
+					value : "TUID" //Ticari Urun İlgili Doküman
+				})
+			);
 		},
 		onFileUploadChange : function(evt) {
 			var uc = evt.getSource();
-	
+
 			var filename = evt.mParameters.mParameters.newValue;// eslint-disable-line
-			
+
 			var objid = jQuery.sap.uid();
-			var fileUploader = uc._oFileUploader;		
-			fileUploader.addHeaderParameter( 
+			var fileUploader = uc._oFileUploader;
+			fileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "filename",
 						value : encodeURI(filename)
-					}) 
-				);		
-			fileUploader.addHeaderParameter( 
+					})
+				);
+			fileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "objid",
 						value : objid
-					}) 
+					})
 				);
-			fileUploader.addHeaderParameter( 
+			fileUploader.addHeaderParameter(
 				new sap.ui.unified.FileUploaderParameter({
 					name : "type",
-					value : "TUEK" //Ticari Urun Ek 
-				}) 
-			);					
-		},		
+					value : "TUEK" //Ticari Urun Ek
+				})
+			);
+		},
 		onIlgiliDokumanDeleted : function(oEvent) {
 			var oMainModel = this.getView().getModel();
 			var src = oEvent.getSource();
@@ -893,7 +883,7 @@ sap.ui.define([
 			});
 			var fileName = item.getFileName();
 			var documentId = item.getDocumentId();
-			
+
 			var response = Common.deleteFile(documentId);
 			if (response==="OK") {
 				MessageBox.show(fileName+" dosyası silindi."+documentId);
@@ -902,9 +892,9 @@ sap.ui.define([
 				oMainModel.setProperty('/MaterialDocuments',aEkler);
 			} else {
 				MessageBox.show("Hata oluştu :"+response);
-			}					
-			//this.deleteFileSAP(documentId,idx,fileName,fileType);			
-		},		
+			}
+			//this.deleteFileSAP(documentId,idx,fileName,fileType);
+		},
 		onFileDeleted : function(oEvent) {
 			var oMainModel = this.getView().getModel();
 			var src = oEvent.getSource();
@@ -920,7 +910,7 @@ sap.ui.define([
 			});
 			var fileName = item.getFileName();
 			var documentId = item.getDocumentId();
-			
+
 			var response = Common.deleteFile(documentId);
 			if (response==="OK") {
 				MessageBox.show(fileName+" dosyası silindi."+documentId);
@@ -929,10 +919,10 @@ sap.ui.define([
 				oMainModel.setProperty('/Attachments',aEkler);
 			} else {
 				MessageBox.show("Hata oluştu :"+response);
-			}					
+			}
 		},
 		onGorselUploadChange : function (oEvent) {
-			this.handleGorselUpload(oEvent);	
+			this.handleGorselUpload(oEvent);
 		},
 		handleGorselUpload : function(oEvent) {
 			var oModel = this.getView().getModel();
@@ -946,26 +936,26 @@ sap.ui.define([
 			var objid = jQuery.sap.uid();
 			//var filename = evt.mParameters.mParameters.newValue;
 			oFileUploader.removeAllHeaderParameters();
-			oFileUploader.addHeaderParameter( 
+			oFileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "filename",
 						value : encodeURI(filename)
-					}) 
-				);		
-			oFileUploader.addHeaderParameter( 
+					})
+				);
+			oFileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "objid",
 						value : objid
-					}) 
-				);		
-			oFileUploader.addHeaderParameter( 
+					})
+				);
+			oFileUploader.addHeaderParameter(
 					new sap.ui.unified.FileUploaderParameter({
 						name : "type",
-						value : "TUGO" //Ticari Ürün Görsel 
-					}) 
-				);					
+						value : "TUGO" //Ticari Ürün Görsel
+					})
+				);
 			oFileUploader.setSendXHR(true);
-			oFileUploader.upload();			
+			oFileUploader.upload();
 		},
 		onGorselUploadComplete : function(oEvent) {
 			var sResponse = oEvent.getParameter("responseRaw");
@@ -979,7 +969,7 @@ sap.ui.define([
 			// 	var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
 			// 	sUploadedFile = aUploadedFile[0];
 			// }
-			
+
 			if (sStatus !== 200) {
 				sResponse = sResponse.length > 50 ? sResponse.substring(0, 50) + "..." : sResponse;
 				MessageToast.show("Hata oluştu :"+sResponse);
@@ -995,12 +985,12 @@ sap.ui.define([
 				oModel.setProperty("/UrunGorseli",sResponse);
 				var oImage = this.getView().byId("idGorselImage");
 				oImage.setSrc("/logo~ui~talep/DownloadServlet?id="+sResponse+"&amp;filename="+sFilename);
-			}	
-			
+			}
+
 		},
 		onIlgiliDokumanlarUploadComplete : function(oEvent) {
 			var params = oEvent.getParameters();
-			var status = params.getParameter("status");		
+			var status = params.getParameter("status");
 			var response = params.getParameter("responseRaw");
 			var files = oEvent.getParameter("files");
 			var sUploadedFile;
@@ -1011,7 +1001,7 @@ sap.ui.define([
 				var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
 				sUploadedFile = aUploadedFile[0];
 			}
-			
+
 			var mainModel = this.getView().getModel();
 			var collection = mainModel.getProperty("/MaterialDocuments");
 			if (!collection) {
@@ -1021,30 +1011,30 @@ sap.ui.define([
 
 			if (status !== 200) {
 				MessageToast.show("Hata oluştu :"+response);
-				collection.push({});			
-				mainModel.setProperty("/MaterialDocuments",collection);		
+				collection.push({});
+				mainModel.setProperty("/MaterialDocuments",collection);
 				collection.pop();
-				mainModel.setProperty("/MaterialDocuments",collection);		
+				mainModel.setProperty("/MaterialDocuments",collection);
 			} else if (response.search("User authentication failed")>0) {
 				MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
-				collection.push({});			
-				mainModel.setProperty("/MaterialDocuments",collection);		
+				collection.push({});
+				mainModel.setProperty("/MaterialDocuments",collection);
 				collection.pop();
-				mainModel.setProperty("/MaterialDocuments",collection);		
+				mainModel.setProperty("/MaterialDocuments",collection);
 			} else {
 				var row = {
-					ProcessNo : "",				
+					ProcessNo : "",
 					DocumentId : response,
 					FileName : sUploadedFile
-				};			
+				};
 				collection.unshift(row);
 				mainModel.setProperty("/MaterialDocuments",collection);
 				//this.saveFileDataSAP(row);
-			}			
-		}, 
+			}
+		},
 		onFileUploadComplete : function(oEvent) {
 			var params = oEvent.getParameters();
-			var status = params.getParameter("status");		
+			var status = params.getParameter("status");
 			var response = params.getParameter("responseRaw");
 			var files = oEvent.getParameter("files");
 			var sUploadedFile;
@@ -1055,7 +1045,7 @@ sap.ui.define([
 				var aUploadedFile = (oEvent.getParameters().getSource().getProperty("value")).split(/\" "/);
 				sUploadedFile = aUploadedFile[0];
 			}
-			
+
 			var mainModel = this.getView().getModel();
 			var collection = mainModel.getProperty("/Attachments");
 			if (!collection) {
@@ -1065,26 +1055,26 @@ sap.ui.define([
 
 			if (status !== 200) {
 				MessageToast.show("Hata oluştu :"+response);
-				collection.push({});			
-				mainModel.setProperty("/Attachments",collection);		
+				collection.push({});
+				mainModel.setProperty("/Attachments",collection);
 				collection.pop();
-				mainModel.setProperty("/Attachments",collection);		
+				mainModel.setProperty("/Attachments",collection);
 			} else if (response.search("User authentication failed")>0) {
 				MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
-				collection.push({});			
-				mainModel.setProperty("/Attachments",collection);		
+				collection.push({});
+				mainModel.setProperty("/Attachments",collection);
 				collection.pop();
-				mainModel.setProperty("/Attachments",collection);		
+				mainModel.setProperty("/Attachments",collection);
 			} else {
 				var row = {
-					ProcessNo : "",				
+					ProcessNo : "",
 					DocumentId : response,
 					FileName : sUploadedFile
-				};			
+				};
 				collection.unshift(row);
 				mainModel.setProperty("/Attachments",collection);
 				//this.saveFileDataSAP(row);
-			}			
+			}
 		},
 		handleUrunGrubuValueHelp : function(oEvent) {
 			var oModel = this.getView().getModel("genel");
@@ -1098,13 +1088,13 @@ sap.ui.define([
 			var oModel = this.getView().getModel("genel");
 			Common.handleValueHelp(this,oEvent.getSource(),null,"UlkeKodu","UlkeAdi",oModel,"/UlkeSet",this.getView(),"Ülke");
 		},
-		
+
 		handleOdemeSekliValueHelp : function(oEvent) {
 			var oModel = this.getView().getModel("genel");
 			var textEl = this.getView().byId("idOdemeSekliAdi");
 			Common.handleValueHelp(this,oEvent.getSource(),textEl,"OdemeKosuluKodu","OdemeKosuluAciklamasi",oModel,"/OdemeKosuluSet",this.getView(),"Ödeme Şekli");
 		},
-		
+
 		handleTeslimSekliValueHelp : function(oEvent) {
 			var oModel = this.getView().getModel("genel");
 			var textEl = this.getView().byId("idTeslimSekliAdi");
@@ -1114,24 +1104,24 @@ sap.ui.define([
 			var oModel = this.getView().getModel("genel");
 			var textEl = this.getView().byId("idMarkaAdi");
 			Common.handleValueHelp(this,oEvent.getSource(),textEl,"MarkaKodu","Aciklama",oModel,"/MarkalarSet",this.getView(),"Marka");
-			
+
 		},
 		_yorumEkle : function () {
 			var oController = this;
 			var oModel = oController.getView().getModel();
 			var eccModel = oController.getView().getModel("ecc");
 			var sTalepNumarasi = oModel.getProperty("/TalepNumarasi");
-			var sYorum = oModel.getProperty("/Yorum");				
+			var sYorum = oModel.getProperty("/Yorum");
 			var bpmModel = this.getView().getModel("bpm");
 			var sCurrentStep = bpmModel.getProperty("/currentStep");
-			
+
 			eccModel.callFunction("/YorumEkle",{
 				urlParameters : {
-					"TalepNumarasi" : sTalepNumarasi , 
+					"TalepNumarasi" : sTalepNumarasi ,
 					"Yorum"  :  sYorum,
 					"Statu" : sCurrentStep
 				},
-				success : function(oData, response) { 
+				success : function(oData, response) {
 					// var row = {};
 					// var oDateFormat = DateFormat.getDateTimeInstance(
 					// 	{
@@ -1145,11 +1135,11 @@ sap.ui.define([
 					// oModel.oData.Yorumlar.push(row);
 					// oModel.refresh(true);
 					// oController.byId("idComment").setValue("");
-                }, 
+                },
 				error : function(oError){
                 	oController._onGeneralError(oError);
                 }
-			}); 
+			});
 		},
 		onUrunEkle : function(oEvent) {
 			this.getRouter().navTo("tedarikformuekle");
@@ -1157,7 +1147,7 @@ sap.ui.define([
 		onDisplayTedarik : function(oEvent) {
 			var oButton = oEvent.getSource();
 			var oItem = oButton.getParent();
-			var sPath = oItem.getBindingContextPath(); 
+			var sPath = oItem.getBindingContextPath();
 			var sIndex = sPath.substring(sPath.lastIndexOf("/")+1);
 			this.getRouter().navTo("tedarikformu",{
 				action : 'display',
@@ -1168,8 +1158,8 @@ sap.ui.define([
 			var oController = this;
 			var oView = this.getView();
 			var oButton = oEvent.getSource();
-			var oItem = oButton.getParent();			
-			var sPath = oItem.getBindingContextPath(); 			
+			var oItem = oButton.getParent();
+			var sPath = oItem.getBindingContextPath();
 			var oModel = this.getView().getModel();
 			var oTedarikData = oModel.getProperty(sPath);
 			var sTalepNumarasi = oTedarikData.TalepNumarasi;
@@ -1179,7 +1169,7 @@ sap.ui.define([
 			                   'TedarikNumarasi=\''+sTedarikNumarasi+'\')';
 			var eccModel = this.getView().getModel("ecc");
 			oView.setBusy(true);
-			
+
             eccModel.remove(sTedarikPath,{
                 success : function(oData,oResponse) {
                     var sMessageSuccess = oController._getBundleText("RecordDeleted");
@@ -1192,15 +1182,15 @@ sap.ui.define([
                     MessageBox.error(sMessageError);
                     oView.setBusy(false) ;
                 }
-            });		
+            });
 		},
 		onChangeTedarik : function(oEvent) {
 			var bpmModel = this.getView().getModel("bpm");
 			var sCurrentStep = bpmModel.getProperty("/currentStep");
-			
+
 			var oButton = oEvent.getSource();
 			var oItem = oButton.getParent();
-			var sPath = oItem.getBindingContextPath(); 
+			var sPath = oItem.getBindingContextPath();
 			var sIndex = sPath.substring(sPath.lastIndexOf("/")+1);
 			var sAction = "change";
 			if (sCurrentStep==="40") {
@@ -1217,7 +1207,7 @@ sap.ui.define([
 	        } else if (action==='Onayla') {
 	            return "sap-icon://accept";
 	        } else if (action === 'Revizyon') {
-	        	return "sap-icon://undo";
+	        	return "sap-icon://to-be-reviewed";
 	        }else if (action === 'NumuneAlinmayacak') {
 	        	return "sap-icon://decline";
 	        }else {
