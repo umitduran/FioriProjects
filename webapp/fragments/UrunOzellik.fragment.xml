@@ -30,6 +30,8 @@
 			change="onGorselUploadChange"
 			useMultipart="false"
 			style="Emphasized"
+			maximumFileSize="50"
+			fileSizeExceed = "isFileSizeExceed"
 			placeholder="{i18n>GorselUploadText}">
 			<u:layoutData>
 				<l:GridData span="L12 M12 S12"/>

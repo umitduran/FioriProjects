@@ -70,7 +70,7 @@ sap.ui.define([
 		onOnayla : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				var sWarning = this._getBundleText("sWarning");
+				var sWarning = this._getBundleText("warningMessage");
 				MessageToast.show(sWarning);
 				return;
 			}			
@@ -177,6 +177,8 @@ sap.ui.define([
 			});
 			if (checkEmpty) {
 				//FIXME hata mesajı ekle.
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.shows(sWarning);
 				return;
 			}
 			var eccModel = oController.getView().getModel("ecc");
@@ -782,17 +784,17 @@ sap.ui.define([
 				bpmStartModel.setCountSupported(false);
 				var startData = {};
 				startData.ProcessStartEvent = {};
-				startData.ProcessStartEvent.UrunTalebiType = {};
-				startData.ProcessStartEvent.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
-				startData.ProcessStartEvent.UrunTalebiType.Marka = sMarka;
-				startData.ProcessStartEvent.UrunTalebiType.UrunTedarik = [];
+				startData.ProcessStartEvent.UrunTalebiInType = {};
+				startData.ProcessStartEvent.UrunTalebiInType.TalepNumarasi = sTalepNumarasi;
+				startData.ProcessStartEvent.UrunTalebiInType.Marka = sMarka;
+				startData.ProcessStartEvent.UrunTalebiInType.UrunTedarik = [];
 				jQuery.each(oUrunTedarik,function(key,el) {
 					var rowUrunTedarik = {
 						uniqueid : el.uniqueid,
 						name : el.name,
 						uniquename : el.uniquename
 					};
-					startData.ProcessStartEvent.UrunTalebiType.UrunTedarik.push(rowUrunTedarik);
+					startData.ProcessStartEvent.UrunTalebiInType.UrunTedarik.push(rowUrunTedarik);
 				});
 				bpmStartModel.create("/StartData",startData,null,
 						function (oData,response) {
@@ -1268,6 +1270,10 @@ sap.ui.define([
 	            return "#000000";
 	        }
 	    },
+	    isFileSizeExceed : function () {
+	    	var sWarning  = this._getBundleText("uploadError");
+	    	MessageToast.show(sWarning);
+	    },
 	    validateInput : function () {
 	    	var sNumber = this.byId("idHedefFiyat").getValue();
 	    	if (this._isNumber(sNumber) === false) {
@@ -1280,8 +1286,7 @@ sap.ui.define([
 		remainLetter : function () {
 			var textMax = 200;
 			var textLength = this.byId("idComment").getValue().length;
-			var textRemainig = textMax - textLength;
-			this.byId("idCountLetter").setText("/"+textRemainig);
+			this.byId("idCountLetter").setText(textLength+"/"+"200");
 		},
 		onUploadTestData : function () {
 			//FIXME
