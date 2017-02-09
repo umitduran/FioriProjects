@@ -49,7 +49,7 @@
 				<l:GridData span="L12 M12 S12"/>
 			</layoutData>			
 			<columns>
-				<Column width="24em">
+				<Column>
 					<Text text="{i18n>ColumnDokumanName}" />
 				</Column>			
 				<Column hAlign="Right">

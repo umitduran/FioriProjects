@@ -90,8 +90,10 @@ sap.ui.define([
 					break;
 				case "230" : 
 					this._onOnayla230(sCurrentStep);
-				case "260" :
-					this._onOnayla260(sCurrentStep);
+					break;
+				case "270" :
+					this._onOnayla270(sCurrentStep);
+					break;
 				default :
 					this._claimAndComplete();
 					break;
@@ -163,29 +165,44 @@ sap.ui.define([
 			});
 			this._claimAndComplete();
 		},
-		_onOnayla260 : function () {
+		_onOnayla270 : function () {
 			var oController = this;
 			var oMainModel = oController.getView().getModel();
-			var oList = oMainModel.getData().MaterialDocuments;
+			var oList = oMainModel.getProperty("/MaterialDocuments");
+			var checkEmpty = false;
+			jQuery.each(oList, function (key,el) {			
+				if (!el.DocumentType) {
+					checkEmpty = true; 	
+				}
+			});
+			if (checkEmpty) {
+				//FIXME hata mesajı ekle.
+				return;
+			}
 			var eccModel = oController.getView().getModel("ecc");
-			var oDocumentList = [];
-
+			var iCounter = 0;
+			var iListSize = oList.length;
 			jQuery.each(oList, function (key,el) {
 				var row = {
 					TalepNumarasi : el.TalepNumarasi,
-					Documentid : el.DocumentId,
-					Documenttype : el.Documenttype
-
+					DocumentId : el.DocumentId,
+					DocumentType : el.DocumentType
 				};
-				oDocumentList.push(row);
-			});
-			eccModel.create('/Dokumanlar', oDocumentList, {
-				success : function () {
-					oController.getView().setBusy(false);
-				},
-				error : function () {
-					oController.getView().setBusy(false);
-				}
+				eccModel.create('/DokumanlarSet', row, {
+					success : function () {
+						iCounter++;
+						if (iCounter===iListSize) {
+							oController.getView().setBusy(false);
+						}
+					},
+					error : function () {
+						iCounter++;
+						if (iCounter===iListSize) {
+							oController.getView().setBusy(false);
+						}
+					}
+				});
+				
 			});
 		},
 		_setSAPStatus : function(sCurrentStep,sTalepNumarasi,sAction) {

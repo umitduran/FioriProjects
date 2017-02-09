@@ -452,6 +452,9 @@
 			"editable" : true,
 			"visible" : true
 		},
+		"230" : {
+			"visible" : true
+		},
 		"250" : {
 			"visible" : true
 		},
