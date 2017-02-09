@@ -19,7 +19,8 @@
 											formatOptions: {
 												minFractionDigits: 2
 											}
-										}" >
+										}" 
+								liveChange="validateInput">
 	        <layoutData>
 	          <l:GridData span="L5 M5 S12"/>
 	        </layoutData>			

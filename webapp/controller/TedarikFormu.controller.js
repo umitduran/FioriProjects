@@ -135,7 +135,8 @@ sap.ui.define([
 				var result = this._onBeforeKaydet();
 				if (!result) {
 					oController.getView().setBusy(false);
-					MessageToast.show("Tüm zorunlu alanları doldurun!");
+					var sWarningMessage = this._getBundleText("warningMessage");
+					MessageToast.show(sWarningMessage);
 					return;
 				} else {
 					var mainModel = this.getView().getModel();
@@ -162,7 +163,7 @@ sap.ui.define([
 					eModel.create('/TedarikSet', oTedarik, {
 						success : function (oResponse) {
 							oController.getView().setBusy(false);
-							var sMessageSuccess = oController.getBundleText("TedarikSuccess");
+							var sMessageSuccess = oController._getBundleText("TedarikSuccess");
 							MessageToast.show(sMessageSuccess,{duration : 3000});
 							oController.byId("idGorselImageTedarik").setSrc("");
 							oController.byId("idGorselUploadTedarik").setValue("");
@@ -170,14 +171,14 @@ sap.ui.define([
 						},
 						error  : function (oError) {
 							oController.getView().setBusy(false);
-							var sMessageError = oController.getBundleText("TedarikError");
+							var sMessageError = oController._getBundleText("TedarikError");
 							MessageToast.show(sMessageError);
 						}
 					});
 					
 				}
 			},
-			getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
+			_getBundleText : function (sKey,sParameter1,sParameter2,sParameter3,sParameter4) {
 				var i18nModel = this.getView().getModel("i18n");
 				var oBundle = i18nModel.getResourceBundle();
 				var sValue = oBundle.getText(sKey, [sParameter1,sParameter2,sParameter3,sParameter4]);	
@@ -186,16 +187,21 @@ sap.ui.define([
 			onGorselUploadComplete : function (oEvent) {
 				var sResponse = oEvent.getParameter("responseRaw");
 				var sStatus = oEvent.getParameter("status");
+				var sWarningMessage;
 				if (sStatus !== 200) {
 					sResponse = sResponse.length > 50 ? sResponse.substring(0, 50) + "..." : sResponse;
-					MessageToast.show("Hata oluştu :"+sResponse);
+					sWarningMessage = this._getBundleText("ErrorMessage");
+					MessageToast.show(sWarningMessage+" :"+sResponse);
 				} else if (sResponse.search("User authentication failed")>0) {
-					MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
+					sWarningMessage = this._getBundleText("enterMessage");
+					MessageToast.show(sWarningMessage);
 				} else if (sResponse.search("An unexpected problem has occurred")>0 ||
 						   sResponse.search("Application error occurred during the request processing")>0) {
-					MessageToast.show("Dosya yükleme sırasında hata oluştu.");
+					sWarningMessage = this._getBundleText("loadingError");	   	
+					MessageToast.show(sWarningMessage);
 				} else {
-					MessageToast.show("Dosya başarı ile yüklendi :"+sResponse);
+					sWarningMessage = this._getBundleText("loadingSuccess");
+					MessageToast.show(sWarningMessage+" :"+sResponse);
 					var oModel = this.getView().getModel("tedarik");
 					var sFilename = oModel.getProperty("/GorselFileName");
 					oModel.setProperty("/UrunGorseli",sResponse);
@@ -213,7 +219,8 @@ sap.ui.define([
 				var type = "TUTD";			
 				var filename = oFileUploader.getValue();
 				if (!filename) {
-					MessageToast.show("Lütfen dosya seçiniz!");
+					var sWarningMessage = this._getBundleText("chooseFile");
+					MessageToast.show(sWarningMessage);
 				} else {
 					oModel.setProperty("/GorselFileName",filename);
 				}

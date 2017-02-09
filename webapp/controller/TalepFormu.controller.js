@@ -62,14 +62,16 @@ sap.ui.define([
 			var result = this._onBeforeKaydet();
             if (!result) {
                 var sWarning = this._getBundleText("warningMessage");
-                MessageToast.show("sWarning");
-            } else this._claimAndComplete("Iptal");
+                MessageToast.show(sWarning);
+            } else {
+            	this._claimAndComplete("Iptal");
+            }
 		},
 		onOnayla : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				var sWarning = this._getBundleText("warningMessage")
-				MessageToast.show("sWarning");
+				var sWarning = this._getBundleText("sWarning");
+				MessageToast.show(sWarning);
 				return;
 			}			
 			this.getView().setBusy(true);
@@ -213,7 +215,8 @@ sap.ui.define([
 			var oTable = this.getView().byId("idUrunTedarikTable");
 			var oSelectedItem = oTable.getSelectedItem();
 			if (!oSelectedItem) {
-				MessageToast.show("Ürün Tedarik tabından ürün seçmelisiniz!");
+				var sWarning = this._getBundleText("urunSecMessage");
+				MessageToast.shows(sWarning);
 				oController.getView().setBusy(false);
 			} else {
 				var sPath = oSelectedItem.getBindingContextPath();
@@ -237,7 +240,8 @@ sap.ui.define([
 		onRevizyon : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
 			} else {
 				this._claimAndComplete("Revizyon");
 			}
@@ -245,7 +249,8 @@ sap.ui.define([
 		onBypass : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
 			} else {
 				this._claimAndComplete();
 			}
@@ -253,7 +258,8 @@ sap.ui.define([
 		onNumuneAlinmayacak : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
 			} else {
 				this._claimAndComplete("NumuneAlinmayacak");
 			}
@@ -261,7 +267,8 @@ sap.ui.define([
 		onFinalNumuneAlinmayacak : function() {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
 			} else {
 				this._claimAndComplete("FinalNumuneAlinmayacak");
 			}
@@ -269,7 +276,8 @@ sap.ui.define([
 		onNumuneTalep : function () {
 			var result = this._onBeforeKaydet();
 			if (!result) {
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
 			} else {
 				this._claimAndComplete("NumuneTalebi");
 			}
@@ -655,7 +663,8 @@ sap.ui.define([
 			var result = this._onBeforeKaydet();
 			if (!result) {
 				oController.getView().setBusy(false);
-				MessageToast.show("Tüm zorunlu alanları doldurun!");
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
 				return;
 			}
 			var dHedefSipiarisTarihi = new Date(oModel.getProperty("/HedefSiparisTarihi"));
@@ -663,8 +672,10 @@ sap.ui.define([
             if (!validDate) {
                 var oHedefSiparisTarihi = this.getView().byId("idHedefSiparisTarihi");
                 oHedefSiparisTarihi.setValueState(sap.ui.core.ValueState.Error);
-                oHedefSiparisTarihi.setValueStateText("Geçersiz Tarih");
-                MessageToast.show("Hedef Sipariş Tarihi geçmiş tarih girilemez!");
+                sWarning = this._getBundleText("invalidDate");
+                oHedefSiparisTarihi.setValueStateText(sWarning);
+                sWarning = this._getBundleText("dateWarning");
+                MessageToast.show(sWarning);
                 return;
             }
 
@@ -902,6 +913,7 @@ sap.ui.define([
 			var items = src.getItems();
 			var item;
 			var idx;
+			var sWarning;
 			jQuery.each(items, function(key,val) {
 				if (val.getId()===sDeletedItemId) {
 					item = val;
@@ -913,12 +925,14 @@ sap.ui.define([
 
 			var response = Common.deleteFile(documentId);
 			if (response==="OK") {
-				MessageBox.show(fileName+" dosyası silindi."+documentId);
+				sWarning = this._getBundleText("fileDeleted");
+				MessageBox.show(fileName+sWarning+documentId);
 				var aEkler = oMainModel.getProperty('/Attachments');
 				aEkler.splice(idx,1);
 				oMainModel.setProperty('/Attachments',aEkler);
 			} else {
-				MessageBox.show("Hata oluştu :"+response);
+				sWarning = this._getBundleText("ErrorMessage");
+				MessageBox.show(sWarning + " :"+response);
 			}
 		},
 		onGorselUploadChange : function (oEvent) {
@@ -929,7 +943,8 @@ sap.ui.define([
 			var oFileUploader = this.getView().byId("idGorselUpload");
 			var filename = oFileUploader.getValue();
 			if (!filename) {
-				MessageToast.show("Lütfen dosya seçiniz!");
+				var sWarning = this._getBundleText("chooseFile");
+				MessageToast.show(sWarning);
 			} else {
 				oModel.setProperty("/GorselFileName",filename);
 			}
@@ -960,6 +975,7 @@ sap.ui.define([
 		onGorselUploadComplete : function(oEvent) {
 			var sResponse = oEvent.getParameter("responseRaw");
 			var sStatus = oEvent.getParameter("status");
+			var sWarningMessage;
 			//var files = oEvent.getParameter("files");
 			// var sUploadedFile;
 			// if (files) {
@@ -972,14 +988,18 @@ sap.ui.define([
 
 			if (sStatus !== 200) {
 				sResponse = sResponse.length > 50 ? sResponse.substring(0, 50) + "..." : sResponse;
-				MessageToast.show("Hata oluştu :"+sResponse);
+				sWarningMessage = this._getBundleText("ErrorMessage");
+				MessageToast.show(sWarningMessage+" :"+sResponse);
 			} else if (sResponse.search("User authentication failed")>0) {
-				MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
+				sWarningMessage = this._getBundleText("enterMessage");
+				MessageToast.show(sWarningMessage);
 			} else if (sResponse.search("An unexpected problem has occurred")>0 ||
 					   sResponse.search("Application error occurred during the request processing")>0) {
-				MessageToast.show("Dosya yükleme sırasında hata oluştu.");
+				sWarningMessage = this._getBundleText("loadingError");	   	
+				MessageToast.show(sWarningMessage);
 			} else {
-				MessageToast.show("Dosya başarı ile yüklendi :"+sResponse);
+				sWarningMessage = this._getBundleText("loadingSuccess");
+				MessageToast.show(sWarningMessage+" :"+sResponse);
 				var oModel = this.getView().getModel();
 				var sFilename = oModel.getProperty("/GorselFileName");
 				oModel.setProperty("/UrunGorseli",sResponse);
@@ -994,6 +1014,7 @@ sap.ui.define([
 			var response = params.getParameter("responseRaw");
 			var files = oEvent.getParameter("files");
 			var sUploadedFile;
+			var sWarningMessage;
 			if (files) {
 				sUploadedFile = oEvent.getParameter("files")[0].fileName;
 			}
@@ -1010,13 +1031,15 @@ sap.ui.define([
 			}
 
 			if (status !== 200) {
-				MessageToast.show("Hata oluştu :"+response);
+				sWarningMessage = this._getBundleText("ErrorMessage");
+				MessageToast.show(sWarningMessage+" :"+response);
 				collection.push({});
 				mainModel.setProperty("/MaterialDocuments",collection);
 				collection.pop();
 				mainModel.setProperty("/MaterialDocuments",collection);
 			} else if (response.search("User authentication failed")>0) {
-				MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
+				sWarningMessage = this._getBundleText("enterMessage");
+				MessageToast.show(sWarningMessage);
 				collection.push({});
 				mainModel.setProperty("/MaterialDocuments",collection);
 				collection.pop();
@@ -1060,7 +1083,8 @@ sap.ui.define([
 				collection.pop();
 				mainModel.setProperty("/Attachments",collection);
 			} else if (response.search("User authentication failed")>0) {
-				MessageToast.show("Kullanıcı oturumu kapalı. Sisteme yeniden giriş yapınız.");
+				var sWarningMessage = this._getBundleText("enterMessage");
+				MessageToast.show(sWarningMessage);
 				collection.push({});
 				mainModel.setProperty("/Attachments",collection);
 				collection.pop();
@@ -1207,7 +1231,7 @@ sap.ui.define([
 	        } else if (action==='Onayla') {
 	            return "sap-icon://accept";
 	        } else if (action === 'Revizyon') {
-	        	return "sap-icon://to-be-reviewed";
+	        	return "sap-icon://undo";
 	        }else if (action === 'NumuneAlinmayacak') {
 	        	return "sap-icon://decline";
 	        }else {
@@ -1227,9 +1251,21 @@ sap.ui.define([
 	            return "#000000";
 	        }
 	    },
-	    titleClicked : function () {
-	    
+	    validateInput : function () {
+	    	var sNumber = this.byId("idHedefFiyat").getValue();
+	    	if (this._isNumber(sNumber) === false) {
+	    		this.byId("idHedefFiyat").setValue("");
+	    	}
 	    },
+	    _isNumber : function (n) {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		},
+		remainLetter : function () {
+			var textMax = 200;
+			var textLength = this.byId("idComment").getValue().length;
+			var textRemainig = textMax - textLength;
+			this.byId("idCountLetter").setText("/"+textRemainig);
+		},
 		onUploadTestData : function () {
 			//FIXME
 			// var oModel = this.getView().getModel();

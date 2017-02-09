@@ -14,11 +14,16 @@
 				columnsL="1"
 				columnsM="1">
 		<core:Title text="{i18n>YorumlarTitle}" />
-	 	<TextArea id="idComment"  value="{/Yorum}" width="100%" maxLength="200" rows="5">
+	 	<TextArea id="idComment"  value="{/Yorum}" width="100%" maxLength="200" rows="5" liveChange="remainLetter">
 			<layoutData>
 				<l:GridData span="L12 M12 S12"/>
 			</layoutData>
 	 	</TextArea>
+	 	<Text id="idCountLetter" text="/200" textAlign="Right">
+			<layoutData>
+				<l:GridData span="L12 M4 S8"/>
+			</layoutData>
+	 	</Text>
 		<Table items="{/Yorumlar}">
 			<layoutData>
 				<l:GridData span="L12 M12 S12"/>
@@ -54,7 +59,7 @@
 							path: 'YorumSaati',
 							type: 'sap.ui.model.odata.type.Time'}" />
 
-					 	<TextArea value="{Yorum}" tooltip="{Yorum}" editable="false" width="100%" rows="2" />
+					 	<TextArea value="{Yorum}" growing="true" tooltip="{Yorum}" editable="false" width="100%" rows="2" />
 					</cells>
 				</ColumnListItem>
 			</items>
