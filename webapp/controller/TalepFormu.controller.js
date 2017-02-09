@@ -235,7 +235,7 @@ sap.ui.define([
 			var oSelectedItem = oTable.getSelectedItem();
 			if (!oSelectedItem) {
 				var sWarning = this._getBundleText("urunSecMessage");
-				MessageToast.shows(sWarning);
+				MessageToast.show(sWarning);
 				oController.getView().setBusy(false);
 			} else {
 				var sPath = oSelectedItem.getBindingContextPath();
@@ -272,6 +272,24 @@ sap.ui.define([
 				MessageToast.show(sWarning);
 			} else {
 				this._claimAndComplete();
+			}
+		},
+		onSartliOnay : function() {
+			var result = this._onBeforeKaydet();
+			if (!result) {
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
+			} else {
+				this._claimAndComplete("SartliOnay");
+			}
+		},
+		onRed : function() {
+			var result = this._onBeforeKaydet();
+			if (!result) {
+				var sWarning = this._getBundleText("warningMessage");
+				MessageToast.show(sWarning);
+			} else {
+				this._claimAndComplete("Red");
 			}
 		},
 		onNumuneAlinmayacak : function() {
@@ -342,6 +360,8 @@ sap.ui.define([
 			if (sAction && sAction!=="NumuneAlinmayacak"
 						&& sAction!=="FinalNumuneAlinmayacak"
 						&& sAction!=="Iptal"
+						&& sAction!=="SartliOnay"
+						&& sAction!=="Red"
 			            && sAction!=="NumuneTalebi") {
 				var faultData = {};
 				faultData.UrunTalebiType = {};
@@ -776,7 +796,7 @@ sap.ui.define([
 		},
 		_startBPM : function(oController, sTalepNumarasi, sUrunGrubu, sMarka) {
 			var sGroupServiceURL = "/lib~bpm/BPMServlet/GetUsersByGroup/BPM_TU_Uretim_Tedarik_"+sUrunGrubu;
-			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm/Urun Talebi";
+			var startURL = "/bpmodata/startprocess.svc/ag.com/tu~bpm2/Urun Talebi";
 			var oBPMServletModel = new JSONModel(sGroupServiceURL);
 			oBPMServletModel.attachRequestCompleted(function(oEvent) {
 				var oUrunTedarik = oBPMServletModel.getProperty("/Users");
@@ -1253,6 +1273,10 @@ sap.ui.define([
 	        	return "sap-icon://undo";
 	        }else if (action === 'NumuneAlinmayacak') {
 	        	return "sap-icon://decline";
+	        }else if (action === 'Red') {
+	        	return "sap-icon://decline";
+	        } else if (action==='SartliOnay') {
+	            return "sap-icon://accept";
 	        }else {
 	            return "sap-icon://task";
 	        }
@@ -1263,6 +1287,10 @@ sap.ui.define([
 	        } else if (action==='Onayla') {
 	            return "#4BC202";
 	        } else if (action === 'Revizyon') {
+	        	return "#FE2E2E";
+	        } else if (action === 'SartliOnay') {
+	        	return "#FE2E2E";
+	        } else if (action === 'Red') {
 	        	return "#FE2E2E";
 	        }else if (action === 'NumuneAlinmayacak') {
 	        	return "#FE2E2E";

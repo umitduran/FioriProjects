@@ -40,15 +40,6 @@
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.GenelBilgiler" type="XML"/> 																								
 							</IconTabFilter>
 							<IconTabFilter
-								id="idYorumlarTab"
-								icon="sap-icon://comment"
-								design="Horizontal"
-								iconColor="Positive"
-								text="{i18n>YorumlarTitle}"
-								key="Yorumlar">
-								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Yorumlar" type="XML"/> 																
-							</IconTabFilter>
-							<IconTabFilter
 								id="idEklerTab"
 								icon="sap-icon://attachment"
 								design="Horizontal"
@@ -85,6 +76,15 @@
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Malzeme" type="XML"/> 																
 							</IconTabFilter>
 							<IconTabFilter
+								id="idYorumlarTab"
+								icon="sap-icon://comment"
+								design="Horizontal"
+								iconColor="Positive"
+								text="{i18n>YorumlarTitle}"
+								key="Yorumlar">
+								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Yorumlar" type="XML"/> 																
+							</IconTabFilter>
+							<IconTabFilter
 								id="idLogTab"
 								icon="sap-icon://history"
 								design="Horizontal"
@@ -108,6 +108,8 @@
 							<Button id="idNumuneAlinmayacakButton" text="{i18n>NumuneAlinmayacakButton}" type="Reject" press="onNumuneAlinmayacak"/>
 							<Button id="idFinalNumuneAlinmayacakButton" text="{i18n>FinalNumuneAlinmayacakButton}" type="Reject" press="onFinalNumuneAlinmayacak"/>
 							<Button id="idNumuneTalebiButton" text="{i18n>NumuneTalebiButton}" type="Reject" press="onNumuneTalep"/>
+							<Button id="idSartliOnayButton" text="{i18n>SartliOnayButton}" type="Reject" press="onSartliOnay"/>
+							<Button id="idRedButton" text="{i18n>RedButton}" type="Reject" press="onRed"/>
 							<Button id="idIptalButton" text="{i18n>IptalButton}" type="Reject" press="onIptal"/>
 					</Toolbar>
 				</footer>
