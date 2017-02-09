@@ -178,7 +178,7 @@ sap.ui.define([
 			if (checkEmpty) {
 				//FIXME hata mesajı ekle.
 				var sWarning = this._getBundleText("warningMessage");
-				MessageToast.shows(sWarning);
+				MessageToast.show (sWarning);
 				return;
 			}
 			var eccModel = oController.getView().getModel("ecc");

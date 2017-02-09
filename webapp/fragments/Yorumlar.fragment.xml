@@ -19,7 +19,7 @@
 				<l:GridData span="L12 M12 S12"/>
 			</layoutData>
 	 	</TextArea>
-	 	<Text id="idCountLetter" text="/200" textAlign="Right">
+	 	<Text id="idCountLetter" text="0/200" textAlign="Right">
 			<layoutData>
 				<l:GridData span="L12 M4 S8"/>
 			</layoutData>
