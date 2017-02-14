@@ -24,6 +24,8 @@
 			uploadComplete="onFileUploadComplete"
 			numberOfAttachmentsText=" "
 			uploadUrl="/logo~ui~talep/UploadServlet"
+			maximumFileSize="50"
+			fileSizeExceed = "isFileSizeExceed"
 			noDataText=" "
 			items="{/Attachments}">
 			<items>

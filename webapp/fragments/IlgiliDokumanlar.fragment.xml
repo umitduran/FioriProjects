@@ -23,6 +23,8 @@
 			uploadComplete="onIlgiliDokumanlarUploadComplete"
 			numberOfAttachmentsText=" "
 			uploadUrl="/logo~ui~talep/UploadServlet"
+			maximumFileSize="50"
+			fileSizeExceed = "isFileSizeExceed"
 			noDataText=" "
 			items="{/MaterialDocuments}">
 			<items>

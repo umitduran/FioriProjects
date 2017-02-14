@@ -8,11 +8,7 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("com.silverline.ticariurun.controller.TedarikFormu", {
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf com.silverline.ticariurun.view.TedarikFormu
-		 */
+
 			onInit: function() {
 				var oView = this.getView();
 				var oComp = this.getOwnerComponent();
@@ -225,7 +221,6 @@ sap.ui.define([
 					oModel.setProperty("/GorselFileName",filename);
 				}
 				var objid = jQuery.sap.uid();
-				//var filename = evt.mParameters.mParameters.newValue;
 				oFileUploader.removeAllHeaderParameters();
 				oFileUploader.addHeaderParameter( 
 						new sap.ui.unified.FileUploaderParameter({
