@@ -1289,8 +1289,8 @@ sap.ui.define([
 			var textMax = 200;
 			var textLength = this.byId("idComment").getValue().length;
 			this.byId("idCountLetter").setText(textLength+"/"+"200");
-		},
-		onUploadTestData : function () {
+		}
+/*		onUploadTestData : function () {
 			//FIXME
 			// var oModel = this.getView().getModel();
 			// oModel.setProperty("/UrunOzellikleri","Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir");		
@@ -1360,6 +1360,6 @@ sap.ui.define([
 			});
 
 
-		}
+		}*/
 	});
 });

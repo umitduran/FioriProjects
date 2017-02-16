@@ -128,15 +128,11 @@
 		}
 	},
 	"GorselUploadTedarik" : {
-		"visible" : false,
-		"10" : {
-			"visible" : true
-		},
-		"40" : {
-			"visible" : true
-		},
-		"change" : {
-			"visible" : true
+		"visible": true,
+		"editable": true,
+		"display" : {
+			"editable" : false,
+			"visible" : false
 		}
 	},
 	"OdemeSekli" : {
@@ -496,10 +492,7 @@
 		},	
 		"80" : {
 			"visible" : true
-		},	
-		"130" : {
-			"visible" : true
-		},	
+		},
 		"220" : {
 			"visible" : true
 		}
@@ -565,7 +558,7 @@
 		},	
 		"40" : {
 			"visible" : true
-		}	
+		}
 	},
 	"UrunEkleButton" : {
 		"visible" : false,

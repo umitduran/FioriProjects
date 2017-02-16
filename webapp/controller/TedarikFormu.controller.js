@@ -253,7 +253,17 @@ sap.ui.define([
 				var oModel = this.getView().getModel("genel");
 				var textEl = this.getView().byId("idTeslimSekliTedarikAdi");
 				Common.handleValueHelp(this,oEvent.getSource(),textEl,"TeslimSekliKodu","TeslimSekliAciklamasi",oModel,"/TeslimSekliSet",this.getView(),"Teslim Şekli");
+			},
+			validateInput : function () {
+				var sNumber = this.byId("idFiyatTedarik").getValue();
+		    	if (this._isNumber(sNumber) === false) {
+		    		this.byId("idFiyatTedarik").setValue("");
+		    	}
+			},	   
+			_isNumber : function (number) {
+				return !isNaN(parseFloat(number)) && isFinite(number);
 			}
+			
 	});
 
 });
