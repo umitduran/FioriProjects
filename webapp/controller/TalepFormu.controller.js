@@ -843,7 +843,7 @@ sap.ui.define([
 			if (!bpmModel) {
 				bpmModel = new JSONModel();
 			}
-			return Common.validateAll(oMainForm,oUIModel,bpmModel,oMainModel);
+			return Common.validateAll(oMainForm,oUIModel,bpmModel,oMainModel,this.getView());
 		},
 		updateForms : function() {
 			this.updateForm("idUrunGrubuForm");
@@ -861,7 +861,7 @@ sap.ui.define([
 			var oUIModel = this.getView().getModel("ui");
 			var oMainForm = this.getView().byId(sFormId);
 			var bpmModel = this.getView().getModel("bpm");
-			Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel);
+			Common.updateForm(oMainForm,oUIModel,bpmModel,oMainModel,undefined,this.getView());
 		},
 		onIlgiliDokumanlarUploadChange : function(oEvent) {
 			var oMainModel = this.getView().getModel();
@@ -1284,6 +1284,9 @@ sap.ui.define([
 	    },
 	    _isNumber : function (n) {
 			return !isNaN(parseFloat(n)) && isFinite(n);
+		},
+		onHedefUlkeChanged : function() {
+			this.updateForms();	
 		},
 		remainLetter : function () {
 			var textMax = 200;

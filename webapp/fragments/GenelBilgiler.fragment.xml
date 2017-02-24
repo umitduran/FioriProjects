@@ -39,7 +39,7 @@
 		<Input id="idMinimumSiparis" value="{/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
 		
 		<Label id="idHedefUlkeLabel" text="{i18n>HedefUlkeLabel}"/>
-		<MultiInput id="idHedefUlke" showValueHelp="true" valueHelpRequest="handleHedefUlkeValueHelp" valueHelpOnly="true"
+		<MultiInput id="idHedefUlke" tokenUpdate="onHedefUlkeChanged" showValueHelp="true" valueHelpRequest="handleHedefUlkeValueHelp" valueHelpOnly="true"
 					enableMultiLineMode="true" />
 		<Label id="idTedarikKisitiLabel" text=" {i18n>TedarikKisitiLabel}"/>
 		<MultiInput id="idTedarikKisiti" showValueHelp="true" valueHelpRequest="handleTedarikKisitiUlkeValueHelp" valueHelpOnly="true"

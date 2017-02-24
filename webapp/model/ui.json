@@ -82,7 +82,7 @@
 		}
 	},
 	"TedarikKisiti" : {
-		"required": true,
+		"required": false,
 		"visible": true,
 		"editable": false,
 		"00" : {
@@ -114,12 +114,28 @@
 		}
 	},
 	"OzelDurum" : {
-		"required": false,
+		"required": "complex",
 		"visible": true,
 		"editable": false,
 		"00" : {
 			"editable" : true
-		}
+		},
+		"conditions" : [
+			{
+				"uielement" : "idHedefUlke",
+				"value" : "TR",
+				"option" : "CT",
+				"attributes" : {
+					"required": false
+				}			
+			},
+			{
+				"option" : "ELSE",
+				"attributes" : {
+					"required": true
+				}			
+			}
+		]
 	},
 	"GorselUpload" : {
 		"visible" : false,
@@ -490,10 +506,10 @@
 		"20" : {
 			"visible" : true
 		},	
-		"80" : {
+		"50" : {
 			"visible" : true
-		},
-		"220" : {
+		},	
+		"80" : {
 			"visible" : true
 		}
 	},

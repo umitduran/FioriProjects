@@ -85,7 +85,7 @@ sap.ui.define([
 		}
 		return required;
 	},	
-	updateForm : function (frm,uimodel,bpmModel,mainModel,pCurrentStep) {
+	updateForm : function (frm,uimodel,bpmModel,mainModel,pCurrentStep,oView) {
 		var that = this;
 		var currentStep = "";
 		if (pCurrentStep) {
@@ -147,22 +147,22 @@ sap.ui.define([
 			var uiObj = that._generateUIObj(uidata,id,currentStep);			
 			
 			if (requiredElements.indexOf(type)>=0) {
-				var required = that.evaluateCondition(uiObj,"required",mainModel);
+				var required = that.evaluateCondition(uiObj,"required",mainModel,oView);
 				el.setRequired(required);
 				processed = true;
 			}			
 			if (editableElements.indexOf(type)>=0) {
-				var editable = that.evaluateCondition(uiObj,"editable",mainModel);
+				var editable = that.evaluateCondition(uiObj,"editable",mainModel,oView);
 				el.setEditable(editable);
 				processed = true;
 			}			
 			if (visibleElements.indexOf(type)>=0) {
-				var visible = that.evaluateCondition(uiObj,"visible",mainModel);
+				var visible = that.evaluateCondition(uiObj,"visible",mainModel,oView);
 				el.setVisible(visible);
 				processed = true;
 			}		
 			if (editableTableElements.indexOf(type)>=0) {
-				var teditable = that.evaluateCondition(uiObj,"editable",mainModel);
+				var teditable = that.evaluateCondition(uiObj,"editable",mainModel,oView);
 				var toolbar = el.getHeaderToolbar();
 				if (!teditable) {
 					if (toolbar!==undefined) {
@@ -183,7 +183,7 @@ sap.ui.define([
 				processed = true;
 			}
 			if (editableListElements.indexOf(type)>=0) {
-				var leditable = that.evaluateCondition(uiObj,"editable",mainModel);
+				var leditable = that.evaluateCondition(uiObj,"editable",mainModel,oView);
 				var ltoolbar = el.getHeaderToolbar();
 				if (!leditable) {
 					if (ltoolbar!==undefined) {
@@ -195,7 +195,7 @@ sap.ui.define([
 			}
 			
 			if (editableUploadCollectionElements.indexOf(type)>=0) {
-				var uceditable = that.evaluateCondition(uiObj,"editable",mainModel);
+				var uceditable = that.evaluateCondition(uiObj,"editable",mainModel,oView);
 				if (!uceditable) {
 					el.setUploadEnabled(false);
 					var elitems = el.getItems();
@@ -282,14 +282,14 @@ sap.ui.define([
 		}
 		return currentStep;
 	},
-	validateUploadCollection : function(uc,uimodel,bpmModel,mainModel) {
+	validateUploadCollection : function(uc,uimodel,bpmModel,mainModel,oView) {
 		var uidata = uimodel.getData();
 		var id = this._getCleanId(uc);
 		var currentStep = this._getCurrentStep(bpmModel);
 		var validate = true;
 		var uiObj = this._generateUIObj(uidata,id,currentStep);
 		//var required = this.isRequired(uiObj);
-		var required = this.evaluateCondition(uiObj,"required",mainModel);
+		var required = this.evaluateCondition(uiObj,"required",mainModel,oView);
 		if (required) {			
 			var result = this.checkRequired(uc);
 			if (!result) {
@@ -308,13 +308,13 @@ sap.ui.define([
 			}				
 		});
 	},
-	validateAll : function (frm,uimodel,bpmModel,mainModel) {
+	validateAll : function (frm,uimodel,bpmModel,mainModel,oView) {
 		
 		var that = this;
 		
 		var currentStep = that._getCurrentStep(bpmModel,mainModel);
 		
-		that.updateForm(frm,uimodel,bpmModel,mainModel);
+		that.updateForm(frm,uimodel,bpmModel,mainModel,undefined,oView);
 		var content = frm.getContent();
 		var validate = true;
 		//var uimodel = sap.ui.getCore().getModel("uimodel");
@@ -331,7 +331,7 @@ sap.ui.define([
 				
 				var uiObj = that._generateUIObj(uidata,id,currentStep); 
 				
-				var required = that.evaluateCondition(uiObj,"required",mainModel);
+				var required = that.evaluateCondition(uiObj,"required",mainModel,oView);
 				type = el.getMetadata().getName();
 				if (required) {			
 					var result = that.checkRequired(el);
@@ -354,47 +354,98 @@ sap.ui.define([
 		});
 		return validate;
 	},
-	evaluateCondition : function(value,attr,mainModel) {
+	evaluateCondition : function(value,attr,mainModel,oView) {
 		if ((typeof value[attr])==="boolean") {
 			return value[attr];
 		}		
 		var result = false;
 		jQuery.each(value.conditions, function(key,cond) {
-			var fval = mainModel.getProperty(cond.field);
-			if (fval===undefined && cond.field !=='') {
-				console.log(cond.field+' not found in the data model!');
-				return false;
-			}				
-			if (fval!==null) {
-				fval = fval.toLowerCase();
+			var conditionMode = "";
+			var oElement = "";
+			var oFieldValue = "";
+			if (cond.field && cond.field !=='') {//model bazlı condition
+				oFieldValue = mainModel.getProperty(cond.field);
+				if (!oFieldValue) {
+					console.log(cond.field+' not found in the data model!');
+					return false;
+				}		
+				if (oFieldValue!==null) {
+					oFieldValue = oFieldValue.toLowerCase();
+				}
+			} else if (cond.uielement) {//uielement bazlı condition
+				oElement = oView.byId(cond.uielement);
+				if (!oElement) {
+					console.log(cond.field+' not found in the view:'+oView.getId());
+					return false;					
+				}
+				var sElementType = oElement.getMetadata().getName();					
+				if (sElementType==="sap.m.Input") {
+					oFieldValue = oElement.getValue();
+				} else if (sElementType==="sap.m.MultiInput") {
+					var oTokens = oElement.getTokens();
+					oFieldValue = [];
+					jQuery.each(oTokens, function(idx,token) {
+						var oTokenKey = token.getKey();
+						oFieldValue.push(oTokenKey.toLowerCase());
+					});
+				}
 			}
-			cond.value = cond.value.toLowerCase();
+			if (cond.value) {
+				cond.value = cond.value.toLowerCase();
+			}
+			
 			if (cond.option==="EQ") {
-				if (fval===cond.value) {
+				if (Array.isArray(oFieldValue)) {
+					console.log('Array is not supported to evaluate EQ condition:'+cond.field);
+					return false;						
+				}
+				if (oFieldValue===cond.value) {
 					result = cond.attributes[attr];
 					if (result!==undefined) {
 						return false;
 					}
 				}
 			} else if (cond.option==="NE") {
-				if (fval!==cond.value) {
+				if (Array.isArray(oFieldValue)) {
+					console.log('Array is not supported to evaluate NE condition:'+cond.field);
+					return false;						
+				}				
+				if (oFieldValue!==cond.value) {
 					result = cond.attributes[attr];
 					if (result!==undefined) {
 						return false;
 					}
 				}
 			} else if (cond.option==="CT") {
-				if (fval.indexOf(cond.value)>=0) {
-					result = cond.attributes[attr];
-					if (result!==undefined) {
-						return false;
+				if (Array.isArray(oFieldValue)) {
+					if (oFieldValue.indexOf(cond.value)>=0) {
+						result = cond.attributes[attr];
+						if (result!==undefined) {
+							return false;
+						}						
 					}
-				}
+				} else {
+					if (oFieldValue.indexOf(cond.value)>=0) {
+						result = cond.attributes[attr];
+						if (result!==undefined) {
+							return false;
+						}
+					}
+				}				
 			} else if (cond.option==="NC") {
-				if (fval.indexOf(cond.value)<0) {
-					result = cond.attributes[attr];
-					if (result!==undefined) {
-						return false;
+				if (Array.isArray(oFieldValue)) {
+					if (oFieldValue.indexOf(cond.value)<0) {
+						result = cond.attributes[attr];
+						if (result!==undefined) {
+							return false;
+						}						
+					}
+				} else {
+					if (oFieldValue.indexOf(cond.value)<0) {
+						result = cond.attributes[attr];
+						if (result!==undefined) {
+							return false;
+						}
 					}
 				}
 			} else if (cond.option==="ELSE") {
@@ -462,11 +513,11 @@ sap.ui.define([
                 		textEl.setValue(obj[valueProp]);
                 	}
                 	evt.getSource().getBinding("items").filter([]);
-                	if (typeof controller.updateForms === "function") {
-                		controller.updateForms();
-                	}
                 	if (valueChanged) { 
                 		valueChanged(inputEl);
+                	}
+                	if (typeof controller.updateForms === "function") {
+                		controller.updateForms();
                 	}
                 }
             });            
