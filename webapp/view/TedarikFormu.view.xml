@@ -40,7 +40,7 @@
 							</IconTabBar>
 					</content>
 				<footer>
-					<Toolbar>
+					<Toolbar id="idTedarikFooterToolbar">
 						<ToolbarSpacer/>
 						<Button id="idUrunTedarikKaydetButton" text="{i18n>UrunKaydetButton}" type="Accept" press="onUrunKaydet" icon="sap-icon://save" />
 					</Toolbar>

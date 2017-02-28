@@ -203,6 +203,7 @@ sap.ui.define([
 				});
 				
 			});
+			this._claimAndComplete();
 		},
 		_setSAPStatus : function(sCurrentStep,sTalepNumarasi,sAction) {
 			var oController = this;
@@ -344,7 +345,7 @@ sap.ui.define([
 			            },
 			            error : function () {
 			            	oController.getView().setBusy(false);
-			            	oController._onGeneralError;
+			            	oController._onGeneralError();
 			            }
 					});
 				}
@@ -446,7 +447,8 @@ sap.ui.define([
 				}
 				if (sTalepNumarasi) {
 					var sText = "("+sTalepNumarasi+")";
-					var sTitle = this._getBundleText("TalepFormuTitle", sText);
+					var sFormTitle = bpmModel.getProperty("/TalepBasligi");
+					var sTitle = sText + " " + sFormTitle;
 					var oPage = this.getView().byId("idTalepFormuPage");
 					oPage.setTitle(sTitle);
 
@@ -522,6 +524,7 @@ sap.ui.define([
 							MinimumSiparisMiktari : el.MinimumSiparisMiktari,
 							OzelDurum : el.OzelDurum,
 							UretimSuresi : el.UretimSuresi,
+							TedarikciAdi : el.TedarikciAdi,
 							Ekleyen : el.Ekleyen,
 							Metinler : el.TedarikToTedarikMetinler,
 							Change : bChangeVisible,

@@ -10,10 +10,7 @@
 		"editable": true
 	},
 	"AttachmentUpload" : {
-		"editable": false,
-		"00" : {
-			"editable" : true
-		}
+		"editable": true
 	},	
 	"TalepEden" : {
 		"required": false,
@@ -282,6 +279,20 @@
 			"editable" : false
 		}
 	},
+	"TedarikciAdi" : {
+		"required" : false,
+		"visible" : true,
+		"editable" : true,
+		"revise" : {
+			"editable" : false
+		},
+		"change" : {
+			"editable" : false	
+		},
+		"display" : {
+			"editable" : false
+		}
+	},
 	"Numune" : {
 		"visible" : true,
 		"editable" : false,
@@ -511,6 +522,9 @@
 		},	
 		"80" : {
 			"visible" : true
+		},
+		"130" : {
+			"visible" : true
 		}
 	},
 	"RevizyonButton" : {
@@ -572,7 +586,10 @@
 		"10" : {
 			"visible" : true
 		},	
-		"40" : {
+		"revise" : {
+			"visible" : true
+		},
+		"change" : {
 			"visible" : true
 		}
 	},

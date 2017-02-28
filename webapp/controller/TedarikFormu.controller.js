@@ -109,7 +109,8 @@ sap.ui.define([
 			},
 			_updateForms : function(sAction) {
 				this._updateForm("idUrunOzellikTedarikForm",sAction);
-				this._updateForm("idGenelBilgilerTedarikForm",sAction);		
+				this._updateForm("idGenelBilgilerTedarikForm",sAction);
+				this._updateForm("idTedarikFooterToolbar",sAction);
 			},
 			_updateForm : function(sFormId,sAction) {
 				var oMainModel = this.getView().getModel();
@@ -151,6 +152,7 @@ sap.ui.define([
 					oTedarik.OdemeSekli = tData.OdemeSekli;
 					oTedarik.TeslimSekli = tData.TeslimSekli;
 					oTedarik.UretimSuresi = tData.UretimSuresi;
+					oTedarik.TedarikciAdi = tData.TedarikciAdi;
 					oTedarik.MinimumSiparisMiktari = parseInt(tData.MinimumSiparisMiktari,10);
 					oTedarik.TedarikNumarasi = tData.TedarikNumarasi;
 					oTedarik.Secildi = tData.Secildi;
