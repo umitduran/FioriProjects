@@ -24,46 +24,59 @@
 				<l:GridData span="L12 M4 S8"/>
 			</layoutData>
 	 	</Text>
-		<Table items="{/Yorumlar}">
-			<layoutData>
-				<l:GridData span="L12 M12 S12"/>
-			</layoutData>
-			<columns>
-	            <Column width="3em">
-	                <Text text=""/>
-	            </Column>
-				<Column width="10em">
-					<Text text="{i18n>CommentTableKullaniciAdi}" />
-				</Column>			
-				<Column width="15em">
-					<Text text="{i18n>CommentTableStatuText}" />
-				</Column>			
-				<Column width="8em">
-					<Text text="{i18n>CommentTableYorumTarihi}" />
-				</Column>			
-				<Column width="8em">
-					<Text text="{i18n>CommentTableYorumSaati}" />
-				</Column>			
-				<Column>
-					<Text text="{i18n>CommentTableYorum}" />
-				</Column>			
-			</columns>
-			<items>
-				<ColumnListItem>
-					<cells>			
-						<core:Icon src="sap-icon://comment"/>					
-						<Text text ="{KullaniciAdi}" />	
-						<Text text="{StatuText}" />
-						<Text text="{YorumTarihi}" />
-						<Text text="{
-							path: 'YorumSaati',
-							type: 'sap.ui.model.odata.type.Time'}" />
-
-					 	<TextArea value="{Yorum}" growing="true" tooltip="{Yorum}" editable="false" width="100%" rows="1" />
-					</cells>
-				</ColumnListItem>
-			</items>
-		</Table>	 	
+	<Table id="idLogTable" items="{/LogCollection}">
+		<headerToolbar>
+			<Toolbar>
+				<Title text="{i18n>LogTableTitle}" level="H2"/>
+			</Toolbar>
+		</headerToolbar>	
+		<columns>
+            <Column width="3em">
+                <Text text=""/>
+            </Column>
+			<Column width="3em">
+				<Text text="{i18n>LogTableCurrentStep}" />
+			</Column>			
+			<Column width="5em">
+				<Text text="{i18n>LogTableAction}" />
+			</Column>			
+			<Column>
+				<Text text="{i18n>LogTableLogDate}" />
+			</Column>			
+			<Column>
+				<Text text="{i18n>LogTableLogTime}" />
+			</Column>			
+			<Column>
+				<Text text="{i18n>LogTableUsername}" />
+			</Column>
+			<Column>
+				<Text text="{i18n>CommentTableYorum}" />
+			</Column>			
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>			
+					<core:Icon src="{ path: 'Action', formatter: '.ConvertActionToIcon'}"
+                               color="{ path: 'Action', formatter: '.ConvertActionToIconColor'}"/>
+					<ObjectIdentifier title="{CurrentStep}" />
+					<Text text ="{Action}" />	
+					<Text text="{
+    					path: 'DegisiklikTarihi',
+    					type: 'sap.ui.model.type.Date',
+    					formatOptions: {
+    						pattern: 'dd/MM/yyyy'
+    					}
+					}" />
+					<Text text="{
+						path: 'DegisiklikSaati',
+						type: 'sap.ui.model.odata.type.Time'}" />
+					<Text text="{Degistiren}" />
+					<TextArea value="{Yorum}" growing="true" tooltip="{Yorum}" editable="false" width="100%" rows="1" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>	
+	 	
 	</f:SimpleForm>
 
 </core:FragmentDefinition>

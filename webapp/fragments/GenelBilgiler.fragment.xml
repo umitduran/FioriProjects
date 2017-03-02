@@ -35,7 +35,7 @@
 		</ComboBox>			
 		<Label id="idHedefAdetLabel" text="{i18n>HedefAdetLabel}"/>
 		<Input id="idHedefAdet" value="{/HedefAdet}" type="Number" maxLength="10"/>
-		<Label id="idMinimumSiparisLabel" text="{i18n>MinimumSiparisLabel}"/>
+		<Label id="idMinimumSiparisLabel" text="{i18n>MinimumSiparisLabel}" />
 		<Input id="idMinimumSiparis" value="{/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
 		
 		<Label id="idHedefUlkeLabel" text="{i18n>HedefUlkeLabel}"/>

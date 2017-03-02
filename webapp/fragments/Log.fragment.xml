@@ -3,7 +3,7 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
-	<Table id="idLogTable" items="{/LogCollection}">
+	<Table id="idLogTable_2" items="{/LogCollection}">
 		<headerToolbar>
 			<Toolbar>
 				<Title text="{i18n>LogTableTitle}" level="H2"/>
@@ -27,7 +27,7 @@
 			</Column>			
 			<Column>
 				<Text text="{i18n>LogTableUsername}" />
-			</Column>			
+			</Column>
 		</columns>
 		<items>
 			<ColumnListItem>

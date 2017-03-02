@@ -207,15 +207,17 @@ sap.ui.define([
 		},
 		_setSAPStatus : function(sCurrentStep,sTalepNumarasi,sAction) {
 			var oController = this;
+			var oMainModel = oController.getView().getModel();
 			if (sTalepNumarasi === null) {
-				var oMainModel = oController.getView().getModel();
 				sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
 			}
+			var sYorum = oMainModel.getProperty("/Yorum");
 			var eccModel = oController.getView().getModel("ecc");
 			eccModel.callFunction("/SetTalepStatus",{
 				urlParameters : {"TalepNumarasi" : sTalepNumarasi,
 				                 "Statu" : sCurrentStep,
-								 "Action" : sAction
+								 "Action" : sAction,
+								 "Yorum" : sYorum
 				},
 				success : function(oData, response) {
 
@@ -622,7 +624,8 @@ sap.ui.define([
 							Action : el.Action,
 							Degistiren : el.Degistiren,
 							DegisiklikTarihi : el.DegisiklikTarihi,
-							DegisiklikSaati : el.DegisiklikSaati
+							DegisiklikSaati : el.DegisiklikSaati,
+							Yorum : el.Yorum
 						};
 						aLogs.push(row) ;
 					});

@@ -61,7 +61,7 @@
 		<Label id="idUretimSuresiLabel" text="{i18n>UretimSuresiLabel}" />
 		<Input id="idUretimSuresi" value="{tedarik>/UretimSuresi}" type="Number"/>
 		
-		<Label id="idMinimumSiparisTedarikLabel" text="{i18n>MinimumSiparisLabel}" />
+		<Label id="idMinimumSiparisTedarikLabel" text="{i18n>MinimumSiparisTedarikLabel}" />
 		<Input id="idMinimumSiparisTedarik" value="{tedarik>/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
 		
 		<Label id="idTedarikciAdiLabel" text="{i18n>TedarikciAdiLabel}" />
