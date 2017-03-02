@@ -469,7 +469,7 @@ sap.ui.define([
 
 			eccModel.read(sPath,
 			{
-				urlParameters : { "$expand":"TalepToYorum,TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler,TalepToIlgiliDokumanlar,TalepToLog"},
+				urlParameters : { "$expand":"TalepToUlke,TalepToMetinler,TalepToTedarik,TalepToTedarik/TedarikToTedarikMetinler,TalepToEkler,TalepToIlgiliDokumanlar,TalepToLog"},
 				success : function(oData,oResponse) {
 					mainModel.setProperty('/UrunGrubu',oData.UrunGrubu);
 					mainModel.setProperty('/UrunOzellikleri',oData.UrunOzellikleri);
@@ -517,6 +517,7 @@ sap.ui.define([
 						var row = {
 							TalepNumarasi : el.TalepNumarasi,
  							TedarikNumarasi : el.TedarikNumarasi,
+ 							Versiyon : el.Versiyon,
 							UrunGorseli : el.UrunGorseli,
 							UrunOzellikleri : el.UrunOzellikleri,
 							Fiyat: el.Fiyat,
@@ -571,28 +572,6 @@ sap.ui.define([
 							oTedarikKisiti.addToken(oToken);
 						}
 					});
-					var aYorumlar = [];
-					var oDateFormat = DateFormat.getDateTimeInstance(
-						{
-							pattern: "dd/MM/yyyy"
-							//pattern: "dd/MM/yyyy KK:mm:ss"
-						});
-					jQuery.each(oData.TalepToYorum.results,function(key,el) {
-						var row = {
-							KullaniciAdi : el.KullaniciAdi,
-							YorumTarihi : el.YorumTarihi,
-							YorumSaati : el.YorumSaati,
-							Yorum : el.Yorum,
-							Statu : el.Statu,
-							StatuText : el.StatuText
-						};
-						row.YorumTarihi = oDateFormat.format(row.YorumTarihi);
-
-						aYorumlar.push(row);
-					});
-					mainModel.setProperty('/Yorumlar',aYorumlar);
-					var oYorumlarTab = oController.getView().byId("idYorumlarTab");
-					oYorumlarTab.setCount(aYorumlar.length);
 
 					var aEkler = [];
 					jQuery.each(oData.TalepToEkler.results,function(key,el) {
@@ -631,7 +610,7 @@ sap.ui.define([
 					});
 					mainModel.setProperty('/LogCollection',aLogs);
 
-					var oLogTab = oView.byId("idLogTab");
+					var oLogTab = oView.byId("idYorumlarTab");
 					oLogTab.setCount(aLogs.length);
 
 					oView.setBusy(false);

@@ -487,7 +487,7 @@ sap.ui.define([
                     );
                     var oFilter = new sap.ui.model.Filter({filters:[oFilter1,oFilter2],and:false});
 
-                    evt.getSource().getBinding("items").filter(oFilter);
+                    evt.getSource().getBinding("items").filter(oFilter1);
                 },
                 confirm : function(evt) {
                 	var aContexts = evt.getParameter("selectedContexts");

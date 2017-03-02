@@ -24,6 +24,7 @@
 				<l:GridData span="L12 M4 S8"/>
 			</layoutData>
 	 	</Text>
+	</f:SimpleForm>
 	<Table id="idLogTable" items="{/LogCollection}">
 		<headerToolbar>
 			<Toolbar>
@@ -76,7 +77,4 @@
 			</ColumnListItem>
 		</items>
 	</Table>	
-	 	
-	</f:SimpleForm>
-
 </core:FragmentDefinition>

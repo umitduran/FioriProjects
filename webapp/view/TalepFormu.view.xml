@@ -84,15 +84,6 @@
 								key="Yorumlar">
 								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Yorumlar" type="XML"/> 																
 							</IconTabFilter>
-							<IconTabFilter
-								id="idLogTab"
-								icon="sap-icon://history"
-								design="Horizontal"
-								iconColor="Positive"
-								text="{i18n>LogTitle}"
-								key="Log">
-								<core:Fragment fragmentName="com.silverline.ticariurun.fragments.Log" type="XML"/> 																
-							</IconTabFilter>
 						</items>
 					</IconTabBar>
 				</content>

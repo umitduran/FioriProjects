@@ -14,6 +14,9 @@
 			<Column width="12em">
 				<Text text="{i18n>ColumnTedarikNumarasiTitle}" />
 			</Column>			
+			<Column visible="{= ${bpm>/currentStep} === '50' }">
+				<Text text="{i18n>ColumnVersiyonTitle}" />
+			</Column>			
 			<Column>
 				<Text text="{i18n>ColumnUretimSuresiTitle}" />
 			</Column>			
@@ -37,6 +40,7 @@
 			<ColumnListItem>
 				<cells>			
 					<ObjectIdentifier title="{TedarikNumarasi}" />	
+					<Text text="{Versiyon}" />
 					<Text text="{UretimSuresi}" />
 					<Text text="{Metinler/OdemeKosuluAciklamasi}" />
 					<Text text="{Metinler/TeslimSekliAciklamasi}" />
