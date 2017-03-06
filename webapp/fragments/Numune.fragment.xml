@@ -14,7 +14,7 @@
 				  columnsM="2">
 		
 		<Label id="idNumuneLabel" text="{i18n>NumuneLabel}"/>
-		<Input id="idNumune" value="{/Numune}">
+		<Input id="idNumune" value="{/Numune}" maxLength="20">
 			<layoutData>
 				<l:GridData span="L3 M2 S12"/>
 			</layoutData>

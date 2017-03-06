@@ -269,7 +269,7 @@
 		}
 	},
 	"UretimSuresi" : {
-		"required" : false,
+		"required" : true,
 		"visible" : true,
 		"editable" : true,
 		"revise" : {
@@ -472,6 +472,7 @@
 		"editable" : false,
 		"visible" : false,
 		"240" : {
+			"required" : true,
 			"editable" : true,
 			"visible" : true
 		},

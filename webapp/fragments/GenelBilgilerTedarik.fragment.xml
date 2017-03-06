@@ -21,7 +21,7 @@
 												minFractionDigits: 2
 											}
 										}"
-									liveChange="validateInput"	>
+									liveChange="validateInput" maxLength="20">
 	        <layoutData>
 	          <l:GridData span="L5 M5 S12"/>
 	        </layoutData>			
@@ -59,13 +59,13 @@
         </Input>	
 		<core:Title/> 
 		<Label id="idUretimSuresiLabel" text="{i18n>UretimSuresiLabel}" />
-		<Input id="idUretimSuresi" value="{tedarik>/UretimSuresi}" type="Number"/>
+		<Input id="idUretimSuresi" value="{tedarik>/UretimSuresi}" type="Number" maxLength="20"/>
 		
 		<Label id="idMinimumSiparisTedarikLabel" text="{i18n>MinimumSiparisTedarikLabel}" />
 		<Input id="idMinimumSiparisTedarik" value="{tedarik>/MinimumSiparisMiktari}" type="Number" maxLength="10"/>
 		
 		<Label id="idTedarikciAdiLabel" text="{i18n>TedarikciAdiLabel}" />
-		<Input id="idTedarikciAdi" value="{tedarik>/TedarikciAdi}" />
+		<Input id="idTedarikciAdi" value="{tedarik>/TedarikciAdi}" maxLength="20"/>
 			
 	</f:SimpleForm>
 

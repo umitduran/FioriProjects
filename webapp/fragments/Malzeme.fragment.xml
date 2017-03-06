@@ -14,7 +14,7 @@
 				  columnsM="1">
 		<core:Title text="{i18n>MalzemeTitle}" />
 		<Label id="idMalzemeLabel" text="{i18n>MalzemeLabel}"/>
-		<Input id="idMalzeme" value="{/Malzeme}">
+		<Input id="idMalzeme" value="{/Malzeme}" maxLength="20">
 			<layoutData>
 				<l:GridData span="L4 M4 S6"/>
 			</layoutData>
