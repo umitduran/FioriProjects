@@ -10,7 +10,8 @@
 		"editable": true
 	},
 	"AttachmentUpload" : {
-		"editable": true
+		"editable": true,
+		"required": true
 	},	
 	"TalepEden" : {
 		"required": false,
