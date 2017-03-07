@@ -55,7 +55,19 @@ sap.ui.define([
 				delete oModel.oData.refreshRequired;
 			}
 			else if (sRouteName==="talepformu") {
-					this._reloadTalepData();
+				var bpmModel = this.getView().getModel("bpm");
+				this._reloadAfterBPMLoaded = false;
+				if (!bpmModel) {
+					//callback ile çağrılacak. 
+					this._reloadAfterBPMLoaded = true;
+				} else {
+					this._reloadTalepData();	
+				}
+			}
+		},
+		onBPMModelLoaded : function() {
+			if (this._reloadAfterBPMLoaded) {
+				this._reloadTalepData();
 			}
 		},
 		onIptal : function() {
