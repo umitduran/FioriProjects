@@ -530,6 +530,9 @@
 	},
 	"RevizyonButton" : {
 		"visible" : false,	
+		"20" : {
+			"visible" : true
+		},	
 		"30" : {
 			"visible" : true
 		},	

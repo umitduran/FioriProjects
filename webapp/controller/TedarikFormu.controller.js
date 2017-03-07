@@ -132,7 +132,7 @@ sap.ui.define([
 				var result = this._onBeforeKaydet();
 				if (!result) {
 					oController.getView().setBusy(false);
-					var sWarningMessage = this._getBundleText("warningMessage");
+					var sWarningMessage = this._getBundleText("requiredFieldMessage");
 					MessageToast.show(sWarningMessage);
 					return;
 				} else {
