@@ -1186,9 +1186,11 @@ sap.ui.define([
 			var oTedarikData = oModel.getProperty(sPath);
 			var sTalepNumarasi = oTedarikData.TalepNumarasi;
 			var sTedarikNumarasi = oTedarikData.TedarikNumarasi;
+			var sTedarikVersion = oTedarikData.Version;
 			var sTedarikPath = '/TedarikSet('+
 			                   'TalepNumarasi=\''+sTalepNumarasi+'\','+
-			                   'TedarikNumarasi=\''+sTedarikNumarasi+'\')';
+			                   'TedarikNumarasi=\''+sTedarikNumarasi+'\','+
+			                   'sTedarikVersion=\''+sTedarikVersion+'\')';
 			var eccModel = this.getView().getModel("ecc");
 			oView.setBusy(true);
 

@@ -525,7 +525,7 @@
 			"visible" : true
 		},
 		"130" : {
-			"visible" : true
+			"visible" : false
 		}
 	},
 	"RevizyonButton" : {
@@ -588,6 +588,9 @@
 			"visible" : true
 		},
 		"170" : {
+			"visible" : true
+		},
+		"180" : {
 			"visible" : true
 		}
 	},	
