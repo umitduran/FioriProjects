@@ -229,7 +229,7 @@ sap.ui.define([
 			});
 
 		},
-		_onOnayla20 : function() {
+		_onOnayla20 : function(sAction) {
 			var oController = this;
 			var oTable = this.getView().byId("idUrunTedarikTable");
 			var oSelectedItem = oTable.getSelectedItem();
@@ -246,7 +246,11 @@ sap.ui.define([
 				eccModel.callFunction("/SelectUrunTedarik",{
 					urlParameters : {"TedarikNumarasi" : sTedarikNumarasi  },
 					success : function(oData, response) {
-                    	oController._claimAndComplete();
+						if (sAction) {
+							oController._claimAndComplete("UrunRevizyon");
+						} else {
+                    		oController._claimAndComplete();
+						}
                     },
 					error : function(oError){
 						oController.getView().setBusy(false);
@@ -262,7 +266,13 @@ sap.ui.define([
 				var sWarningMessage = this._getBundleText("requiredFieldMessage");
 				MessageToast.show(sWarningMessage);
 			} else {
-				this._claimAndComplete("Revizyon");
+				var bpmModel = this.getView().getModel("bpm");
+				var sCurrentStep = bpmModel.getProperty("/currentStep");
+				if (sCurrentStep==="20") {
+					this._onOnayla20("UrunRevizyon");
+				} else {
+					this._claimAndComplete("Revizyon");	
+				}
 			}
 		},
 		onBypass : function() {
@@ -362,7 +372,8 @@ sap.ui.define([
 						&& sAction!=="Iptal"
 						&& sAction!=="SartliOnay"
 						&& sAction!=="Red"
-			            && sAction!=="NumuneTalebi") {
+			            && sAction!=="NumuneTalebi"
+			            && sAction!=="UrunRevizyon") {
 				var faultData = {};
 				faultData.UrunTalebiType = {};
 				faultData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;

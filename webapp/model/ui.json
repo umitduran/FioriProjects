@@ -10,7 +10,8 @@
 		"editable": true
 	},
 	"AttachmentUpload" : {
-		"editable": true
+		"editable": true,
+		"required": true
 	},	
 	"TalepEden" : {
 		"required": false,
@@ -530,6 +531,9 @@
 	},
 	"RevizyonButton" : {
 		"visible" : false,	
+		"20" : {
+			"visible" : true
+		},	
 		"30" : {
 			"visible" : true
 		},	

@@ -320,7 +320,7 @@ sap.ui.define([
 		//var uimodel = sap.ui.getCore().getModel("uimodel");
 		var uidata = uimodel.getData();
 		var skip = ['sap.ui.core.Title','sap.m.Label'];
-		var run = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.DatePicker','sap.m.TextArea'];
+		var run = ['sap.m.ComboBox','sap.m.Input','sap.m.MultiComboBox','sap.m.MultiInput','sap.m.Table','sap.m.DatePicker','sap.m.TextArea','sap.m.UploadCollection'];
 		content.forEach(function(el){			
 			var type = el.getMetadata().getName();
 			if (skip.indexOf(type)>=0) {
@@ -337,12 +337,17 @@ sap.ui.define([
 					var result = that.checkRequired(el);
 					if (!result) {
 						validate = false;
-						console.log(id+' is required!');
+						console.log(id+" is required!");
 					}
-				} else if (type !== 'sap.m.Table') {
+				} else if (type !== "sap.m.Table" && type !=="sap.m.UploadCollection") {
 					if (el.getValueState() === sap.ui.core.ValueState.Error) {					
 						el.setValueState(sap.ui.core.ValueState.None);
 					}					
+				} else if (type === "sap.m.Table") {
+					el.setNoDataText("");
+					el.setShowNoData(false);					
+				} else if (type === "sap.m.UploadCollection") {
+					el.setNoDataText("");
 				} else {					
 					el.setNoDataText("");
 					el.setShowNoData(false);					
