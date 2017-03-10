@@ -320,6 +320,31 @@ sap.ui.define([
 				var sWarningMessage = this._getBundleText("requiredFieldMessage");
 				MessageToast.show(sWarningMessage);
 			} else {
+				var bpmModel = this.getView().getModel("bpm");
+				var sCurrentStep = bpmModel.getProperty("/currentStep");
+			
+				if (sCurrentStep === "70") {
+					var oMainModel = this.getView().getModel();
+					var eccModel = this.getView().getModel("ecc");
+					var sTalepNumarasi = oMainModel.getProperty('/TalepNumarasi');
+					var sVarisNoktasi = oMainModel.getProperty('/VarisNoktasi');
+					var sNumuneGeldi = this.byId("idNumuneGeldi").getSelected();
+		
+					eccModel.callFunction("/UpdateNumuneInfo",{
+						urlParameters : {
+							"TalepNumarasi" : sTalepNumarasi,
+							"Statu" : sCurrentStep,
+							"VarisNoktasi" : sVarisNoktasi,
+							"NumuneGeldi" : sNumuneGeldi
+						},
+						success : function () {
+		
+						},
+						error : function () {
+		
+						}
+					});
+				}
 				this._claimAndComplete("NumuneAlinmayacak");
 			}
 		},
@@ -1136,6 +1161,23 @@ sap.ui.define([
 			var sTalepNumarasi = mainModel.getProperty("/TalepNumarasi");
 			if (sTalepNumarasi !== undefined) {
 				var aAttachments = mainModel.getProperty("/Attachments");
+				var sDocumentId = aAttachments[0].DocumentId;
+				var sFileName = aAttachments[0].FileName;
+				var sObjid = jQuery.sap.uid();
+					row = {
+					TalepNumarasi : sTalepNumarasi,
+					DocumentId : sDocumentId,
+					FileName : sFileName
+				};	
+				var eccModel = this.getView().getModel("ecc");
+				eccModel.create('/EklerSet',row,{
+					success : function (resp) {
+						
+					},
+					error : function (err) {
+						
+					}
+				});
 				
 			}
 		},
