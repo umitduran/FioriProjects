@@ -196,9 +196,14 @@ sap.ui.define([
 			
 			if (editableUploadCollectionElements.indexOf(type)>=0) {
 				var uceditable = that.evaluateCondition(uiObj,"editable",mainModel,oView);
-				if (!uceditable) {
+				var elitems = el.getItems();
+				if (uceditable) {
+					el.setUploadEnabled(true);
+					jQuery.each(elitems, function(arrkey,val) {
+						val.setVisibleDelete(true) ;	
+					});						
+				} else {
 					el.setUploadEnabled(false);
-					var elitems = el.getItems();
 					jQuery.each(elitems, function(arrkey,val) {
 						val.setVisibleDelete(false);	
 					});					
