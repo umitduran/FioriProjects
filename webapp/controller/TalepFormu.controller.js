@@ -433,7 +433,7 @@ sap.ui.define([
 				);
 			} else {
 				var mainModel = oController.getView().getModel();
-				var ekleyen = mainModel.getProperty("/TedarikCollection/0/Ekleyen");
+				var ekleyen = mainModel.getProperty("/TedarikCollection/0/EkleyenBPM");
 				var outputData = {};
 				outputData.UrunTalebiType = {};
 				outputData.UrunTalebiType.TalepNumarasi = sTalepNumarasi;
@@ -577,6 +577,7 @@ sap.ui.define([
 							UretimSuresi : el.UretimSuresi,
 							TedarikciAdi : el.TedarikciAdi,
 							Ekleyen : el.Ekleyen,
+							EkleyenBPM : el.EkleyenBPM,
 							Metinler : el.TedarikToTedarikMetinler,
 							Change : bChangeVisible,
 							Delete : bDeleteVisible,

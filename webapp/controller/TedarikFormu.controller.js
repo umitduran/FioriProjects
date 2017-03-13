@@ -157,6 +157,7 @@ sap.ui.define([
 					oTedarik.TedarikNumarasi = tData.TedarikNumarasi;
 					oTedarik.Secildi = tData.Secildi;
 					oTedarik.Ekleyen=' ';
+					oTedarik.EkleyenBPM = oData.BPMUsername;
 					
 					eModel.create('/TedarikSet', oTedarik, {
 						success : function (oResponse) {

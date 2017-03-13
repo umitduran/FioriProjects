@@ -35,6 +35,13 @@ sap.ui.define([
 			var sToday = oDateFormat.format(new Date());
 			oModel.setProperty("/TalepTarihi",sToday); 
 			var oTalepToMetinler = {};
+
+			var sGetCurrentUserUrl = "/lib~bpmapi/TaskUtil?service=currentuser";
+			var oGetCurrentUserModel = new JSONModel(sGetCurrentUserUrl);
+			oGetCurrentUserModel.attachRequestCompleted(function(oResponseModel) {
+				var sUsername = oResponseModel.getSource().getProperty("/username");
+				oModel.setProperty("/BPMUsername",sUsername);
+			});
 			oModel.setProperty('/TalepToMetinler',oTalepToMetinler);			
 			return oModel;
 		},
